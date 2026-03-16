@@ -295,12 +295,12 @@ a { text-decoration: none; color: inherit; transition: color 0.2s; }
 /* Breadcrumb — Clean slash format */
 .breadcrumb-new {
   padding: 20px 0;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--border-color);
   background: var(--bg-secondary);
 }
 
 .breadcrumb-new__inner {
-  display: flex;
+  display: flex !important;
   align-items: center;
   gap: 10px;
   font-size: 14px;
@@ -321,7 +321,7 @@ a { text-decoration: none; color: inherit; transition: color 0.2s; }
 }
 
 .breadcrumb-new__current {
-  color: var(--text);
+  color: var(--text-primary);
   font-weight: 500;
 }
 
@@ -344,17 +344,17 @@ a { text-decoration: none; color: inherit; transition: color 0.2s; }
   line-height: 1.2;
   margin: 0 0 32px 0;
   font-weight: 400;
-  color: var(--text);
+  color: var(--text-primary);
 }
 
 /* Meta Row: Flexbox with author left, share right */
 .post-header-new__meta-row {
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: space-between;
   padding: 20px 0 24px;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
   gap: 24px;
 }
 
@@ -380,7 +380,7 @@ a { text-decoration: none; color: inherit; transition: color 0.2s; }
   display: block;
   font-weight: 600;
   font-size: 15px;
-  color: var(--text);
+  color: var(--text-primary);
   margin-bottom: 4px;
 }
 
@@ -409,9 +409,9 @@ a { text-decoration: none; color: inherit; transition: color 0.2s; }
   width: 40px;
   height: 40px;
   border-radius: 8px;
-  border: 1px solid var(--border);
-  background: var(--bg);
-  color: var(--text);
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-primary);
   cursor: pointer;
   transition: all .2s;
 }
@@ -419,7 +419,7 @@ a { text-decoration: none; color: inherit; transition: color 0.2s; }
 .share-btn-new:hover {
   border-color: var(--accent);
   color: var(--accent);
-  background: var(--bg-secondary);
+  background: var(--bg-primary);
 }
 
 @media (max-width: 640px) {
