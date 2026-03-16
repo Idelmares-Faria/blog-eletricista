@@ -245,10 +245,39 @@
     container.innerHTML = html;
   }
 
+  // ---------- Load Home Categories ----------
+  function loadHomeCategories() {
+    var homeCatGrid = document.getElementById('homeCategoriesGrid');
+    if (!homeCatGrid) return;
+    
+    fetch('/api/categories')
+      .then(function(r) { return r.json(); })
+      .then(function(res) {
+        if (!res.success) return;
+        var cats = res.data;
+        var html = '';
+        cats.forEach(function(c) {
+          var bgImg = c.image || 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800&q=80';
+          html += '<a href="/categorias?cat=' + c.slug + '" class="category-preview-card reveal">' +
+                  '<div class="category-preview-card__bg" style="background-image: url(' + bgImg + ')"></div>' +
+                  '<div class="category-preview-card__overlay"></div>' +
+                  '<h3 class="category-preview-card__name">' + c.name + '</h3>' +
+                  '</a>';
+        });
+        homeCatGrid.innerHTML = html;
+        initScrollReveal();
+      })
+      .catch(function(e) {
+        console.error('Erro ao carregar categorias na home:', e);
+        homeCatGrid.innerHTML = '<p>Erro ao carregar categorias.</p>';
+      });
+  }
+
   // ---------- Init ----------
   document.addEventListener('DOMContentLoaded', function () {
     initScrollReveal();
     initBackToTop();
+    loadHomeCategories();
 
     var recentGrid = document.getElementById('recentPostsGrid');
     if (recentGrid) {

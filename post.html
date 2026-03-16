@@ -101,88 +101,33 @@
     </div>
   </div>
 
-  <!-- ======== ARTICLE CONTENT ======== -->
-  <article class="post-content">
-    <div class="post-content__inner" id="postContent">
-      <p class="post-content__lead">Carregando conteúdo do artigo...</p>
-    </div>
-  </article>
-
-  <!-- ======== ABOUT AUTHOR ======== -->
-  <section class="author-box">
-    <div class="container">
-      <div class="author-box__inner">
-        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=160&q=80" alt="Avatar" class="author-box__avatar" id="authorBoxAvatar" />
-        <div class="author-box__info">
-          <span class="author-box__label">Sobre o autor</span>
-          <h3 class="author-box__name" id="authorBoxName">Autor</h3>
-          <p class="author-box__bio" id="authorBoxBio">Especialista em instalações elétricas com ampla experiência em projetos residenciais e industriais.</p>
+  <div class="post-layout">
+    <div class="post-layout__main">
+      <!-- ======== ARTICLE CONTENT ======== -->
+      <article class="post-content">
+        <div class="post-content__inner" id="postContent">
+          <p class="post-content__lead">Carregando conteúdo do artigo...</p>
         </div>
-      </div>
-    </div>
-  </section>
+      </article>
 
-  <!-- Ad: Inline -->
-  <div class="container">
-    <div class="ad-slot ad-slot--inline"></div>
-  </div>
+      <!-- ======== ABOUT AUTHOR ======== -->
+      <section class="author-box">
+        <div class="author-box__inner">
+          <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=160&q=80" alt="Avatar" class="author-box__avatar" id="authorBoxAvatar" />
+          <div class="author-box__info">
+            <span class="author-box__label">Sobre o autor</span>
+            <h3 class="author-box__name" id="authorBoxName">Autor</h3>
+            <p class="author-box__bio" id="authorBoxBio">Especialista em instalações elétricas com ampla experiência em projetos residenciais e industriais.</p>
+          </div>
+        </div>
+      </section>
 
-  <!-- ======== RELATED POSTS ======== -->
-  <section class="section related-posts">
-    <div class="container">
-      <h2 class="section__heading">Posts relacionados</h2>
-      <div class="related-posts__grid" id="relatedPosts">
-        <article class="post-card post-card--vertical reveal">
-          <a href="/post/sequencias-email-que-convertem" class="post-card__image-wrap">
-            <img src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&q=80" alt="Email marketing" class="post-card__image" />
-          </a>
-          <div class="post-card__body">
-            <span class="post-card__meta">Ana Beatriz &bull; 8 Mar 2026</span>
-            <a href="/post/sequencias-email-que-convertem" class="post-card__title-link">
-              <h3 class="post-card__title post-card__title--sm">Sequências de email que convertem: o guia definitivo</h3>
-            </a>
-            <div class="post-card__tags">
-              <span class="tag tag--cyan">Email Marketing</span>
-            </div>
-          </div>
-        </article>
-        <article class="post-card post-card--vertical reveal">
-          <a href="/post/funis-vendas-high-ticket" class="post-card__image-wrap">
-            <img src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=600&q=80" alt="Reunião de estratégia" class="post-card__image" />
-          </a>
-          <div class="post-card__body">
-            <span class="post-card__meta">Rafael Costa &bull; 5 Mar 2026</span>
-            <a href="/post/funis-vendas-high-ticket" class="post-card__title-link">
-              <h3 class="post-card__title post-card__title--sm">Funis de vendas high-ticket: da atração ao fechamento</h3>
-            </a>
-            <div class="post-card__tags">
-              <span class="tag tag--green">Funis</span>
-            </div>
-          </div>
-        </article>
-        <article class="post-card post-card--vertical reveal">
-          <a href="/post/headlines-que-vendem-formulas-copy" class="post-card__image-wrap">
-            <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&q=80" alt="Copywriting" class="post-card__image" />
-          </a>
-          <div class="post-card__body">
-            <span class="post-card__meta">Pedro Almeida &bull; 25 Fev 2026</span>
-            <a href="/post/headlines-que-vendem-formulas-copy" class="post-card__title-link">
-              <h3 class="post-card__title post-card__title--sm">Headlines que vendem: 15 fórmulas de copy testadas</h3>
-            </a>
-            <div class="post-card__tags">
-              <span class="tag tag--purple">Copywriting</span>
-            </div>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- ======== COMMENTS ======== -->
-  <section class="section comments-section">
-    <div class="container">
-      <div class="comments__inner">
-        <h2 class="section__heading">Comentários <span class="comments__count" id="commentsCount">(0)</span></h2>
+      <!-- Ad: Inline -->
+      <div class="ad-slot ad-slot--inline"></div>
+      <!-- ======== COMMENTS ======== -->
+      <section class="section comments-section">
+        <div class="comments__inner">
+          <h2 class="section__heading">Comentários <span class="comments__count" id="commentsCount">(0)</span></h2>
 
         <!-- Comment Form -->
         <form class="comment-form" id="commentForm">
@@ -220,6 +165,20 @@
       </div>
     </div>
   </section>
+  </div> <!-- end post-layout__main -->
+
+  <!-- ======== SIDEBAR ======== -->
+  <aside class="post-layout__sidebar">
+    <div class="sidebar-widget">
+      <h3 class="sidebar-widget__title">Recomendados</h3>
+      <div class="sidebar-widget__posts" id="sidebarRelatedPosts">
+        <p>Carregando...</p>
+      </div>
+    </div>
+
+    <div class="ad-slot ad-slot--sidebar"></div>
+  </aside>
+</div> <!-- end post-layout -->
 
   <!-- ======== FOOTER ======== -->
   <footer class="footer footer--full">
@@ -309,18 +268,18 @@
 
         // Fill related posts
         if (related.length > 0) {
-          var grid = document.getElementById('relatedPosts');
-          grid.innerHTML = related.map(function (p) {
-            return '<article class="post-card post-card--vertical reveal">' +
-              '<a href="/post/' + p.slug + '" class="post-card__image-wrap">' +
-              '<img src="' + p.image + '" alt="' + p.title + '" class="post-card__image" />' +
-              '</a><div class="post-card__body">' +
-              '<span class="post-card__meta">' + p.author.name + ' &bull; ' + formatDate(p.date) + '</span>' +
-              '<a href="/post/' + p.slug + '" class="post-card__title-link">' +
-              '<h3 class="post-card__title post-card__title--sm">' + p.title + '</h3></a>' +
-              '<div class="post-card__tags"><span class="tag tag--purple">' + p.category.name + '</span></div>' +
-              '</div></article>';
-          }).join('');
+          var sidebar = document.getElementById('sidebarRelatedPosts');
+          if (sidebar) {
+            sidebar.innerHTML = related.map(function (p) {
+              return '<article class="sidebar-post">' +
+                '<a href="/post/' + p.slug + '" class="sidebar-post__image-wrap">' +
+                '<img src="' + p.image + '" alt="' + p.title + '" class="sidebar-post__image" />' +
+                '</a><div class="sidebar-post__body">' +
+                '<a href="/post/' + p.slug + '" class="sidebar-post__title">' + p.title + '</a>' +
+                '<span class="sidebar-post__meta">' + formatDate(p.date) + '</span>' +
+                '</div></article>';
+            }).join('');
+          }
         }
       })
       .catch(function (err) {

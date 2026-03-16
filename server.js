@@ -227,13 +227,14 @@ app.get('/api/posts/:slug', async (req, res) => {
   }
 });
 
-// GET /api/categories — list all categories with post counts
+// GET /api/categories — list all categories with post counts and latest image
 app.get('/api/categories', async (req, res) => {
   try {
     const result = await pool.query(`
       SELECT
         c.id, c.slug, c.name, c.color,
-        COUNT(p.id) as post_count
+        COUNT(p.id) as post_count,
+        (SELECT p2.image FROM posts p2 WHERE p2.category_id = c.id ORDER BY p2.date DESC LIMIT 1) as latest_image
       FROM categories c
       LEFT JOIN posts p ON c.id = p.category_id
       GROUP BY c.id
@@ -244,7 +245,8 @@ app.get('/api/categories', async (req, res) => {
       slug: r.slug,
       name: r.name,
       color: r.color,
-      postCount: parseInt(r.post_count)
+      postCount: parseInt(r.post_count),
+      image: r.latest_image
     }));
 
     res.json({
