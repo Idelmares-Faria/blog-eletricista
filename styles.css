@@ -70,6 +70,7 @@
 
   /* Image overlay */
   --image-overlay: linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.03) 100%);
+  --bg-primary-rgb: 255, 255, 255;
 }
 
 [data-theme="dark"] {
@@ -120,6 +121,7 @@
   --card-hover-shadow: 0 12px 40px rgba(251, 191, 36, 0.15);
 
   --image-overlay: linear-gradient(180deg, transparent 60%, rgba(0,0,0,0.2) 100%);
+  --bg-primary-rgb: 9, 13, 31;
 }
 
 /* ---------- Transitions ---------- */
@@ -204,7 +206,7 @@ button {
   position: sticky;
   top: 0;
   z-index: 100;
-  background-color: var(--bg-primary);
+  background-color: rgba(var(--bg-primary-rgb, 255, 255, 255), 0.8);
   border-bottom: 1px solid var(--border-color);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -265,6 +267,7 @@ button {
   height: 2px;
   background: var(--accent);
   border-radius: 1px;
+  box-shadow: 0 0 8px var(--accent);
 }
 
 /* Theme Toggle */
@@ -282,6 +285,7 @@ button {
 
 .theme-toggle:hover {
   transform: scale(1.05);
+  box-shadow: 0 0 15px var(--accent);
 }
 
 .theme-toggle__icon {
@@ -339,7 +343,22 @@ button {
    ============================================================ */
 .hero {
   background-color: var(--bg-primary);
-  padding: 40px 0 0;
+  padding: 80px 0 60px;
+  background-image: 
+    radial-gradient(circle at 2px 2px, var(--border-color) 1px, transparent 0);
+  background-size: 40px 40px;
+  position: relative;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 150px;
+  background: linear-gradient(to top, var(--bg-primary), transparent);
+  pointer-events: none;
 }
 
 .hero__inner {
@@ -373,6 +392,42 @@ button {
   padding: 10px 0;
   animation: heroReveal 1s ease-out forwards;
   user-select: none;
+}
+
+.hero__title em {
+  font-style: italic;
+  color: var(--accent);
+  text-shadow: 0 0 30px var(--accent-light);
+  position: relative;
+}
+
+.hero__subtitle {
+  max-width: 600px;
+  font-size: 20px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 32px 0;
+  animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+.hero__cta-group {
+  display: flex;
+  gap: 16px;
+  margin-top: 40px;
+  animation: fadeInUp 0.8s ease-out 0.6s both;
+}
+
+.hero__badge {
+  display: inline-block;
+  padding: 6px 14px;
+  background: var(--accent-light);
+  color: var(--accent);
+  border-radius: 99px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  border: 1px solid var(--accent);
+  box-shadow: 0 0 10px var(--accent-light);
 }
 
 /* ============================================================
