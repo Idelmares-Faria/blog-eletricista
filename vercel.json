@@ -3,18 +3,14 @@
   "builds": [
     {
       "src": "server.js",
-      "use": "@vercel/node"
+      "use": "@vercel/node",
+      "config": {
+        "includeFiles": ["*.html", "*.css", "*.js", "data/**"]
+      }
     }
   ],
   "routes": [
-    { "src": "/api/(.*)", "dest": "server.js" },
-    { "src": "/post/(.*)", "dest": "server.js" },
-    { "src": "/categorias(.*)", "dest": "server.js" },
-    { "src": "/categoria/(.*)", "dest": "server.js" },
-    { "src": "/sobre", "dest": "server.js" },
-    { "src": "/newsletter", "dest": "server.js" },
-    { "src": "/busca", "dest": "server.js" },
-    { "src": "/", "dest": "server.js" }
+    { "src": "/(.*)", "dest": "server.js" }
   ],
   "env": {
     "NODE_ENV": "production"
