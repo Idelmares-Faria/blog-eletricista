@@ -116,7 +116,7 @@
       '<img src="' + (post.image || '') + '" alt="' + post.title + '" class="post-card__image" loading="lazy"/></a>' +
       '<div class="post-card__body">' +
       '<span class="post-card__meta">' + post.author.name + ' &bull; ' + formatDate(post.date) + '</span>' +
-      '<a href="/post/' + post.slug + '" class="post-card__title-link"><h3 class="post-card__title">' + post.title + ' ' + ARROW + '</h3></a>' +
+      '<a href="/post/' + post.slug + '" class="post-card__title-link"><h3 class="post-card__title">' + post.title + '</h3></a>' +
       '<p class="post-card__excerpt">' + post.excerpt + '</p>' +
       '<div class="post-card__tags">' + renderTags(post.tags, post.category.color) + '</div>' +
       '</div></article>';
@@ -140,7 +140,7 @@
       '<img src="' + (post.image || '') + '" alt="' + post.title + '" class="post-card__image" loading="lazy"/></a>' +
       '<div class="post-card__body">' +
       '<span class="post-card__meta">' + post.author.name + ' &bull; ' + formatDate(post.date) + '</span>' +
-      '<a href="/post/' + post.slug + '" class="post-card__title-link"><h3 class="post-card__title">' + post.title + ' ' + ARROW + '</h3></a>' +
+      '<a href="/post/' + post.slug + '" class="post-card__title-link"><h3 class="post-card__title">' + post.title + '</h3></a>' +
       '<p class="post-card__excerpt">' + post.excerpt + '</p>' +
       '<div class="post-card__tags">' + renderTags(post.tags, post.category.color) + '</div>' +
       '</div></article>';
