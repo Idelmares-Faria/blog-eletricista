@@ -1,4 +1,5 @@
 const express = require('express');
+const compression = require('compression');
 const { Pool } = require('pg');
 const path = require('path');
 require('dotenv').config();
@@ -12,13 +13,22 @@ const pool = new Pool({
 });
 
 // Middleware
+app.use(compression());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Static files
+// Static files with cache headers
 app.use(express.static(path.join(__dirname), {
   extensions: ['html'],
-  index: 'index.html'
+  index: 'index.html',
+  maxAge: '7d',
+  setHeaders: function (res, filePath) {
+    if (filePath.endsWith('.html')) {
+      res.setHeader('Cache-Control', 'no-cache');
+    } else if (filePath.endsWith('.css') || filePath.endsWith('.js')) {
+      res.setHeader('Cache-Control', 'public, max-age=86400');
+    }
+  }
 }));
 
 // ═══════════════════════════════════════════
@@ -364,24 +374,48 @@ app.get('/api/search', async (req, res) => {
       return res.json({ success: true, data: [], total: 0 });
     }
 
-    const result = await pool.query(`
-      SELECT
-        p.id, p.slug, p.title, p.excerpt, p.author_name, p.author_avatar, p.author_bio,
-        p.image, p.featured, p.read_time, p.date,
-        c.id as category_id, c.slug as category_slug, c.name as category_name, c.color as category_color,
-        ARRAY_AGG(DISTINCT t.name) as tags
-      FROM posts p
-      JOIN categories c ON p.category_id = c.id
-      LEFT JOIN post_tags pt ON p.id = pt.post_id
-      LEFT JOIN tags t ON pt.tag_id = t.id
-      WHERE
-        LOWER(p.title) LIKE $1
-        OR LOWER(p.excerpt) LIKE $1
-        OR LOWER(c.name) LIKE $1
-        OR LOWER(t.name) LIKE $1
-      GROUP BY p.id, c.id
-      ORDER BY p.date DESC
-    `, [`%${q}%`]);
+    // Try full-text search first, fallback to LIKE
+    let result;
+    try {
+      result = await pool.query(`
+        SELECT
+          p.id, p.slug, p.title, p.excerpt, p.author_name, p.author_avatar, p.author_bio,
+          p.image, p.featured, p.read_time, p.date,
+          c.id as category_id, c.slug as category_slug, c.name as category_name, c.color as category_color,
+          ARRAY_AGG(DISTINCT t.name) as tags,
+          ts_rank(to_tsvector('portuguese', COALESCE(p.title,'') || ' ' || COALESCE(p.excerpt,'') || ' ' || COALESCE(p.content,'')), plainto_tsquery('portuguese', $1)) as rank
+        FROM posts p
+        JOIN categories c ON p.category_id = c.id
+        LEFT JOIN post_tags pt ON p.id = pt.post_id
+        LEFT JOIN tags t ON pt.tag_id = t.id
+        WHERE
+          to_tsvector('portuguese', COALESCE(p.title,'') || ' ' || COALESCE(p.excerpt,'') || ' ' || COALESCE(p.content,'')) @@ plainto_tsquery('portuguese', $1)
+          OR LOWER(c.name) LIKE $2
+          OR LOWER(t.name) LIKE $2
+        GROUP BY p.id, c.id
+        ORDER BY rank DESC, p.date DESC
+      `, [q, `%${q}%`]);
+    } catch (ftsError) {
+      // Fallback to LIKE search if full-text search fails
+      result = await pool.query(`
+        SELECT
+          p.id, p.slug, p.title, p.excerpt, p.author_name, p.author_avatar, p.author_bio,
+          p.image, p.featured, p.read_time, p.date,
+          c.id as category_id, c.slug as category_slug, c.name as category_name, c.color as category_color,
+          ARRAY_AGG(DISTINCT t.name) as tags
+        FROM posts p
+        JOIN categories c ON p.category_id = c.id
+        LEFT JOIN post_tags pt ON p.id = pt.post_id
+        LEFT JOIN tags t ON pt.tag_id = t.id
+        WHERE
+          LOWER(p.title) LIKE $1
+          OR LOWER(p.excerpt) LIKE $1
+          OR LOWER(c.name) LIKE $1
+          OR LOWER(t.name) LIKE $1
+        GROUP BY p.id, c.id
+        ORDER BY p.date DESC
+      `, [`%${q}%`]);
+    }
 
     const posts = result.rows.map(p => ({
       id: p.id,
@@ -456,6 +490,10 @@ app.get('/newsletter', (req, res) => {
 });
 
 app.get('/busca', (req, res) => {
+  sendHTML(res, 'search.html');
+});
+
+app.get('/buscar', (req, res) => {
   sendHTML(res, 'search.html');
 });
 

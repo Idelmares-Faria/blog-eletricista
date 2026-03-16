@@ -207,10 +207,52 @@
       .catch(function(e) { console.error('Erro ao carregar posts:', e); });
   }
 
+  // ---------- Back to Top ----------
+  function initBackToTop() {
+    var btn = document.createElement('button');
+    btn.className = 'back-to-top';
+    btn.setAttribute('aria-label', 'Voltar ao topo');
+    btn.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>';
+    document.body.appendChild(btn);
+
+    window.addEventListener('scroll', function () {
+      if (window.scrollY > 400) {
+        btn.classList.add('is-visible');
+      } else {
+        btn.classList.remove('is-visible');
+      }
+    });
+
+    btn.addEventListener('click', function () {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  // ---------- Skeleton Loading ----------
+  function showSkeletons(container, count) {
+    if (!container) return;
+    var html = '';
+    for (var i = 0; i < count; i++) {
+      html += '<div class="skeleton--card skeleton">' +
+        '<div class="skeleton--image skeleton"></div>' +
+        '<div class="skeleton--card-body">' +
+        '<div class="skeleton--text-sm skeleton"></div>' +
+        '<div class="skeleton--title skeleton"></div>' +
+        '<div class="skeleton--text skeleton"></div>' +
+        '<div class="skeleton--tag skeleton"></div>' +
+        '</div></div>';
+    }
+    container.innerHTML = html;
+  }
+
   // ---------- Init ----------
   document.addEventListener('DOMContentLoaded', function () {
     initScrollReveal();
-    if (document.getElementById('recentPostsGrid')) {
+    initBackToTop();
+
+    var recentGrid = document.getElementById('recentPostsGrid');
+    if (recentGrid) {
+      showSkeletons(recentGrid, 3);
       loadPosts(1);
       document.getElementById('btnPrev') && document.getElementById('btnPrev').addEventListener('click', function() { loadPosts(currentPage - 1); window.scrollTo(0,0); });
       document.getElementById('btnNext') && document.getElementById('btnNext').addEventListener('click', function() { loadPosts(currentPage + 1); window.scrollTo(0,0); });

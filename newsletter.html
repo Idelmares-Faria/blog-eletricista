@@ -3,7 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Newsletter — AtivMax Blog</title>
+  <title>Newsletter — Blog do Eletricista</title>
+  <meta name="description" content="Inscreva-se na newsletter do Blog do Eletricista e receba artigos técnicos, normas e dicas práticas no seu email." />
+  <meta property="og:title" content="Newsletter — Blog do Eletricista" />
+  <meta property="og:description" content="Inscreva-se na newsletter do Blog do Eletricista e receba artigos técnicos, normas e dicas práticas no seu email." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Blog do Eletricista" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&display=swap" rel="stylesheet" />
@@ -14,12 +20,18 @@
   <!-- ======== NAVBAR ======== -->
   <header class="navbar">
     <div class="navbar__inner container">
-      <a href="/" class="navbar__logo">AtivMax</a>
+      <a href="/" class="navbar__logo">Blog do Eletricista</a>
       <nav class="navbar__menu" id="navMenu">
         <a href="/" class="navbar__link">Blog</a>
-        <a href="/categorias" class="navbar__link">Estratégias</a>
+        <a href="/categorias" class="navbar__link">Categorias</a>
         <a href="/sobre" class="navbar__link">Sobre</a>
         <a href="/newsletter" class="navbar__link navbar__link--active">Newsletter</a>
+        <div class="navbar__search" id="navSearch">
+          <button class="navbar__search-btn" id="searchToggleBtn" aria-label="Buscar">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </button>
+          <input type="search" class="navbar__search-input" id="navSearchInput" placeholder="Buscar..." />
+        </div>
         <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema">
           <svg class="theme-toggle__icon theme-toggle__icon--sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
           <svg class="theme-toggle__icon theme-toggle__icon--moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -36,8 +48,8 @@
     <div class="container">
       <div class="newsletter-hero__inner">
         <span class="newsletter-hero__badge">Newsletter Semanal</span>
-        <h1 class="newsletter-hero__title">As melhores estratégias de marketing digital, direto no seu email.</h1>
-        <p class="newsletter-hero__desc">Junte-se a mais de 12.000 profissionais que recebem insights exclusivos, tendências do mercado e dicas práticas toda semana.</p>
+        <h1 class="newsletter-hero__title">Artigos técnicos, normas e dicas práticas de elétrica, direto no seu email.</h1>
+        <p class="newsletter-hero__desc">Junte-se a milhares de eletricistas e profissionais que recebem conteúdo técnico exclusivo, atualizações de normas e dicas do dia a dia toda semana.</p>
 
         <!-- Subscription Form -->
         <form class="newsletter-form" id="newsletterForm">
@@ -45,7 +57,7 @@
             <input type="text" class="newsletter-form__input" id="nlName" placeholder="Seu nome" required />
             <input type="email" class="newsletter-form__input" id="nlEmail" placeholder="Seu melhor email" required />
           </div>
-          <button type="submit" class="btn btn--primary btn--lg">Quero receber as estratégias</button>
+          <button type="submit" class="btn btn--primary btn--lg">Quero receber o conteúdo técnico</button>
           <p class="newsletter-form__disclaimer">Sem spam. Cancele quando quiser. Seus dados estão seguros.</p>
         </form>
       </div>
@@ -61,29 +73,29 @@
           <div class="benefit-card__icon">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
           </div>
-          <h3 class="benefit-card__title">Estratégias testadas</h3>
-          <p class="benefit-card__desc">Receba frameworks e táticas que realmente funcionam, validadas com dados reais de campanhas e projetos.</p>
+          <h3 class="benefit-card__title">Conteúdo técnico validado</h3>
+          <p class="benefit-card__desc">Receba artigos baseados em normas vigentes (NBR 5410, NR-10) e experiências reais de campo, validados por engenheiros.</p>
         </div>
         <div class="benefit-card reveal">
           <div class="benefit-card__icon">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
           </div>
-          <h3 class="benefit-card__title">Conteúdo exclusivo</h3>
-          <p class="benefit-card__desc">Acesse análises, estudos de caso e insights que não publicamos no blog - só para assinantes.</p>
+          <h3 class="benefit-card__title">Material exclusivo</h3>
+          <p class="benefit-card__desc">Acesse checklists, guias técnicos e análises de casos reais que não publicamos no blog — só para assinantes.</p>
         </div>
         <div class="benefit-card reveal">
           <div class="benefit-card__icon">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           </div>
-          <h3 class="benefit-card__title">Antes de todo mundo</h3>
-          <p class="benefit-card__desc">Fique por dentro das novidades e tendências do mercado antes de virarem assunto comum.</p>
+          <h3 class="benefit-card__title">Normas atualizadas</h3>
+          <p class="benefit-card__desc">Fique por dentro de atualizações nas normas técnicas e regulamentações antes que impactem seu trabalho.</p>
         </div>
         <div class="benefit-card reveal">
           <div class="benefit-card__icon">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
           </div>
-          <h3 class="benefit-card__title">Comunidade ativa</h3>
-          <p class="benefit-card__desc">Faça parte de um grupo de profissionais de marketing que trocam experiências e se ajudam.</p>
+          <h3 class="benefit-card__title">Comunidade técnica</h3>
+          <p class="benefit-card__desc">Faça parte de uma rede de eletricistas e engenheiros que trocam experiências e soluções práticas.</p>
         </div>
       </div>
     </div>
@@ -94,87 +106,84 @@
     <div class="container">
       <div class="proof__grid">
         <div class="proof-card reveal">
-          <span class="proof-card__number">12.000+</span>
+          <span class="proof-card__number">5.000+</span>
           <span class="proof-card__label">Assinantes ativos</span>
         </div>
         <div class="proof-card reveal">
-          <span class="proof-card__number">48%</span>
+          <span class="proof-card__number">52%</span>
           <span class="proof-card__label">Taxa de abertura média</span>
         </div>
         <div class="proof-card reveal">
-          <span class="proof-card__number">150+</span>
+          <span class="proof-card__number">80+</span>
           <span class="proof-card__label">Edições publicadas</span>
         </div>
         <div class="proof-card reveal">
-          <span class="proof-card__number">4.9/5</span>
+          <span class="proof-card__number">4.8/5</span>
           <span class="proof-card__label">Avaliação dos leitores</span>
         </div>
       </div>
     </div>
   </section>
 
+  <!-- Ad: Inline -->
+  <div class="container">
+    <div class="ad-slot ad-slot--inline"></div>
+  </div>
+
   <!-- ======== RECENT POSTS PREVIEW ======== -->
   <section class="section newsletter-recent">
     <div class="container">
       <h2 class="section__heading">Posts recentes do blog</h2>
       <div class="all-posts__grid" id="recentPostsGrid">
-        <article class="post-card post-card--vertical reveal">
-          <a href="/post/escalar-campanhas-trafego-pago" class="post-card__image-wrap">
-            <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80" alt="Dashboard de métricas" class="post-card__image" />
-          </a>
-          <div class="post-card__body">
-            <span class="post-card__meta">Lucas Martins &bull; 10 Mar 2026</span>
-            <a href="/post/escalar-campanhas-trafego-pago" class="post-card__title-link">
-              <h3 class="post-card__title">Como escalar suas campanhas de tráfego pago sem aumentar o CAC <svg class="arrow-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></h3>
-            </a>
-            <div class="post-card__tags">
-              <span class="tag tag--purple">Tráfego Pago</span>
-            </div>
-          </div>
-        </article>
-        <article class="post-card post-card--vertical reveal">
-          <a href="/post/sequencias-email-que-convertem" class="post-card__image-wrap">
-            <img src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=600&q=80" alt="Email marketing" class="post-card__image" />
-          </a>
-          <div class="post-card__body">
-            <span class="post-card__meta">Ana Beatriz &bull; 8 Mar 2026</span>
-            <a href="/post/sequencias-email-que-convertem" class="post-card__title-link">
-              <h3 class="post-card__title">Sequências de email que convertem: o guia definitivo <svg class="arrow-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></h3>
-            </a>
-            <div class="post-card__tags">
-              <span class="tag tag--cyan">Email Marketing</span>
-            </div>
-          </div>
-        </article>
-        <article class="post-card post-card--vertical reveal">
-          <a href="/post/seo-2026-tecnicas-rankear-google" class="post-card__image-wrap">
-            <img src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600&q=80" alt="SEO" class="post-card__image" />
-          </a>
-          <div class="post-card__body">
-            <span class="post-card__meta">Camila Rodrigues &bull; 1 Mar 2026</span>
-            <a href="/post/seo-2026-tecnicas-rankear-google" class="post-card__title-link">
-              <h3 class="post-card__title">SEO em 2026: as técnicas que realmente funcionam <svg class="arrow-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></h3>
-            </a>
-            <div class="post-card__tags">
-              <span class="tag tag--purple">SEO</span>
-            </div>
-          </div>
-        </article>
+        <!-- Populated via JS -->
       </div>
     </div>
   </section>
 
   <!-- ======== FOOTER ======== -->
-  <footer class="footer">
-    <div class="footer__inner container">
-      <p class="footer__copy">&copy; 2026 AtivMax</p>
-      <nav class="footer__links">
-        <a href="#">Instagram</a>
-        <a href="#">LinkedIn</a>
-        <a href="#">YouTube</a>
-        <a href="#">Email</a>
-        <a href="#">RSS feed</a>
-      </nav>
+  <footer class="footer footer--full">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__col">
+          <h3 class="footer__brand-name">Blog do Eletricista</h3>
+          <p class="footer__brand-desc">Conteúdo técnico de qualidade sobre instalações elétricas, normas, segurança e manutenção para profissionais e entusiastas.</p>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__col-title">Conteúdo</h4>
+          <nav class="footer__col-links">
+            <a href="/categorias?cat=instalacoes">Instalações</a>
+            <a href="/categorias?cat=seguranca">Segurança</a>
+            <a href="/categorias?cat=normas">Normas Técnicas</a>
+            <a href="/categorias?cat=manutencao">Manutenção</a>
+            <a href="/categorias?cat=materiais">Materiais</a>
+          </nav>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__col-title">Blog</h4>
+          <nav class="footer__col-links">
+            <a href="/sobre">Sobre nós</a>
+            <a href="/newsletter">Newsletter</a>
+            <a href="/buscar">Buscar</a>
+            <a href="/categorias">Categorias</a>
+          </nav>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__col-title">Redes Sociais</h4>
+          <nav class="footer__col-links">
+            <a href="#">Instagram</a>
+            <a href="#">YouTube</a>
+            <a href="#">LinkedIn</a>
+            <a href="#">WhatsApp</a>
+          </nav>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p class="footer__copy">&copy; 2026 Blog do Eletricista</p>
+        <nav class="footer__bottom-links">
+          <a href="#">Privacidade</a>
+          <a href="#">Termos</a>
+        </nav>
+      </div>
     </div>
   </footer>
 
@@ -182,6 +191,39 @@
   <script>
   (function () {
     'use strict';
+
+    // Navbar search
+    var searchToggle = document.getElementById('searchToggleBtn');
+    var navSearchEl = document.getElementById('navSearch');
+    var navSearchInput = document.getElementById('navSearchInput');
+    if (searchToggle) {
+      searchToggle.addEventListener('click', function () {
+        navSearchEl.classList.toggle('is-open');
+        if (navSearchEl.classList.contains('is-open')) navSearchInput.focus();
+      });
+      navSearchInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && navSearchInput.value.trim()) {
+          window.location.href = '/buscar?q=' + encodeURIComponent(navSearchInput.value.trim());
+        }
+      });
+    }
+
+    // Toast notification
+    function showToast(message) {
+      var existing = document.querySelector('.toast');
+      if (existing) existing.remove();
+      var toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.textContent = message;
+      document.body.appendChild(toast);
+      requestAnimationFrame(function () {
+        toast.classList.add('is-visible');
+      });
+      setTimeout(function () {
+        toast.classList.remove('is-visible');
+        setTimeout(function () { toast.remove(); }, 300);
+      }, 4000);
+    }
 
     // Newsletter form submission
     document.getElementById('newsletterForm').addEventListener('submit', function (e) {
@@ -196,14 +238,14 @@
       })
       .then(function (res) {
         if (res.ok) {
-          alert('Inscrição realizada com sucesso! Bem-vindo(a) à newsletter do AtivMax.');
+          showToast('Inscrição realizada com sucesso! Bem-vindo(a) à newsletter.');
           e.target.reset();
         } else {
           throw new Error('Erro');
         }
       })
       .catch(function () {
-        alert('Erro ao realizar inscrição. Tente novamente.');
+        showToast('Erro ao realizar inscrição. Tente novamente.');
       });
     });
 

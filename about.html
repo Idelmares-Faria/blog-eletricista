@@ -3,7 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sobre — AtivMax Blog</title>
+  <meta name="description" content="Conheça o Blog do Eletricista — sua fonte de conhecimento técnico sobre instalações elétricas, normas e segurança." />
+  <meta property="og:title" content="Sobre — Blog do Eletricista" />
+  <meta property="og:description" content="Conheça o Blog do Eletricista — sua fonte de conhecimento técnico sobre instalações elétricas." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Blog do Eletricista" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+  <title>Sobre — Blog do Eletricista</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&display=swap" rel="stylesheet" />
@@ -14,12 +20,18 @@
   <!-- ======== NAVBAR ======== -->
   <header class="navbar">
     <div class="navbar__inner container">
-      <a href="/" class="navbar__logo">AtivMax</a>
+      <a href="/" class="navbar__logo">Blog do Eletricista</a>
       <nav class="navbar__menu" id="navMenu">
         <a href="/" class="navbar__link">Blog</a>
-        <a href="/categorias" class="navbar__link">Estratégias</a>
+        <a href="/categorias" class="navbar__link">Categorias</a>
         <a href="/sobre" class="navbar__link navbar__link--active">Sobre</a>
         <a href="/newsletter" class="navbar__link">Newsletter</a>
+        <div class="navbar__search" id="navSearch">
+          <button class="navbar__search-btn" id="searchToggleBtn" aria-label="Buscar">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </button>
+          <input type="search" class="navbar__search-input" id="navSearchInput" placeholder="Buscar..." />
+        </div>
         <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema">
           <svg class="theme-toggle__icon theme-toggle__icon--sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
           <svg class="theme-toggle__icon theme-toggle__icon--moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -35,7 +47,7 @@
   <section class="hero hero--sm">
     <div class="hero__inner container">
       <h1 class="hero__title hero__title--sm">SOBRE NÓS</h1>
-      <p class="hero__subtitle">Acelerando resultados no marketing digital desde 2019.</p>
+      <p class="hero__subtitle">Compartilhando conhecimento técnico em elétrica desde 2020.</p>
     </div>
   </section>
 
@@ -45,13 +57,13 @@
       <div class="mission__grid">
         <div class="mission__block reveal">
           <span class="mission__label">Nossa Missão</span>
-          <h2 class="mission__title">Democratizar o conhecimento em marketing digital de alta performance.</h2>
-          <p class="mission__text">Acreditamos que todo empreendedor e profissional de marketing merece acesso a estratégias avançadas, testadas e comprovadas. O AtivMax nasceu com o propósito de transformar conhecimento técnico em conteúdo acessível e aplicável, ajudando negócios de todos os tamanhos a crescerem no digital.</p>
+          <h2 class="mission__title">Democratizar o conhecimento técnico em instalações elétricas.</h2>
+          <p class="mission__text">Acreditamos que todo eletricista e profissional da área merece acesso a conteúdo técnico de qualidade, atualizado com as normas vigentes. O Blog do Eletricista nasceu para transformar conhecimento técnico complexo em conteúdo acessível e aplicável no dia a dia.</p>
         </div>
         <div class="mission__block reveal">
           <span class="mission__label">Nossa Visão</span>
-          <h2 class="mission__title">Ser a referência #1 em conteúdo de marketing digital no Brasil.</h2>
-          <p class="mission__text">Queremos ser o primeiro lugar onde profissionais de marketing buscam informação, inspiração e estratégia. Com conteúdo original, baseado em dados reais e experiências práticas, construímos uma comunidade que cresce junto.</p>
+          <h2 class="mission__title">Ser a referência #1 em conteúdo técnico de elétrica no Brasil.</h2>
+          <p class="mission__text">Queremos ser o primeiro lugar onde eletricistas e profissionais buscam informação técnica, normas atualizadas e soluções práticas. Com conteúdo original, baseado em normas NBR e experiências de campo, construímos uma comunidade que cresce junto.</p>
         </div>
       </div>
     </div>
@@ -66,7 +78,7 @@
           <span class="stat-card__label">Posts publicados</span>
         </div>
         <div class="stat-card reveal">
-          <span class="stat-card__number">85K</span>
+          <span class="stat-card__number">50K</span>
           <span class="stat-card__label">Leitores mensais</span>
         </div>
         <div class="stat-card reveal">
@@ -74,7 +86,7 @@
           <span class="stat-card__label">Anos de experiência</span>
         </div>
         <div class="stat-card reveal">
-          <span class="stat-card__number">12</span>
+          <span class="stat-card__number">5</span>
           <span class="stat-card__label">Categorias</span>
         </div>
       </div>
@@ -87,28 +99,28 @@
       <h2 class="section__heading">Nosso time</h2>
       <div class="team__grid">
         <div class="team-card reveal">
-          <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&q=80&fit=crop&crop=face" alt="Lucas Martins" class="team-card__photo" />
-          <h3 class="team-card__name">Lucas Martins</h3>
-          <span class="team-card__role">Fundador & Head de Conteúdo</span>
-          <p class="team-card__bio">Especialista em tráfego pago e growth marketing com mais de 10 anos de experiência. Já geriu mais de R$ 50M em investimento publicitário para marcas líderes de mercado.</p>
+          <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&h=300&q=80&fit=crop&crop=face" alt="Carlos Silva" class="team-card__photo" />
+          <h3 class="team-card__name">Carlos Silva</h3>
+          <span class="team-card__role">Engenheiro Eletricista & Fundador</span>
+          <p class="team-card__bio">Engenheiro eletricista com CREA ativo e mais de 15 anos de experiência em projetos residenciais, comerciais e industriais. Especialista em NBR 5410 e sistemas de proteção.</p>
         </div>
         <div class="team-card reveal">
-          <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=300&h=300&q=80&fit=crop&crop=face" alt="Ana Beatriz" class="team-card__photo" />
-          <h3 class="team-card__name">Ana Beatriz</h3>
-          <span class="team-card__role">Head de Email Marketing</span>
-          <p class="team-card__bio">Referência em automação e nutrição de leads. Criadora de sequências de email que já geraram mais de R$ 20M em vendas para clientes de diversos segmentos.</p>
+          <img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=300&h=300&q=80&fit=crop&crop=face" alt="Mariana Costa" class="team-card__photo" />
+          <h3 class="team-card__name">Mariana Costa</h3>
+          <span class="team-card__role">Técnica em Eletrotécnica</span>
+          <p class="team-card__bio">Técnica em eletrotécnica formada pelo SENAI com especialização em automação residencial. Atua há 8 anos com instalações e manutenção elétrica preventiva.</p>
         </div>
         <div class="team-card reveal">
-          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&q=80&fit=crop&crop=face" alt="Rafael Costa" class="team-card__photo" />
-          <h3 class="team-card__name">Rafael Costa</h3>
-          <span class="team-card__role">Estrategista de SEO</span>
-          <p class="team-card__bio">Consultor de SEO para empresas SaaS e e-commerces. Especialista em estratégias de conteúdo orgânico que geram tráfego qualificado e autoridade de domínio.</p>
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&q=80&fit=crop&crop=face" alt="Roberto Mendes" class="team-card__photo" />
+          <h3 class="team-card__name">Roberto Mendes</h3>
+          <span class="team-card__role">Consultor em Segurança Elétrica</span>
+          <p class="team-card__bio">Consultor NR-10 e NR-35 com vasta experiência em treinamentos de segurança elétrica. Perito em análise de riscos e laudos técnicos para empresas.</p>
         </div>
         <div class="team-card reveal">
-          <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&q=80&fit=crop&crop=face" alt="Camila Rodrigues" class="team-card__photo" />
-          <h3 class="team-card__name">Camila Rodrigues</h3>
-          <span class="team-card__role">Social Media Strategist</span>
-          <p class="team-card__bio">Expert em redes sociais com foco em Instagram e TikTok. Já ajudou mais de 200 marcas a construírem presença digital forte e engajamento orgânico consistente.</p>
+          <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=300&h=300&q=80&fit=crop&crop=face" alt="Fernanda Lima" class="team-card__photo" />
+          <h3 class="team-card__name">Fernanda Lima</h3>
+          <span class="team-card__role">Redatora Técnica</span>
+          <p class="team-card__bio">Jornalista especializada em conteúdo técnico para o setor elétrico. Transforma normas e procedimentos complexos em artigos claros e didáticos.</p>
         </div>
       </div>
     </div>
@@ -118,8 +130,8 @@
   <section class="section about-cta">
     <div class="container">
       <div class="cta-box reveal">
-        <h2 class="cta-box__title">Junte-se a milhares de profissionais de marketing</h2>
-        <p class="cta-box__text">Receba as melhores estratégias, dicas e insights diretamente no seu email. Sem spam, apenas conteúdo de valor.</p>
+        <h2 class="cta-box__title">Junte-se a milhares de profissionais de elétrica</h2>
+        <p class="cta-box__text">Receba artigos técnicos, atualizações de normas e dicas práticas diretamente no seu email. Sem spam, apenas conteúdo técnico de valor.</p>
         <form class="cta-box__form" id="ctaForm">
           <input type="email" class="cta-box__input" placeholder="Seu melhor email" required />
           <button type="submit" class="btn btn--primary">Inscrever-se</button>
@@ -129,16 +141,49 @@
   </section>
 
   <!-- ======== FOOTER ======== -->
-  <footer class="footer">
-    <div class="footer__inner container">
-      <p class="footer__copy">&copy; 2026 AtivMax</p>
-      <nav class="footer__links">
-        <a href="#">Instagram</a>
-        <a href="#">LinkedIn</a>
-        <a href="#">YouTube</a>
-        <a href="#">Email</a>
-        <a href="#">RSS feed</a>
-      </nav>
+  <footer class="footer footer--full">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__col">
+          <h3 class="footer__brand-name">Blog do Eletricista</h3>
+          <p class="footer__brand-desc">Conteúdo técnico de qualidade sobre instalações elétricas, normas, segurança e manutenção para profissionais e entusiastas.</p>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__col-title">Conteúdo</h4>
+          <nav class="footer__col-links">
+            <a href="/categorias?cat=instalacoes">Instalações</a>
+            <a href="/categorias?cat=seguranca">Segurança</a>
+            <a href="/categorias?cat=normas">Normas Técnicas</a>
+            <a href="/categorias?cat=manutencao">Manutenção</a>
+            <a href="/categorias?cat=materiais">Materiais</a>
+          </nav>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__col-title">Blog</h4>
+          <nav class="footer__col-links">
+            <a href="/sobre">Sobre nós</a>
+            <a href="/newsletter">Newsletter</a>
+            <a href="/buscar">Buscar</a>
+            <a href="/categorias">Categorias</a>
+          </nav>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__col-title">Redes Sociais</h4>
+          <nav class="footer__col-links">
+            <a href="#">Instagram</a>
+            <a href="#">YouTube</a>
+            <a href="#">LinkedIn</a>
+            <a href="#">WhatsApp</a>
+          </nav>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p class="footer__copy">&copy; 2026 Blog do Eletricista</p>
+        <nav class="footer__bottom-links">
+          <a href="#">Privacidade</a>
+          <a href="#">Termos</a>
+        </nav>
+      </div>
     </div>
   </footer>
 
@@ -146,6 +191,18 @@
   <script>
   (function () {
     'use strict';
+
+    // Toast helper
+    function showToast(msg) {
+      var existing = document.querySelector('.toast');
+      if (existing) existing.remove();
+      var toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.textContent = msg;
+      document.body.appendChild(toast);
+      requestAnimationFrame(function () { toast.classList.add('is-visible'); });
+      setTimeout(function () { toast.classList.remove('is-visible'); setTimeout(function () { toast.remove(); }, 400); }, 3000);
+    }
 
     // CTA form
     document.getElementById('ctaForm').addEventListener('submit', function (e) {
@@ -157,11 +214,11 @@
         body: JSON.stringify({ email: email })
       })
       .then(function () {
-        alert('Inscrição realizada com sucesso!');
+        showToast('Inscrição realizada com sucesso!');
         e.target.reset();
       })
       .catch(function () {
-        alert('Erro ao inscrever. Tente novamente.');
+        showToast('Erro ao inscrever. Tente novamente.');
       });
     });
 
@@ -176,6 +233,22 @@
       });
     }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
     revealEls.forEach(function (el) { el.classList.add('reveal'); observer.observe(el); });
+
+    // Navbar search toggle
+    var searchToggle = document.getElementById('searchToggleBtn');
+    var navSearchEl = document.getElementById('navSearch');
+    var navSearchInput = document.getElementById('navSearchInput');
+    if (searchToggle) {
+      searchToggle.addEventListener('click', function () {
+        navSearchEl.classList.toggle('is-open');
+        if (navSearchEl.classList.contains('is-open')) navSearchInput.focus();
+      });
+      navSearchInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' && navSearchInput.value.trim()) {
+          window.location.href = '/buscar?q=' + encodeURIComponent(navSearchInput.value.trim());
+        }
+      });
+    }
   })();
   </script>
 </body>

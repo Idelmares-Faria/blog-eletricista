@@ -1,18 +1,24 @@
 {
-  "name": "portal-ativmax",
+  "name": "blog-eletricista",
   "version": "1.0.0",
-  "description": "AtivMax Blog — Marketing Digital",
+  "description": "Blog do Eletricista — Dicas e Tutoriais de Elétrica",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js"
   },
-  "keywords": ["marketing", "digital", "blog"],
-  "author": "AtivMax",
+  "keywords": [
+    "eletricista",
+    "eletrica",
+    "instalacoes",
+    "blog"
+  ],
+  "author": "Blog do Eletricista",
   "license": "ISC",
   "dependencies": {
+    "compression": "^1.8.1",
+    "dotenv": "^16.3.1",
     "express": "^4.21.0",
-    "pg": "^8.11.3",
-    "dotenv": "^16.3.1"
+    "pg": "^8.11.3"
   }
 }
