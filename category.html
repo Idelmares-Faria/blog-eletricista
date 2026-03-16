@@ -43,13 +43,21 @@
     </div>
   </header>
 
-  <!-- ======== HERO ======== -->
   <section class="hero hero--sm" style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('images/hero-categorias.png'); background-size: cover; background-position: center;">
     <div class="hero__inner container">
       <h1 class="hero__title hero__title--sm" id="categoryHeroTitle">CATEGORIAS</h1>
       <p class="hero__subtitle" id="categoryDescription">Explore nossas categorias de conteúdo técnico sobre instalações elétricas, segurança, normas NBR, manutenção e materiais.</p>
     </div>
   </section>
+
+  <!-- ======== CATEGORY NAV CHIPS ======== -->
+  <div class="category-nav-bar">
+    <div class="container">
+      <div class="category-nav-chips" id="categoryNavChips">
+        <!-- Populated via JS -->
+      </div>
+    </div>
+  </div>
 
   <!-- ======== CATEGORIES GRID ======== -->
   <section class="section categories-preview">
@@ -206,16 +214,17 @@
           var grid = document.getElementById('filteredGrid');
           if (!grid || !response.data) return;
           grid.innerHTML = response.data.map(function (p) {
-            return '<article class="post-card post-card--vertical reveal">' +
-              '<a href="/post/' + p.slug + '" class="post-card__image-wrap">' +
-              '<img src="' + p.image + '" alt="' + p.title + '" class="post-card__image" /></a>' +
+            var imgHtml = p.image ? '<img src="' + p.image + '" alt="' + p.title + '" class="post-card__image" />' : '<div class="post-card__image-placeholder">Sem Imagem</div>';
+            return '<article class="post-card post-card--vertical reveal is-visible">' +
+              '<a href="/post/' + p.slug + '" class="post-card__image-wrap">' + imgHtml + '</a>' +
               '<div class="post-card__body">' +
               '<span class="post-card__meta">' + p.author.name + ' &bull; ' + formatDate(p.date) + '</span>' +
-              '<a href="/post/' + p.slug + '" class="post-card__title-link">' +
-              '<h3 class="post-card__title">' + p.title + ' <svg class="arrow-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></h3></a>' +
+              '<a href="/post/' + p.slug + '"><h3 class="post-card__title">' + p.title + '</h3></a>' +
               '<p class="post-card__excerpt">' + p.excerpt + '</p>' +
-              '<div class="post-card__tags"><span class="tag tag--purple">' + p.category.name + '</span></div>' +
-              '</div></article>';
+              '<div class="post-card__footer">' +
+              '<div class="post-card__tags"><span class="tag tag--yellow">' + p.category.name + '</span></div>' +
+              '<a href="/post/' + p.slug + '" class="btn-read-more">Ler mais</a>' +
+              '</div></div></article>';
           }).join('');
 
           document.querySelectorAll('.reveal').forEach(function (el) {
@@ -230,15 +239,32 @@
       .then(function (res) { return res.json(); })
       .then(function (response) {
         var grid = document.getElementById('categoriesGrid');
-        if (!grid || !response.data) return;
-        grid.innerHTML = response.data.map(function (c) {
-          var bgImg = c.image || 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800&q=80';
-          return '<a href="/categorias?cat=' + c.slug + '" class="category-preview-card reveal is-visible">' +
-            '<div class="category-preview-card__bg" style="background-image: url(' + bgImg + ')"></div>' +
-            '<div class="category-preview-card__overlay"></div>' +
-            '<h3 class="category-preview-card__name">' + c.name + '</h3>' +
-            '</a>';
-        }).join('');
+        var chips = document.getElementById('categoryNavChips');
+        if (!response.data) return;
+        
+        var categories = response.data;
+        
+        // Grid Home Style
+        if (grid) {
+          grid.innerHTML = categories.map(function (c) {
+            var bgImg = c.image || 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800&q=80';
+            return '<a href="/categorias?cat=' + c.slug + '" class="category-preview-card reveal is-visible">' +
+              '<div class="category-preview-card__image-container">' +
+              '<div class="category-preview-card__bg" style="background-image: url(' + bgImg + ')"></div>' +
+              '</div>' +
+              '<h3 class="category-preview-card__name">' + c.name + '</h3>' +
+              '</a>';
+          }).join('');
+        }
+
+        // Nav Chips
+        if (chips) {
+          var chipsHtml = '<a href="/categorias" class="chip' + (!cat ? ' chip--active' : '') + '">Todas</a>';
+          chipsHtml += categories.map(function (c) {
+            return '<a href="/categorias?cat=' + c.slug + '" class="chip' + (cat === c.slug ? ' chip--active' : '') + '">' + c.name + '</a>';
+          }).join('');
+          chips.innerHTML = chipsHtml;
+        }
       })
       .catch(function () {});
 

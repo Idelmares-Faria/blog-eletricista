@@ -56,7 +56,7 @@
   // ---------- Scroll Reveal ----------
   function initScrollReveal() {
     var cards = document.querySelectorAll(
-      '.post-card--featured, .post-card--horizontal, .post-card--vertical, .featured-post__grid, .section__heading'
+      '.post-card--featured, .post-card--horizontal, .post-card--vertical, .featured-post__grid, .section__heading, .category-preview-card'
     );
 
     cards.forEach(function (el) {
@@ -100,50 +100,61 @@
   }
 
   function tagClass(color) {
-    var map = { yellow: 'tag--orange', red: 'tag--red', blue: 'tag--blue', green: 'tag--green', orange: 'tag--orange', cyan: 'tag--cyan', purple: 'tag--purple' };
+    var map = { yellow: 'tag--yellow', red: 'tag--red', blue: 'tag--blue', green: 'tag--green', orange: 'tag--orange', cyan: 'tag--blue', purple: 'tag--blue' };
     return map[color] || 'tag--blue';
   }
 
   function renderTags(tags, color) {
-    return (tags || []).map(function(t) {
+    var arr = tags || [];
+    var html = arr.slice(0, 2).map(function(t) {
       return '<span class="tag ' + tagClass(color) + '">' + t + '</span>';
     }).join('');
+    if (arr.length > 2) {
+      html += '<span class="dot-tag">...</span>';
+    }
+    return html;
   }
 
   function featuredCard(post) {
+    var imgHtml = post.image ? '<img src="' + post.image + '" alt="' + post.title + '" class="post-card__image" loading="lazy"/>' : '<div class="post-card__image-placeholder">Sem Imagem</div>';
     return '<article class="post-card post-card--featured reveal">' +
-      '<a href="/post/' + post.slug + '" class="post-card__image-wrap">' +
-      '<img src="' + (post.image || '') + '" alt="' + post.title + '" class="post-card__image" loading="lazy"/></a>' +
+      '<a href="/post/' + post.slug + '" class="post-card__image-wrap">' + imgHtml + '</a>' +
       '<div class="post-card__body">' +
       '<span class="post-card__meta">' + post.author.name + ' &bull; ' + formatDate(post.date) + '</span>' +
-      '<a href="/post/' + post.slug + '" class="post-card__title-link"><h3 class="post-card__title">' + post.title + '</h3></a>' +
+      '<a href="/post/' + post.slug + '"><h3 class="post-card__title">' + post.title + '</h3></a>' +
       '<p class="post-card__excerpt">' + post.excerpt + '</p>' +
+      '<div class="post-card__footer">' +
       '<div class="post-card__tags">' + renderTags(post.tags, post.category.color) + '</div>' +
-      '</div></article>';
+      '<a href="/post/' + post.slug + '" class="btn-read-more">Ler mais <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>' +
+      '</div></div></article>';
   }
 
   function horizontalCard(post) {
+    var imgHtml = post.image ? '<img src="' + post.image + '" alt="' + post.title + '" class="post-card__image" loading="lazy"/>' : '<div class="post-card__image-placeholder">Sem Imagem</div>';
     return '<article class="post-card post-card--horizontal reveal">' +
-      '<a href="/post/' + post.slug + '" class="post-card__image-wrap">' +
-      '<img src="' + (post.image || '') + '" alt="' + post.title + '" class="post-card__image" loading="lazy"/></a>' +
+      '<a href="/post/' + post.slug + '" class="post-card__image-wrap">' + imgHtml + '</a>' +
       '<div class="post-card__body">' +
       '<span class="post-card__meta">' + post.author.name + ' &bull; ' + formatDate(post.date) + '</span>' +
-      '<a href="/post/' + post.slug + '" class="post-card__title-link"><h3 class="post-card__title post-card__title--sm">' + post.title + '</h3></a>' +
+      '<a href="/post/' + post.slug + '"><h3 class="post-card__title">' + post.title + '</h3></a>' +
       '<p class="post-card__excerpt">' + post.excerpt + '</p>' +
+      '<div class="post-card__footer">' +
       '<div class="post-card__tags">' + renderTags(post.tags, post.category.color) + '</div>' +
-      '</div></article>';
+      '<a href="/post/' + post.slug + '" class="btn-read-more">Ler mais</a>' +
+      '</div></div></article>';
   }
 
   function verticalCard(post) {
+    var imgHtml = post.image ? '<img src="' + post.image + '" alt="' + post.title + '" class="post-card__image" loading="lazy"/>' : '<div class="post-card__image-placeholder">Sem Imagem</div>';
     return '<article class="post-card post-card--vertical reveal">' +
-      '<a href="/post/' + post.slug + '" class="post-card__image-wrap">' +
-      '<img src="' + (post.image || '') + '" alt="' + post.title + '" class="post-card__image" loading="lazy"/></a>' +
+      '<a href="/post/' + post.slug + '" class="post-card__image-wrap">' + imgHtml + '</a>' +
       '<div class="post-card__body">' +
       '<span class="post-card__meta">' + post.author.name + ' &bull; ' + formatDate(post.date) + '</span>' +
-      '<a href="/post/' + post.slug + '" class="post-card__title-link"><h3 class="post-card__title">' + post.title + '</h3></a>' +
+      '<a href="/post/' + post.slug + '"><h3 class="post-card__title">' + post.title + '</h3></a>' +
       '<p class="post-card__excerpt">' + post.excerpt + '</p>' +
+      '<div class="post-card__footer">' +
       '<div class="post-card__tags">' + renderTags(post.tags, post.category.color) + '</div>' +
-      '</div></article>';
+      '<a href="/post/' + post.slug + '" class="btn-read-more">Ler mais</a>' +
+      '</div></div></article>';
   }
 
   // ---------- Load Posts ----------
@@ -259,8 +270,9 @@
         cats.forEach(function(c) {
           var bgImg = c.image || 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800&q=80';
           html += '<a href="/categorias?cat=' + c.slug + '" class="category-preview-card reveal">' +
+                  '<div class="category-preview-card__image-container">' +
                   '<div class="category-preview-card__bg" style="background-image: url(' + bgImg + ')"></div>' +
-                  '<div class="category-preview-card__overlay"></div>' +
+                  '</div>' +
                   '<h3 class="category-preview-card__name">' + c.name + '</h3>' +
                   '</a>';
         });
