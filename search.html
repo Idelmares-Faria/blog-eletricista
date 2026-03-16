@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buscar — AtivMax Blog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ======== NAVBAR ======== -->
+  <header class="navbar">
+    <div class="navbar__inner container">
+      <a href="/" class="navbar__logo">AtivMax</a>
+      <nav class="navbar__menu" id="navMenu">
+        <a href="/" class="navbar__link">Blog</a>
+        <a href="/categorias" class="navbar__link">Estratégias</a>
+        <a href="/sobre" class="navbar__link">Sobre</a>
+        <a href="/newsletter" class="navbar__link">Newsletter</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema">
+          <svg class="theme-toggle__icon theme-toggle__icon--sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="theme-toggle__icon theme-toggle__icon--moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </nav>
+      <button class="navbar__hamburger" id="hamburgerBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ======== SEARCH HERO ======== -->
+  <section class="search-hero">
+    <div class="container">
+      <div class="search-hero__inner">
+        <h1 class="search-hero__title">Buscar no blog</h1>
+        <form class="search-form" id="searchForm">
+          <div class="search-form__wrapper">
+            <svg class="search-form__icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="search" class="search-form__input" id="searchInput" placeholder="Buscar artigos, categorias, temas..." autofocus />
+            <button type="submit" class="btn btn--primary">Buscar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== SEARCH RESULTS ======== -->
+  <section class="section search-results">
+    <div class="container">
+      <!-- Results info -->
+      <div class="search-results__info" id="searchInfo" style="display: none;">
+        <p class="search-results__count" id="searchCount"></p>
+      </div>
+
+      <!-- Results grid -->
+      <div class="all-posts__grid" id="searchGrid">
+        <!-- Populated via JS -->
+      </div>
+
+      <!-- No results state -->
+      <div class="search-empty" id="searchEmpty" style="display: none;">
+        <div class="search-empty__inner">
+          <svg class="search-empty__icon" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+          <h2 class="search-empty__title">Nenhum resultado encontrado</h2>
+          <p class="search-empty__text">Tente buscar por outros termos ou explore nossas categorias.</p>
+          <a href="/categorias" class="btn btn--outline">Ver categorias</a>
+        </div>
+      </div>
+
+      <!-- Initial state -->
+      <div class="search-initial" id="searchInitial">
+        <div class="search-initial__inner">
+          <svg class="search-initial__icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <p class="search-initial__text">Digite algo para buscar artigos, categorias e temas do blog.</p>
+          <div class="search-suggestions">
+            <span class="search-suggestions__label">Buscas populares:</span>
+            <div class="search-suggestions__tags">
+              <button class="tag tag--purple search-tag" data-query="tráfego pago">Tráfego Pago</button>
+              <button class="tag tag--blue search-tag" data-query="SEO">SEO</button>
+              <button class="tag tag--pink search-tag" data-query="copywriting">Copywriting</button>
+              <button class="tag tag--green search-tag" data-query="funis">Funis</button>
+              <button class="tag tag--cyan search-tag" data-query="email marketing">Email Marketing</button>
+              <button class="tag tag--orange search-tag" data-query="Instagram">Instagram</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== FOOTER ======== -->
+  <footer class="footer">
+    <div class="footer__inner container">
+      <p class="footer__copy">&copy; 2026 AtivMax</p>
+      <nav class="footer__links">
+        <a href="#">Instagram</a>
+        <a href="#">LinkedIn</a>
+        <a href="#">YouTube</a>
+        <a href="#">Email</a>
+        <a href="#">RSS feed</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    var searchInput = document.getElementById('searchInput');
+    var searchForm = document.getElementById('searchForm');
+    var searchGrid = document.getElementById('searchGrid');
+    var searchInfo = document.getElementById('searchInfo');
+    var searchCount = document.getElementById('searchCount');
+    var searchEmpty = document.getElementById('searchEmpty');
+    var searchInitial = document.getElementById('searchInitial');
+    var debounceTimer;
+
+    // Get query from URL
+    var params = new URLSearchParams(window.location.search);
+    var initialQuery = params.get('q');
+    if (initialQuery) {
+      searchInput.value = initialQuery;
+      performSearch(initialQuery);
+    }
+
+    function formatDate(dateStr) {
+      var d = new Date(dateStr);
+      var months = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+      return d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+    }
+
+    function performSearch(query) {
+      if (!query || query.trim().length === 0) {
+        searchGrid.innerHTML = '';
+        searchInfo.style.display = 'none';
+        searchEmpty.style.display = 'none';
+        searchInitial.style.display = '';
+        return;
+      }
+
+      searchInitial.style.display = 'none';
+
+      fetch('/api/search?q=' + encodeURIComponent(query))
+        .then(function (res) { return res.json(); })
+        .then(function (response) {
+          var posts = response.data || [];
+          if (posts.length > 0) {
+            searchInfo.style.display = '';
+            searchEmpty.style.display = 'none';
+            searchCount.textContent = posts.length + ' resultado' + (posts.length > 1 ? 's' : '') + ' para "' + query + '"';
+
+            searchGrid.innerHTML = posts.map(function (p) {
+              return '<article class="post-card post-card--vertical reveal is-visible">' +
+                '<a href="/post/' + p.slug + '" class="post-card__image-wrap">' +
+                '<img src="' + p.image + '" alt="' + p.title + '" class="post-card__image" /></a>' +
+                '<div class="post-card__body">' +
+                '<span class="post-card__meta">' + p.author.name + ' &bull; ' + formatDate(p.date) + '</span>' +
+                '<a href="/post/' + p.slug + '" class="post-card__title-link">' +
+                '<h3 class="post-card__title">' + p.title + ' <svg class="arrow-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></h3></a>' +
+                '<p class="post-card__excerpt">' + p.excerpt + '</p>' +
+                '<div class="post-card__tags"><span class="tag tag--purple">' + p.category.name + '</span></div>' +
+                '</div></article>';
+            }).join('');
+          } else {
+            searchGrid.innerHTML = '';
+            searchInfo.style.display = 'none';
+            searchEmpty.style.display = '';
+          }
+        })
+        .catch(function () {
+          searchGrid.innerHTML = '';
+          searchInfo.style.display = 'none';
+          searchEmpty.style.display = '';
+        });
+
+      // Update URL
+      var url = new URL(window.location);
+      url.searchParams.set('q', query);
+      history.replaceState(null, '', url);
+    }
+
+    // Form submit
+    searchForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      performSearch(searchInput.value);
+    });
+
+    // Live search with debounce
+    searchInput.addEventListener('input', function () {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(function () {
+        performSearch(searchInput.value);
+      }, 400);
+    });
+
+    // Popular search tags
+    document.querySelectorAll('.search-tag').forEach(function (tag) {
+      tag.addEventListener('click', function () {
+        var query = tag.getAttribute('data-query');
+        searchInput.value = query;
+        performSearch(query);
+      });
+    });
+
+    // Scroll reveal
+    var revealEls = document.querySelectorAll('.reveal');
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(function (el) { observer.observe(el); });
+  })();
+  </script>
+</body>
+</html>

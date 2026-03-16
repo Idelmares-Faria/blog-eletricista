@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Categorias — AtivMax Blog</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ======== NAVBAR ======== -->
+  <header class="navbar">
+    <div class="navbar__inner container">
+      <a href="/" class="navbar__logo">AtivMax</a>
+      <nav class="navbar__menu" id="navMenu">
+        <a href="/" class="navbar__link">Blog</a>
+        <a href="/categorias" class="navbar__link navbar__link--active">Estratégias</a>
+        <a href="/sobre" class="navbar__link">Sobre</a>
+        <a href="/newsletter" class="navbar__link">Newsletter</a>
+        <button class="theme-toggle" id="themeToggle" aria-label="Alternar tema">
+          <svg class="theme-toggle__icon theme-toggle__icon--sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="theme-toggle__icon theme-toggle__icon--moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+      </nav>
+      <button class="navbar__hamburger" id="hamburgerBtn" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ======== HERO ======== -->
+  <section class="hero hero--sm">
+    <div class="hero__inner container">
+      <h1 class="hero__title hero__title--sm" id="categoryHeroTitle">ESTRATÉGIAS</h1>
+      <p class="hero__subtitle" id="categoryDescription">Explore nossas categorias de conteúdo sobre marketing digital, tráfego pago, SEO, copywriting e muito mais.</p>
+    </div>
+  </section>
+
+  <!-- ======== CATEGORIES GRID ======== -->
+  <section class="section categories-section">
+    <div class="container">
+      <h2 class="section__heading">Todas as categorias</h2>
+      <div class="categories__grid" id="categoriesGrid">
+
+        <a href="/categorias?cat=trafego-pago" class="category-card reveal">
+          <div class="category-card__icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+          </div>
+          <h3 class="category-card__title">Tráfego Pago</h3>
+          <p class="category-card__desc">Google Ads, Meta Ads, estratégias de mídia paga e otimização de campanhas.</p>
+          <span class="category-card__count">12 posts</span>
+        </a>
+
+        <a href="/categorias?cat=seo" class="category-card reveal">
+          <div class="category-card__icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
+          <h3 class="category-card__title">SEO</h3>
+          <p class="category-card__desc">Otimização para mecanismos de busca, link building e estratégias de conteúdo orgânico.</p>
+          <span class="category-card__count">9 posts</span>
+        </a>
+
+        <a href="/categorias?cat=copywriting" class="category-card reveal">
+          <div class="category-card__icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          </div>
+          <h3 class="category-card__title">Copywriting</h3>
+          <p class="category-card__desc">Técnicas de escrita persuasiva, headlines, storytelling e copy para vendas.</p>
+          <span class="category-card__count">8 posts</span>
+        </a>
+
+        <a href="/categorias?cat=email-marketing" class="category-card reveal">
+          <div class="category-card__icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <h3 class="category-card__title">Email Marketing</h3>
+          <p class="category-card__desc">Automação de emails, sequências de nutrição, segmentação e taxas de conversão.</p>
+          <span class="category-card__count">7 posts</span>
+        </a>
+
+        <a href="/categorias?cat=social-media" class="category-card reveal">
+          <div class="category-card__icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </div>
+          <h3 class="category-card__title">Social Media</h3>
+          <p class="category-card__desc">Instagram, TikTok, LinkedIn e estratégias para crescimento nas redes sociais.</p>
+          <span class="category-card__count">11 posts</span>
+        </a>
+
+        <a href="/categorias?cat=analytics" class="category-card reveal">
+          <div class="category-card__icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+          </div>
+          <h3 class="category-card__title">Analytics</h3>
+          <p class="category-card__desc">Google Analytics, métricas, KPIs e tomada de decisão baseada em dados.</p>
+          <span class="category-card__count">6 posts</span>
+        </a>
+
+        <a href="/categorias?cat=funis" class="category-card reveal">
+          <div class="category-card__icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+          </div>
+          <h3 class="category-card__title">Funis de Vendas</h3>
+          <p class="category-card__desc">Estruturas de funil, landing pages, automação e estratégias de conversão.</p>
+          <span class="category-card__count">5 posts</span>
+        </a>
+
+        <a href="/categorias?cat=growth" class="category-card reveal">
+          <div class="category-card__icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+          </div>
+          <h3 class="category-card__title">Growth</h3>
+          <p class="category-card__desc">Growth hacking, experimentação, escalabilidade e estratégias de crescimento acelerado.</p>
+          <span class="category-card__count">4 posts</span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== FILTERED POSTS (shown when a category is selected) ======== -->
+  <section class="section filtered-posts" id="filteredSection" style="display: none;">
+    <div class="container">
+      <div class="filtered-posts__header">
+        <h2 class="section__heading" id="filteredTitle">Posts de Tráfego Pago</h2>
+        <a href="/categorias" class="btn btn--outline">Ver todas as categorias</a>
+      </div>
+      <div class="all-posts__grid" id="filteredGrid">
+        <!-- Populated via JS -->
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination" id="filteredPagination">
+        <button class="pagination__btn pagination__btn--prev">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          Anterior
+        </button>
+        <div class="pagination__numbers">
+          <span class="pagination__num pagination__num--active">1</span>
+          <span class="pagination__num">2</span>
+          <span class="pagination__num">3</span>
+        </div>
+        <button class="pagination__btn pagination__btn--next">
+          Próximo
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======== FOOTER ======== -->
+  <footer class="footer">
+    <div class="footer__inner container">
+      <p class="footer__copy">&copy; 2026 AtivMax</p>
+      <nav class="footer__links">
+        <a href="#">Instagram</a>
+        <a href="#">LinkedIn</a>
+        <a href="#">YouTube</a>
+        <a href="#">Email</a>
+        <a href="#">RSS feed</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+  (function () {
+    'use strict';
+
+    var params = new URLSearchParams(window.location.search);
+    var cat = params.get('cat');
+
+    function formatDate(dateStr) {
+      var d = new Date(dateStr);
+      var months = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+      return d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+    }
+
+    // Category icons map
+    var categoryIcons = {
+      'trafego-pago': '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>',
+      'email-marketing': '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>',
+      'funis-de-vendas': '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>',
+      'seo': '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>',
+      'copywriting': '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>',
+      'social-media': '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>',
+      'analytics': '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>',
+      'growth-hacking': '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>'
+    };
+
+    if (cat) {
+      // Show filtered posts for specific category
+      var filteredSection = document.getElementById('filteredSection');
+      if (filteredSection) filteredSection.style.display = '';
+
+      // Get category info from categories list
+      fetch('/api/categories')
+        .then(function (res) { return res.json(); })
+        .then(function (response) {
+          var categories = response.data;
+          var found = categories.find(function (c) { return c.slug === cat; });
+          if (found) {
+            var heroTitle = document.getElementById('categoryHeroTitle');
+            var filteredTitle = document.getElementById('filteredTitle');
+            if (heroTitle) heroTitle.textContent = found.name.toUpperCase();
+            if (filteredTitle) filteredTitle.textContent = 'Posts de ' + found.name;
+            document.title = found.name + ' — AtivMax Blog';
+          }
+        })
+        .catch(function () {});
+
+      // Fetch filtered posts
+      var page = params.get('page') || 1;
+      fetch('/api/posts?category=' + cat + '&page=' + page)
+        .then(function (res) { return res.json(); })
+        .then(function (response) {
+          var grid = document.getElementById('filteredGrid');
+          if (!grid || !response.data) return;
+          grid.innerHTML = response.data.map(function (p) {
+            return '<article class="post-card post-card--vertical reveal">' +
+              '<a href="/post/' + p.slug + '" class="post-card__image-wrap">' +
+              '<img src="' + p.image + '" alt="' + p.title + '" class="post-card__image" /></a>' +
+              '<div class="post-card__body">' +
+              '<span class="post-card__meta">' + p.author.name + ' &bull; ' + formatDate(p.date) + '</span>' +
+              '<a href="/post/' + p.slug + '" class="post-card__title-link">' +
+              '<h3 class="post-card__title">' + p.title + ' <svg class="arrow-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></h3></a>' +
+              '<p class="post-card__excerpt">' + p.excerpt + '</p>' +
+              '<div class="post-card__tags"><span class="tag tag--purple">' + p.category.name + '</span></div>' +
+              '</div></article>';
+          }).join('');
+
+          document.querySelectorAll('.reveal').forEach(function (el) {
+            el.classList.add('is-visible');
+          });
+        })
+        .catch(function () {});
+    }
+
+    // Fetch categories dynamically
+    fetch('/api/categories')
+      .then(function (res) { return res.json(); })
+      .then(function (response) {
+        var grid = document.getElementById('categoriesGrid');
+        if (!grid || !response.data) return;
+        grid.innerHTML = response.data.map(function (c) {
+          var icon = categoryIcons[c.slug] || '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>';
+          return '<a href="/categorias?cat=' + c.slug + '" class="category-card reveal is-visible">' +
+            '<div class="category-card__icon">' + icon + '</div>' +
+            '<h3 class="category-card__title">' + c.name + '</h3>' +
+            '<span class="category-card__count">' + c.postCount + ' posts</span></a>';
+        }).join('');
+      })
+      .catch(function () {});
+
+    // Scroll reveal
+    var revealEls = document.querySelectorAll('.reveal, .category-card');
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    revealEls.forEach(function (el) { el.classList.add('reveal'); observer.observe(el); });
+
+    // Pagination
+    var nums = document.querySelectorAll('.pagination__num');
+    nums.forEach(function (num) {
+      num.addEventListener('click', function () {
+        nums.forEach(function (n) { n.classList.remove('pagination__num--active'); });
+        num.classList.add('pagination__num--active');
+      });
+    });
+  })();
+  </script>
+</body>
+</html>
