@@ -7,13 +7,16 @@
     }
   ],
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "server.js"
-    }
+    { "src": "/api/(.*)", "dest": "server.js" },
+    { "src": "/post/(.*)", "dest": "server.js" },
+    { "src": "/categorias(.*)", "dest": "server.js" },
+    { "src": "/categoria/(.*)", "dest": "server.js" },
+    { "src": "/sobre", "dest": "server.js" },
+    { "src": "/newsletter", "dest": "server.js" },
+    { "src": "/busca", "dest": "server.js" },
+    { "src": "/", "dest": "server.js" }
   ],
   "env": {
-    "DATABASE_URL": "@database_url",
     "NODE_ENV": "production"
   }
 }
