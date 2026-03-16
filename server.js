@@ -18,13 +18,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Static files with cache headers
+const isDev = process.env.NODE_ENV !== 'production';
 app.use(express.static(path.join(__dirname), {
   extensions: ['html'],
   index: 'index.html',
-  maxAge: '7d',
   setHeaders: function (res, filePath) {
-    if (filePath.endsWith('.html')) {
-      res.setHeader('Cache-Control', 'no-cache');
+    if (filePath.endsWith('.html') || isDev) {
+      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
     } else if (filePath.endsWith('.css') || filePath.endsWith('.js')) {
       res.setHeader('Cache-Control', 'public, max-age=86400');
     }
@@ -177,8 +177,8 @@ app.get('/api/posts/:slug', async (req, res) => {
       tags: p.tags.filter(t => t !== null)
     };
 
-    // Find related posts (same category, excluding current)
-    const relatedResult = await pool.query(`
+    // Find related posts (same category first, fallback to any recent posts)
+    let relatedResult = await pool.query(`
       SELECT
         p.id, p.slug, p.title, p.excerpt, p.author_name, p.author_avatar, p.author_bio,
         p.image, p.featured, p.read_time, p.date,
@@ -193,6 +193,25 @@ app.get('/api/posts/:slug', async (req, res) => {
       ORDER BY p.date DESC
       LIMIT 3
     `, [p.category_slug, slug]);
+
+    // Fallback: if no same-category posts, fetch any recent posts
+    if (relatedResult.rows.length === 0) {
+      relatedResult = await pool.query(`
+        SELECT
+          p.id, p.slug, p.title, p.excerpt, p.author_name, p.author_avatar, p.author_bio,
+          p.image, p.featured, p.read_time, p.date,
+          c.id as category_id, c.slug as category_slug, c.name as category_name, c.color as category_color,
+          ARRAY_AGG(DISTINCT t.name) as tags
+        FROM posts p
+        JOIN categories c ON p.category_id = c.id
+        LEFT JOIN post_tags pt ON p.id = pt.post_id
+        LEFT JOIN tags t ON pt.tag_id = t.id
+        WHERE p.slug != $1
+        GROUP BY p.id, c.id
+        ORDER BY p.date DESC
+        LIMIT 3
+      `, [slug]);
+    }
 
     const related = relatedResult.rows.map(r => ({
       id: r.id,
