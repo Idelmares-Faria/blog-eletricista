@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
 
@@ -44,26 +44,45 @@
   </header>
 
   <!-- ======== HERO ======== -->
-  <section class="hero hero--sm" style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('images/hero-sobre.png'); background-size: cover; background-position: center;">
+  <section class="hero hero--sm" style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/images/hero-sobre.png'); background-size: cover; background-position: center;">
     <div class="hero__inner container">
-      <h1 class="hero__title hero__title--sm">SOBRE NÓS</h1>
+      <span class="hero__badge">Especialistas em Elétrica</span>
+      <h1 class="hero__title hero__title--sm">SOBRE <em>NÓS</em></h1>
       <p class="hero__subtitle">Compartilhando conhecimento técnico em elétrica desde 2020.</p>
     </div>
   </section>
+  
+  <!-- ======== FEATURED MARQUEE ======== -->
+  <div class="marquee-container" aria-hidden="true">
+    <div class="marquee-content">
+      <a href="#" class="marquee__link"><span class="marquee__tag">Novo</span> NBR 5410: entenda a norma que regula instalações</a>
+      <a href="#" class="marquee__link"><span class="marquee__tag">Destaque</span> Como dimensionar o quadro de distribuição</a>
+      <a href="#" class="marquee__link"><span class="marquee__tag">Dica</span> Aterramento elétrico: o que é e como fazer</a>
+      <a href="#" class="marquee__link"><span class="marquee__tag">Segurança</span> SPDA para raios: como funciona</a>
+      <a href="#" class="marquee__link"><span class="marquee__tag">Guia</span> Fio ou cabo elétrico: qual usar?</a>
+      <a href="#" class="marquee__link"><span class="marquee__tag">Novo</span> NBR 5410: entenda a norma que regula instalações</a>
+      <a href="#" class="marquee__link"><span class="marquee__tag">Destaque</span> Como dimensionar o quadro de distribuição</a>
+      <a href="#" class="marquee__link"><span class="marquee__tag">Dica</span> Aterramento elétrico: o que é e como fazer</a>
+    </div>
+  </div>
 
   <!-- ======== MISSION / VISION ======== -->
   <section class="section about-mission">
     <div class="container">
       <div class="mission__grid">
         <div class="mission__block reveal">
+          <div class="mission__icon">⚡</div>
           <span class="mission__label">Nossa Missão</span>
-          <h2 class="mission__title">Democratizar o conhecimento técnico em instalações elétricas.</h2>
-          <p class="mission__text">Acreditamos que todo eletricista e profissional da área merece acesso a conteúdo técnico de qualidade, atualizado com as normas vigentes. O Blog do Eletricista nasceu para transformar conhecimento técnico complexo em conteúdo acessível e aplicável no dia a dia.</p>
+          <h2 class="mission__title">Democratizar o conhecimento técnico em <em>instalações elétricas</em>.</h2>
+          <div class="mission__divider"></div>
+          <p class="mission__text">Acreditamos que todo eletricista merece acesso a conteúdo técnico de qualidade. O Blog do Eletricista nasceu para transformar normas complexas em ferramentas práticas para o seu dia a dia.</p>
         </div>
         <div class="mission__block reveal">
+          <div class="mission__icon">🏆</div>
           <span class="mission__label">Nossa Visão</span>
-          <h2 class="mission__title">Ser a referência #1 em conteúdo técnico de elétrica no Brasil.</h2>
-          <p class="mission__text">Queremos ser o primeiro lugar onde eletricistas e profissionais buscam informação técnica, normas atualizadas e soluções práticas. Com conteúdo original, baseado em normas NBR e experiências de campo, construímos uma comunidade que cresce junto.</p>
+          <h2 class="mission__title">Ser a <em>referência #1</em> em conteúdo técnico no Brasil.</h2>
+          <div class="mission__divider"></div>
+          <p class="mission__text">Queremos ser o porto seguro onde profissionais buscam informação técnica confiável, atualizada com as normas NBR e validada por quem realmente entende de campo.</p>
         </div>
       </div>
     </div>
@@ -74,11 +93,11 @@
     <div class="container">
       <div class="stats__grid">
         <div class="stat-card reveal">
-          <span class="stat-card__number">120+</span>
+          <span class="stat-card__number" id="statPosts">--</span>
           <span class="stat-card__label">Artigos técnicos</span>
         </div>
         <div class="stat-card reveal">
-          <span class="stat-card__number">15K</span>
+          <span class="stat-card__number" id="statCommunity">--</span>
           <span class="stat-card__label">Comunidade</span>
         </div>
         <div class="stat-card reveal">
@@ -86,56 +105,76 @@
           <span class="stat-card__label">Anos de atuação</span>
         </div>
         <div class="stat-card reveal">
-          <span class="stat-card__number">5</span>
-          <span class="stat-card__label">Categorias centrais</span>
+          <span class="stat-card__number" id="statCategories">--</span>
+          <span class="stat-card__label">Categorias</span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ======== TEAM ======== -->
-  <section class="section about-team">
+  <!-- ======== FOUNDER / AUTHOR ======== -->
+  <section class="section about-author">
     <div class="container">
-      <h2 class="section__heading">Nosso time</h2>
-      <div class="team__grid">
-        <div class="team-card reveal">
-          <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=300&h=300&q=80&fit=crop&crop=face" alt="Carlos Silva" class="team-card__photo" />
-          <h3 class="team-card__name">Carlos Silva</h3>
-          <span class="team-card__role">Engenheiro Eletricista & Fundador</span>
-          <p class="team-card__bio">Engenheiro eletricista com CREA ativo e mais de 15 anos de experiência em projetos residenciais, comerciais e industriais. Especialista em NBR 5410 e sistemas de proteção.</p>
+      <div class="author-profile reveal">
+        <div class="author-profile__image-wrap">
+          <img src="/images/roberto-camargo.png" alt="Roberto Camargo" class="author-profile__image" />
+          <div class="author-profile__experience-badge">
+            <span class="number">25</span>
+            <span class="text">anos de<br>experiência</span>
+          </div>
         </div>
-        <div class="team-card reveal">
-          <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=300&h=300&q=80&fit=crop&crop=face" alt="Mariana Costa" class="team-card__photo" />
-          <h3 class="team-card__name">Mariana Costa</h3>
-          <span class="team-card__role">Técnica em Eletrotécnica</span>
-          <p class="team-card__bio">Técnica em eletrotécnica formada pelo SENAI com especialização em automação residencial. Atua há 8 anos com instalações e manutenção elétrica preventiva.</p>
-        </div>
-        <div class="team-card reveal">
-          <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&h=300&q=80&fit=crop&crop=face" alt="Roberto Mendes" class="team-card__photo" />
-          <h3 class="team-card__name">Roberto Mendes</h3>
-          <span class="team-card__role">Consultor em Segurança Elétrica</span>
-          <p class="team-card__bio">Consultor NR-10 e NR-35 com vasta experiência em treinamentos de segurança elétrica. Perito em análise de riscos e laudos técnicos para empresas.</p>
-        </div>
-        <div class="team-card reveal">
-          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&h=300&q=80&fit=crop&crop=face" alt="Fernanda Lima" class="team-card__photo" />
-          <h3 class="team-card__name">Fernanda Lima</h3>
-          <span class="team-card__role">Redatora Técnica</span>
-          <p class="team-card__bio">Jornalista especializada em conteúdo técnico para o setor elétrico. Transforma normas e procedimentos complexos em artigos claros e didáticos.</p>
+        <div class="author-profile__content">
+          <span class="author-profile__label">O Homem por trás do Blog</span>
+          <h2 class="author-profile__name">Roberto Camargo</h2>
+          <span class="author-profile__title">Engenheiro Eletricista e Mestre Instalador</span>
+          
+          <div class="author-profile__bio">
+            <p>Com mais de duas décadas dedicadas ao setor elétrico, Roberto Camargo transformou sua paixão por normas técnicas e segurança em uma missão de vida. Formado em Engenharia Elétrica com especialização em Proteção de Sistemas, ele já coordenou projetos em larga escala em todo o Brasil.</p>
+            <p>Fundou o <strong>Blog do Eletricista</strong> com um único objetivo: democratizar o acesso a informações técnicas de alta qualidade. "A segurança elétrica não deve ser um segredo guardado por poucos, mas sim um conhecimento compartilhado com todos os profissionais que fazem esse país funcionar", afirma Roberto.</p>
+          </div>
+          
+          <div class="author-profile__creds">
+            <div class="cred-item">
+              <span class="cred-icon">⚡</span>
+              <span class="cred-text">Especialista NBR 5410 / 5419</span>
+            </div>
+            <div class="cred-item">
+              <span class="cred-icon">🏗️</span>
+              <span class="cred-text">Consultor de Projetos Industriais</span>
+            </div>
+            <div class="cred-item">
+              <span class="cred-icon">🎓</span>
+              <span class="cred-text">Mentor de centenas de profissionais</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ======== CTA NEWSLETTER ======== -->
+  <!-- ======== CTA PARTICIPATE ======== -->
   <section class="section about-cta">
     <div class="container">
-      <div class="cta-box reveal">
-        <h2 class="cta-box__title">Junte-se a milhares de profissionais de elétrica</h2>
-        <p class="cta-box__text">Receba artigos técnicos, atualizações de normas e dicas práticas diretamente no seu email. Sem spam, apenas conteúdo técnico de valor.</p>
-        <form class="cta-box__form" id="ctaForm">
-          <input type="email" class="cta-box__input" placeholder="Seu melhor email" required />
-          <button type="submit" class="btn btn--primary">Inscrever-se</button>
-        </form>
+      <div class="cta-banner reveal">
+        <div class="cta-banner__content">
+          <h2 class="cta-banner__title">Quer colaborar com o blog ou tirar uma dúvida técnica?</h2>
+          <p class="cta-banner__text">Junte-se à nossa comunidade de elite. Roberto e seu time estão sempre em busca de novos talentos e discussões técnicas de alto nível.</p>
+        </div>
+        <div class="cta-banner__form-wrap">
+          <form class="cta-banner__form" id="ctaForm">
+            <div class="form-row">
+              <input type="text" class="form-input" placeholder="Seu nome" required />
+            </div>
+            <div class="form-row">
+              <input type="email" class="form-input" placeholder="Seu melhor email" required />
+            </div>
+            <div class="form-row">
+              <textarea class="form-input" placeholder="Sua sugestão de tema ou dúvida" rows="3"></textarea>
+            </div>
+            <button type="submit" class="btn btn--primary btn--lg btn--full">Enviar Mensagem</button>
+            <p class="form-disclaimer">Ao enviar, você concorda em receber novidades técnicas ocasionais.</p>
+          </form>
+        </div>
       </div>
     </div>
   </section>
@@ -187,7 +226,7 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="/script.js"></script>
   <script>
   (function () {
     'use strict';
@@ -207,23 +246,59 @@
     // CTA form
     document.getElementById('ctaForm').addEventListener('submit', function (e) {
       e.preventDefault();
+      var name = e.target.querySelector('input[type="text"]').value;
       var email = e.target.querySelector('input[type="email"]').value;
-      fetch('/api/newsletter', {
+      var message = e.target.querySelector('textarea').value;
+      fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email })
+        body: JSON.stringify({ name: name, email: email, message: message })
       })
-      .then(function () {
-        showToast('Inscrição realizada com sucesso!');
-        e.target.reset();
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (data.success) {
+          showToast('Mensagem enviada com sucesso!');
+          e.target.reset();
+        } else {
+          showToast(data.error || 'Erro ao enviar. Tente novamente.');
+        }
       })
       .catch(function () {
-        showToast('Erro ao inscrever. Tente novamente.');
+        showToast('Erro ao enviar. Tente novamente.');
       });
     });
 
+    // Animation Helper
+    function animateValue(obj, start, end, duration, isK = false) {
+      if (!obj) return;
+      let startTimestamp = null;
+      const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        const val = Math.floor(progress * (end - start) + start);
+        obj.textContent = isK ? (val/1000).toFixed(1) + 'K' : val + '+';
+        if (progress < 1) {
+          window.requestAnimationFrame(step);
+        } else {
+          obj.textContent = isK ? (end/1000).toFixed(1) + 'K' : end + '+';
+        }
+      };
+      window.requestAnimationFrame(step);
+    }
+
+    // Fetch stats
+    fetch('/api/stats')
+      .then(function(r) { return r.json(); })
+      .then(function(res) {
+        if (res.success) {
+          animateValue(document.getElementById('statPosts'), 0, res.data.posts, 1500);
+          animateValue(document.getElementById('statCategories'), 0, res.data.categories, 1500);
+          animateValue(document.getElementById('statCommunity'), 0, res.data.community, 1500, true);
+        }
+      });
+
     // Scroll reveal
-    var revealEls = document.querySelectorAll('.reveal, .mission__block, .stat-card, .team-card, .cta-box');
+    var revealEls = document.querySelectorAll('.reveal, .mission__block, .stat-card, .team-card, .cta-box, .author-profile, .cta-banner');
     var observer = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {

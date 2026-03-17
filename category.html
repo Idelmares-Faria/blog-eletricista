@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
 
@@ -43,55 +43,81 @@
     </div>
   </header>
 
-  <section class="hero hero--sm" style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('images/hero-categorias.png'); background-size: cover; background-position: center;">
+  <section class="hero hero--sm" style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/images/hero-categorias.png'); background-size: cover; background-position: center;">
     <div class="hero__inner container">
-      <h1 class="hero__title hero__title--sm" id="categoryHeroTitle">CATEGORIAS</h1>
-      <p class="hero__subtitle" id="categoryDescription">Explore nossas categorias de conteúdo técnico sobre instalações elétricas, segurança, normas NBR, manutenção e materiais.</p>
+      <span class="hero__badge">Especialistas em Elétrica</span>
+      <h1 class="hero__title hero__title--sm" id="categoryHeroTitle">CATEGO<em>RIAS</em></h1>
+      <p class="hero__subtitle" id="categoryDescription">Explore nosso conhecimento técnico sobre instalações elétricas, segurança e normas NBR.</p>
     </div>
   </section>
 
-  <!-- ======== CATEGORY NAV CHIPS ======== -->
-  <div class="category-nav-bar">
-    <div class="container">
-      <div class="category-nav-chips" id="categoryNavChips">
-        <!-- Populated via JS -->
-      </div>
+  <!-- ======== FEATURED MARQUEE ======== -->
+  <div class="marquee-container" aria-hidden="true">
+    <div class="marquee-content">
+      <a href="#" class="marquee__link"><span class="marquee__tag">Novo</span> NBR 5410: entenda a norma que regula instalações</a>
+      <a href="#" class="marquee__link"><span class="marquee__tag">Destaque</span> Como dimensionar o quadro de distribuição</a>
+      <a href="#" class="marquee__link"><span class="marquee__tag">Dica</span> Aterramento elétrico: o que é e como fazer</a>
+      <a href="#" class="marquee__link"><span class="marquee__tag">Segurança</span> SPDA para raios: como funciona</a>
+      <a href="#" class="marquee__link"><span class="marquee__tag">Guia</span> Fio ou cabo elétrico: qual usar?</a>
+      <a href="#" class="marquee__link"><span class="marquee__tag">Novo</span> NBR 5410: entenda a norma que regula instalações</a>
+      <a href="#" class="marquee__link"><span class="marquee__tag">Destaque</span> Como dimensionar o quadro de distribuição</a>
+      <a href="#" class="marquee__link"><span class="marquee__tag">Dica</span> Aterramento elétrico: o que é e como fazer</a>
     </div>
   </div>
 
-  <!-- ======== CATEGORIES GRID ======== -->
-  <section class="section categories-preview">
+  <!-- ======== FILTER PANEL ======== -->
+  <section class="section category-filters">
     <div class="container">
-      <h2 class="section__heading">Todas as categorias</h2>
-      <div class="category-preview__grid" id="categoriesGrid">
-        <p>Carregando categorias...</p>
+      <div class="filter-panel reveal">
+        <div class="filter-group">
+          <label class="filter-label" for="filterCategory">Categoria</label>
+          <select class="filter-select" id="filterCategory">
+            <option value="">Todas as categorias</option>
+            <!-- Populated via JS -->
+          </select>
+        </div>
+        <div class="filter-group">
+          <label class="filter-label" for="filterDate">Data</label>
+          <select class="filter-select" id="filterDate">
+            <option value="desc">Mais recentes</option>
+            <option value="asc">Mais antigos</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label class="filter-label" for="filterSubject">Assunto</label>
+          <input type="text" class="filter-input" id="filterSubject" placeholder="Ex: NBR 5410, Aterramento...">
+        </div>
+        <div class="filter-actions">
+          <button class="btn btn--primary btn--filter" id="applyFilters">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Filtrar
+          </button>
+          <button class="btn btn--outline btn--filter" id="clearFilters">
+            Limpar
+          </button>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ======== FILTERED POSTS (shown when a category is selected) ======== -->
-  <section class="section filtered-posts" id="filteredSection" style="display: none;">
+  <!-- ======== FILTERED POSTS ======== -->
+  <section class="section filtered-posts" id="filteredSection">
     <div class="container">
       <div class="filtered-posts__header">
-        <h2 class="section__heading" id="filteredTitle">Posts de Instalações Elétricas</h2>
-        <a href="/categorias" class="btn btn--outline">Ver todas as categorias</a>
+        <h2 class="section__heading" id="filteredTitle">Todos os posts</h2>
       </div>
       <div class="all-posts__grid" id="filteredGrid">
         <!-- Populated via JS -->
       </div>
 
       <!-- Pagination -->
-      <div class="pagination" id="filteredPagination">
-        <button class="pagination__btn pagination__btn--prev">
+      <div class="pagination" id="filteredPagination" style="display:none">
+        <button class="pagination__btn pagination__btn--prev" id="catBtnPrev">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
           Anterior
         </button>
-        <div class="pagination__numbers">
-          <span class="pagination__num pagination__num--active">1</span>
-          <span class="pagination__num">2</span>
-          <span class="pagination__num">3</span>
-        </div>
-        <button class="pagination__btn pagination__btn--next">
+        <div class="pagination__numbers" id="catPaginationNums"></div>
+        <button class="pagination__btn pagination__btn--next" id="catBtnNext">
           Próximo
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
         </button>
@@ -146,7 +172,7 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="/script.js"></script>
   <script>
   (function () {
     'use strict';
@@ -169,6 +195,7 @@
 
     var params = new URLSearchParams(window.location.search);
     var cat = params.get('cat');
+    var currentPage = 1;
 
     function formatDate(dateStr) {
       var d = new Date(dateStr);
@@ -176,97 +203,122 @@
       return d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
     }
 
-    // Category icons map
-    var categoryIcons = {
-      'instalacoes': '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>',
-      'seguranca': '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
-      'normas': '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>',
-      'manutencao': '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4"/></svg>',
-      'materiais': '<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>'
-    };
+    function escapeHTML(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
 
-    if (cat) {
-      // Show filtered posts for specific category
-      var filteredSection = document.getElementById('filteredSection');
-      if (filteredSection) filteredSection.style.display = '';
+    function loadFilteredPosts(page) {
+      currentPage = page || 1;
+      var category = document.getElementById('filterCategory').value || cat;
+      var sort = document.getElementById('filterDate').value;
+      var q = document.getElementById('filterSubject').value;
 
-      // Get category info from categories list
-      fetch('/api/categories')
-        .then(function (res) { return res.json(); })
-        .then(function (response) {
-          var categories = response.data;
-          var found = categories.find(function (c) { return c.slug === cat; });
-          if (found) {
-            var heroTitle = document.getElementById('categoryHeroTitle');
-            var filteredTitle = document.getElementById('filteredTitle');
-            if (heroTitle) heroTitle.textContent = found.name.toUpperCase();
-            if (filteredTitle) filteredTitle.textContent = 'Posts de ' + found.name;
-            document.title = found.name + ' — Blog do Eletricista';
-          }
-        })
-        .catch(function () {});
+      var url = '/api/posts?page=' + currentPage + '&limit=9';
+      if (category) url += '&category=' + encodeURIComponent(category);
+      if (sort) url += '&sort=' + sort;
+      if (q) url += '&q=' + encodeURIComponent(q);
 
-      // Fetch filtered posts
-      var page = params.get('page') || 1;
-      fetch('/api/posts?category=' + cat + '&page=' + page)
+      fetch(url)
         .then(function (res) { return res.json(); })
         .then(function (response) {
           var grid = document.getElementById('filteredGrid');
           if (!grid || !response.data) return;
+
+          if (response.data.length === 0) {
+            grid.innerHTML = '<div style="grid-column: 1/-1; padding: 40px; text-align: center; color: var(--text-muted);">Nenhum post encontrado com esses filtros.</div>';
+            document.getElementById('filteredPagination').style.display = 'none';
+            return;
+          }
+
           grid.innerHTML = response.data.map(function (p) {
-            var imgHtml = p.image ? '<img src="' + p.image + '" alt="' + p.title + '" class="post-card__image" />' : '<div class="post-card__image-placeholder">Sem Imagem</div>';
+            var imgHtml = p.image
+              ? '<img src="' + escapeHTML(p.image) + '" alt="' + escapeHTML(p.title) + '" class="post-card__image" />'
+              : '<div class="post-card__image-placeholder">Sem Imagem</div>';
             return '<article class="post-card post-card--vertical reveal is-visible">' +
-              '<a href="/post/' + p.slug + '" class="post-card__image-wrap">' + imgHtml + '</a>' +
+              '<a href="/post/' + escapeHTML(p.slug) + '" class="post-card__image-wrap">' + imgHtml + '</a>' +
               '<div class="post-card__body">' +
-              '<span class="post-card__meta">' + p.author.name + ' &bull; ' + formatDate(p.date) + '</span>' +
-              '<a href="/post/' + p.slug + '"><h3 class="post-card__title">' + p.title + '</h3></a>' +
-              '<p class="post-card__excerpt">' + p.excerpt + '</p>' +
+              '<span class="post-card__meta">' + escapeHTML(p.author.name) + ' &bull; ' + formatDate(p.date) + '</span>' +
+              '<a href="/post/' + escapeHTML(p.slug) + '"><h3 class="post-card__title">' + escapeHTML(p.title) + '</h3></a>' +
+              '<p class="post-card__excerpt">' + escapeHTML(p.excerpt) + '</p>' +
               '<div class="post-card__footer">' +
-              '<div class="post-card__tags"><span class="tag tag--yellow">' + p.category.name + '</span></div>' +
-              '<a href="/post/' + p.slug + '" class="btn-read-more">Ler mais</a>' +
+              '<div class="post-card__tags"><span class="tag tag--yellow">' + escapeHTML(p.category.name) + '</span></div>' +
+              '<a href="/post/' + escapeHTML(p.slug) + '" class="btn-read-more">Ler mais</a>' +
               '</div></div></article>';
           }).join('');
 
-          document.querySelectorAll('.reveal').forEach(function (el) {
-            el.classList.add('is-visible');
-          });
-        })
-        .catch(function () {});
+          // Paginação
+          var pagination = response.pagination;
+          var paginationEl = document.getElementById('filteredPagination');
+          var numsEl = document.getElementById('catPaginationNums');
+          var btnPrev = document.getElementById('catBtnPrev');
+          var btnNext = document.getElementById('catBtnNext');
+
+          if (pagination && pagination.totalPages > 1) {
+            paginationEl.style.display = '';
+            btnPrev.disabled = !pagination.hasPrevPage;
+            btnNext.disabled = !pagination.hasNextPage;
+            var numsHtml = '';
+            for (var p = 1; p <= pagination.totalPages; p++) {
+              numsHtml += '<span class="pagination__num' + (p === currentPage ? ' pagination__num--active' : '') + '" data-page="' + p + '">' + p + '</span>';
+            }
+            numsEl.innerHTML = numsHtml;
+            numsEl.querySelectorAll('.pagination__num').forEach(function (el) {
+              el.addEventListener('click', function () {
+                loadFilteredPosts(parseInt(el.dataset.page));
+                window.scrollTo(0, 0);
+              });
+            });
+          } else {
+            paginationEl.style.display = 'none';
+          }
+        });
     }
 
-    // Fetch categories dynamically
+    // Botões prev/next
+    document.getElementById('catBtnPrev').addEventListener('click', function () {
+      if (currentPage > 1) { loadFilteredPosts(currentPage - 1); window.scrollTo(0, 0); }
+    });
+    document.getElementById('catBtnNext').addEventListener('click', function () {
+      loadFilteredPosts(currentPage + 1); window.scrollTo(0, 0);
+    });
+
+    // Filter button click
+    document.getElementById('applyFilters').addEventListener('click', function () { loadFilteredPosts(1); });
+
+    // Clear filters click
+    document.getElementById('clearFilters').addEventListener('click', function() {
+      document.getElementById('filterCategory').value = '';
+      document.getElementById('filterDate').value = 'desc';
+      document.getElementById('filterSubject').value = '';
+      cat = '';
+      window.history.replaceState(null, '', '/categorias');
+      document.getElementById('categoryHeroTitle').textContent = 'CATEGORIAS';
+      loadFilteredPosts(1);
+    });
+
+    // Carga inicial das categorias + posts
     fetch('/api/categories')
       .then(function (res) { return res.json(); })
       .then(function (response) {
-        var grid = document.getElementById('categoriesGrid');
-        var chips = document.getElementById('categoryNavChips');
-        if (!response.data) return;
-        
-        var categories = response.data;
-        
-        // Grid Home Style
-        if (grid) {
-          grid.innerHTML = categories.map(function (c) {
-            var bgImg = c.image || 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800&q=80';
-            return '<a href="/categorias?cat=' + c.slug + '" class="category-preview-card reveal is-visible">' +
-              '<div class="category-preview-card__image-container">' +
-              '<div class="category-preview-card__bg" style="background-image: url(' + bgImg + ')"></div>' +
-              '</div>' +
-              '<h3 class="category-preview-card__name">' + c.name + '</h3>' +
-              '</a>';
-          }).join('');
+        var categories = response.data || [];
+        var filterSelect = document.getElementById('filterCategory');
+
+        filterSelect.innerHTML += categories.map(function(c) {
+          return '<option value="' + escapeHTML(c.slug) + '"' + (cat === c.slug ? ' selected' : '') + '>' + escapeHTML(c.name) + '</option>';
+        }).join('');
+
+        if (cat) {
+          var found = categories.find(function (c) { return c.slug === cat; });
+          if (found) {
+            document.getElementById('categoryHeroTitle').textContent = found.name.toUpperCase();
+          }
         }
 
-        // Nav Chips
-        if (chips) {
-          var chipsHtml = '<a href="/categorias" class="chip' + (!cat ? ' chip--active' : '') + '">Todas</a>';
-          chipsHtml += categories.map(function (c) {
-            return '<a href="/categorias?cat=' + c.slug + '" class="chip' + (cat === c.slug ? ' chip--active' : '') + '">' + c.name + '</a>';
-          }).join('');
-          chips.innerHTML = chipsHtml;
-        }
-      })
-      .catch(function () {});
+        loadFilteredPosts(1);
+      });
 
     // Scroll reveal
     var revealEls = document.querySelectorAll('.reveal, .category-card');
@@ -278,16 +330,7 @@
         }
       });
     }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-    revealEls.forEach(function (el) { el.classList.add('reveal'); observer.observe(el); });
-
-    // Pagination
-    var nums = document.querySelectorAll('.pagination__num');
-    nums.forEach(function (num) {
-      num.addEventListener('click', function () {
-        nums.forEach(function (n) { n.classList.remove('pagination__num--active'); });
-        num.classList.add('pagination__num--active');
-      });
-    });
+    revealEls.forEach(function (el) { observer.observe(el); });
   })();
   </script>
 </body>
