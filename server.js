@@ -24,10 +24,10 @@ app.use(express.static(path.join(__dirname), {
   extensions: ['html'],
   index: 'index.html',
   setHeaders: function (res, filePath) {
-    if (filePath.endsWith('.html') || isDev) {
+    if (filePath.endsWith('.css') || filePath.endsWith('.js')) {
+      res.setHeader('Cache-Control', 'public, max-age=3600');
+    } else {
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-    } else if (filePath.endsWith('.css') || filePath.endsWith('.js')) {
-      res.setHeader('Cache-Control', 'public, max-age=86400');
     }
   }
 }));
