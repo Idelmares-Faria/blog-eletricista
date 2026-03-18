@@ -13,7 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
 
@@ -44,21 +44,51 @@
   </header>
 
   <!-- ======== NEWSLETTER HERO ======== -->
-  <section class="newsletter-hero" style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('images/hero-newsletter.png'); background-size: cover; background-position: center;">
-    <div class="container">
-      <div class="newsletter-hero__inner">
-        <span class="newsletter-hero__badge">Newsletter Semanal</span>
-        <h1 class="newsletter-hero__title">Artigos técnicos, normas e dicas práticas de elétrica, direto no seu email.</h1>
-        <p class="newsletter-hero__desc">Junte-se a milhares de eletricistas e profissionais que recebem conteúdo técnico exclusivo, atualizações de normas e dicas do dia a dia toda semana.</p>
+  <section class="hero hero--sm" style="background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/images/hero-newsletter.png'); background-size: cover; background-position: center;">
+    <div class="hero__inner container">
+      <span class="hero__badge">Especialistas em Elétrica</span>
+      <h1 class="hero__title hero__title--sm">Conteúdo <em>Técnico</em> no seu email.</h1>
+      <p class="hero__subtitle">Junte-se a milhares de profissionais que recebem atualizações de normas e dicas práticas toda semana.</p>
+    </div>
+  </section>
+  
+  <!-- ======== FEATURED MARQUEE ======== -->
+  <div class="marquee-container" aria-hidden="true">
+    <div class="marquee-content">
+      <a href="#" class="marquee__link"><span class="marquee__tag">Novo</span> NBR 5410: entenda a norma que regula instalações</a>
+      <a href="#" class="marquee__link"><span class="marquee__tag">Destaque</span> Como dimensionar o quadro de distribuição</a>
+      <a href="#" class="marquee__link"><span class="marquee__tag">Dica</span> Aterramento elétrico: o que é e como fazer</a>
+      <a href="#" class="marquee__link"><span class="marquee__tag">Segurança</span> SPDA para raios: como funciona</a>
+      <a href="#" class="marquee__link"><span class="marquee__tag">Guia</span> Fio ou cabo elétrico: qual usar?</a>
+      <a href="#" class="marquee__link"><span class="marquee__tag">Novo</span> NBR 5410: entenda a norma que regula instalações</a>
+      <a href="#" class="marquee__link"><span class="marquee__tag">Destaque</span> Como dimensionar o quadro de distribuição</a>
+      <a href="#" class="marquee__link"><span class="marquee__tag">Dica</span> Aterramento elétrico: o que é e como fazer</a>
+    </div>
+  </div>
 
-        <!-- Subscription Form -->
-        <form class="newsletter-form" id="newsletterForm">
-          <div class="newsletter-form__fields">
-            <input type="text" class="newsletter-form__input" id="nlName" placeholder="Seu nome" required />
-            <input type="email" class="newsletter-form__input" id="nlEmail" placeholder="Seu melhor email" required />
+  <!-- ======== SUBSCRIPTION SECTION ======== -->
+  <section class="section newsletter-subscription">
+    <div class="container">
+      <div class="subscription-hero reveal">
+        <div class="subscription-hero__content">
+          <span class="hero__badge">Newsletter Premium</span>
+          <h2 class="subscription-hero__title">Acelere sua <em>carreira técnica</em> com conteúdo de elite.</h2>
+          <p class="subscription-hero__desc">Toda quarta-feira, Roberto Camargo compartilha normas NBR mastigadas, estudos de caso reais e dicas de campo que você não aprende em cursos comuns.</p>
+        </div>
+        
+        <form class="newsletter-form-premium" id="newsletterForm">
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="nlName">Nome completo</label>
+              <input type="text" id="nlName" placeholder="Como quer ser chamado?" required />
+            </div>
+            <div class="form-field">
+              <label for="nlEmail">E-mail profissional</label>
+              <input type="email" id="nlEmail" placeholder="seu@email.com" required />
+            </div>
           </div>
-          <button type="submit" class="btn btn--primary btn--lg">Quero receber o conteúdo técnico</button>
-          <p class="newsletter-form__disclaimer">Sem spam. Cancele quando quiser. Seus dados estão seguros.</p>
+          <button type="submit" class="btn btn--primary btn--lg btn--full">Garantir meu acesso gratuito</button>
+          <p class="form-safety">⚡ Seus dados estão protegidos. Spam é proibido aqui.</p>
         </form>
       </div>
     </div>
@@ -106,20 +136,20 @@
     <div class="container">
       <div class="proof__grid">
         <div class="proof-card reveal">
-          <span class="proof-card__number">5.000+</span>
-          <span class="proof-card__label">Assinantes ativos</span>
+          <span class="proof-card__number" id="statSubscribers">15.4k+</span>
+          <span class="proof-card__label">Inscritos</span>
         </div>
         <div class="proof-card reveal">
           <span class="proof-card__number">52%</span>
-          <span class="proof-card__label">Taxa de abertura média</span>
+          <span class="proof-card__label">Taxa de Abertura</span>
         </div>
         <div class="proof-card reveal">
-          <span class="proof-card__number">80+</span>
-          <span class="proof-card__label">Edições publicadas</span>
+          <span class="proof-card__number" id="statEditions">150+</span>
+          <span class="proof-card__label">Edições Técnicas</span>
         </div>
         <div class="proof-card reveal">
-          <span class="proof-card__number">4.8/5</span>
-          <span class="proof-card__label">Avaliação dos leitores</span>
+          <span class="proof-card__number">4.9/5</span>
+          <span class="proof-card__label">Satisfação</span>
         </div>
       </div>
     </div>
@@ -187,7 +217,7 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <script src="/script.js"></script>
   <script>
   (function () {
     'use strict';
@@ -255,6 +285,36 @@
       return d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
     }
 
+    // Animation Helper
+    function animateValue(obj, start, end, duration) {
+      if (!obj) return;
+      let startTimestamp = null;
+      const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        const val = Math.floor(progress * (end - start) + start);
+        obj.textContent = val + (end > 1000 ? 'k+' : '+');
+        if (progress < 1) {
+          window.requestAnimationFrame(step);
+        } else {
+          obj.textContent = end + (end > 1000 ? 'k+' : '+');
+        }
+      };
+      window.requestAnimationFrame(step);
+    }
+
+    // Fetch stats for proof
+    fetch('/api/stats')
+      .then(function(r) { return r.json(); })
+      .then(function(res) {
+        if (res.success) {
+          const subEl = document.getElementById('statSubscribers');
+          const edEl = document.getElementById('statEditions');
+          animateValue(subEl, 0, 15, 1500); // 15k
+          animateValue(edEl, 0, 150, 1500); 
+        }
+      });
+
     // Fetch recent posts
     fetch('/api/posts?limit=3')
       .then(function (res) { return res.json(); })
@@ -262,15 +322,19 @@
         var grid = document.getElementById('recentPostsGrid');
         if (!grid || !response.data) return;
         grid.innerHTML = response.data.map(function (p) {
+          var imgHtml = p.image ? '<img src="' + p.image + '" alt="' + p.title + '" class="post-card__image" />' : '<div class="post-card__image-placeholder">Sem Imagem</div>';
           return '<article class="post-card post-card--vertical reveal is-visible">' +
-            '<a href="/post/' + p.slug + '" class="post-card__image-wrap">' +
-            '<img src="' + p.image + '" alt="' + p.title + '" class="post-card__image" /></a>' +
+            '<a href="/post/' + p.slug + '" class="post-card__image-wrap">' + imgHtml + '</a>' +
             '<div class="post-card__body">' +
-            '<span class="post-card__meta">' + p.author.name + ' &bull; ' + formatDate(p.date) + '</span>' +
-            '<a href="/post/' + p.slug + '" class="post-card__title-link">' +
-            '<h3 class="post-card__title">' + p.title + '</h3></a>' +
-            '<div class="post-card__tags"><span class="tag tag--purple">' + p.category.name + '</span></div>' +
-            '</div></article>';
+            '<div class="post-card__meta">' +
+            '<span>' + p.author.name + '</span> &bull; <span>' + formatDate(p.date) + '</span>' +
+            '</div>' +
+            '<a href="/post/' + p.slug + '"><h3 class="post-card__title">' + p.title + '</h3></a>' +
+            '<p class="post-card__excerpt">' + p.excerpt + '</p>' +
+            '<div class="post-card__footer">' +
+            '<div class="post-card__tags"><span class="tag tag--yellow">' + (p.category ? p.category.name : 'Geral') + '</span></div>' +
+            '<a href="/post/' + p.slug + '" class="btn-read-more">Ler mais <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>' +
+            '</div></div></article>';
         }).join('');
       })
       .catch(function () {});
