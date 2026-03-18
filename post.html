@@ -556,11 +556,25 @@
       navigator.clipboard.writeText(pageUrl).then(function () {
         showToast('Link copiado para a área de transferência!');
       });
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({event: 'share_click', share_method: 'copy_link'});
     });
 
     document.getElementById('shareTwitter').href = 'https://twitter.com/intent/tweet?url=' + encodeURIComponent(pageUrl) + '&text=' + encodeURIComponent(pageTitle);
+    document.getElementById('shareTwitter').addEventListener('click', function () {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({event: 'share_click', share_method: 'twitter'});
+    });
     document.getElementById('shareLinkedIn').href = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(pageUrl);
+    document.getElementById('shareLinkedIn').addEventListener('click', function () {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({event: 'share_click', share_method: 'linkedin'});
+    });
     document.getElementById('shareWhatsApp').href = 'https://wa.me/?text=' + encodeURIComponent(pageTitle + ' ' + pageUrl);
+    document.getElementById('shareWhatsApp').addEventListener('click', function () {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({event: 'share_click', share_method: 'whatsapp'});
+    });
 
     // Comment form
     document.getElementById('commentForm').addEventListener('submit', function (e) {
@@ -584,6 +598,8 @@
           '<time class="comment__date">Agora</time></div>' +
           '<p class="comment__text">' + escapeHTML(text) + '</p></div></div>';
         list.insertAdjacentHTML('afterbegin', html);
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({event: 'comment_submit', post_slug: slug});
         e.target.reset();
       })
       .catch(function () {

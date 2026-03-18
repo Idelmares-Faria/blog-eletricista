@@ -19,7 +19,16 @@
       "mcp__claude_ai_Vercel__get_deployment_build_logs",
       "Bash(npm -v)",
       "WebFetch(domain:blog-eletricista-idelmaresweb-2751s-projects.vercel.app)",
-      "mcp__claude_ai_Vercel__web_fetch_vercel_url"
+      "mcp__claude_ai_Vercel__web_fetch_vercel_url",
+      "Bash(vercel deploy:*)",
+      "Bash(vercel env:*)",
+      "Bash(npm install:*)",
+      "mcp__claude_ai_Vercel__get_project",
+      "mcp__claude_ai_Vercel__search_vercel_documentation",
+      "Bash(vercel inspect:*)",
+      "Bash(vercel build:*)",
+      "Bash(vercel pull:*)",
+      "mcp__claude_ai_Vercel__get_runtime_logs"
     ]
   }
 }

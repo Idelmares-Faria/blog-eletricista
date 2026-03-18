@@ -281,6 +281,8 @@
       .then(function (res) {
         if (res.ok) {
           showToast('Inscrição realizada com sucesso! Bem-vindo(a) à newsletter.');
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({event: 'newsletter_signup', form_id: 'newsletterForm'});
           e.target.reset();
         } else {
           throw new Error('Erro');
