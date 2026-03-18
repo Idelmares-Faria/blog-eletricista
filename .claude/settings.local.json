@@ -3,7 +3,23 @@
     "allow": [
       "Bash(git remote:*)",
       "Bash(git branch:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(netstat -ano 2>/dev/null | grep :3457 || echo \"nenhum processo na porta 3457\")",
+      "mcp__claude_ai_Vercel__list_teams",
+      "mcp__claude_ai_Vercel__list_projects",
+      "mcp__claude_ai_Vercel__list_deployments",
+      "mcp__claude_ai_Vercel__deploy_to_vercel",
+      "Bash(cd \"C:\\\\Users\\\\admin\\\\Documents\\\\Projetos\\\\blog-eletricista\" && npx vercel deploy --prod 2>&1)",
+      "Bash(node:*)",
+      "WebSearch",
+      "WebFetch(domain:unsplash.com)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(npx vercel:*)",
+      "mcp__claude_ai_Vercel__get_deployment_build_logs",
+      "Bash(npm -v)",
+      "WebFetch(domain:blog-eletricista-idelmaresweb-2751s-projects.vercel.app)",
+      "mcp__claude_ai_Vercel__web_fetch_vercel_url"
     ]
   }
 }
