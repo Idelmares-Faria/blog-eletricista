@@ -4,6 +4,46 @@ const rateLimit = require('express-rate-limit');
 const { Pool } = require('pg');
 const path = require('path');
 require('dotenv').config();
+const crypto = require('crypto');
+
+// Admin sessions (in-memory)
+const adminSessions = new Map();
+const ADMIN_SESSION_DURATION = 24 * 60 * 60 * 1000; // 24 hours
+
+function generateToken() {
+  return crypto.randomBytes(32).toString('hex');
+}
+
+function isValidSession(token) {
+  if (!token || !adminSessions.has(token)) return false;
+  const session = adminSessions.get(token);
+  if (Date.now() > session.expires) {
+    adminSessions.delete(token);
+    return false;
+  }
+  return true;
+}
+
+function getTokenFromRequest(req) {
+  // Check header first
+  if (req.headers['x-admin-token']) return req.headers['x-admin-token'];
+  // Parse cookie manually (no cookie-parser)
+  const cookieHeader = req.headers.cookie || '';
+  const match = cookieHeader.match(/admin_token=([^;]+)/);
+  return match ? match[1] : null;
+}
+
+function requireAdmin(req, res, next) {
+  const token = getTokenFromRequest(req);
+  if (!token) {
+    return res.status(401).json({ success: false, error: 'Não autorizado' });
+  }
+  if (!isValidSession(token)) {
+    return res.status(401).json({ success: false, error: 'Sessão expirada' });
+  }
+  req.adminToken = token;
+  next();
+}
 
 const app = express();
 const PORT = process.env.PORT || 3457;
@@ -300,10 +340,14 @@ app.get('/api/stats', async (req, res) => {
       commentsCount = parseInt(cmRes.rows[0].count);
     } catch (e) { 
       // Table might not exist, use a meaningful fallback
-      commentsCount = postsCount * 2; 
+      commentsCount = 0;
     }
     
-    const communitySize = 15420 + (postsCount * 10);
+    let communitySize = 0;
+    try {
+      const subRes = await pool.query('SELECT COUNT(*) FROM subscribers');
+      communitySize = parseInt(subRes.rows[0].count);
+    } catch (e) { communitySize = 0; }
 
     res.json({
       success: true,
@@ -316,7 +360,7 @@ app.get('/api/stats', async (req, res) => {
     });
   } catch (error) {
     console.error('Error fetching stats:', error);
-    res.status(500).json({ success: true, data: { posts: 120, categories: 5, comments: 450, community: 15420 } });
+    res.status(500).json({ success: true, data: { posts: 0, categories: 0, comments: 0, community: 0 } });
   }
 });
 
@@ -454,7 +498,6 @@ app.post('/api/posts/:slug/comments', commentLimiter, async (req, res) => {
         id: newComment.id,
         postSlug: slug,
         author: newComment.author,
-        email: newComment.email,
         content: newComment.content,
         date: newComment.date
       }
@@ -576,6 +619,144 @@ app.get('/api/search', async (req, res) => {
 });
 
 // ═══════════════════════════════════════════
+//  ADMIN API ROUTES
+// ═══════════════════════════════════════════
+
+const adminLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, error: 'Muitas tentativas. Aguarde 15 minutos.' }
+});
+
+// POST /api/admin/login
+app.post('/api/admin/login', adminLimiter, (req, res) => {
+  const { username, password } = req.body;
+  const adminUser = process.env.ADMIN_USER || 'admin';
+  const adminPass = process.env.ADMIN_PASSWORD;
+
+  if (!adminPass) {
+    return res.status(500).json({ success: false, error: 'Admin não configurado' });
+  }
+
+  if (username === adminUser && password === adminPass) {
+    const token = generateToken();
+    adminSessions.set(token, { expires: Date.now() + ADMIN_SESSION_DURATION });
+    res.cookie('admin_token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: ADMIN_SESSION_DURATION
+    });
+    return res.json({ success: true, token });
+  }
+
+  res.status(401).json({ success: false, error: 'Credenciais inválidas' });
+});
+
+// POST /api/admin/logout
+app.post('/api/admin/logout', (req, res) => {
+  const token = getTokenFromRequest(req);
+  if (token) adminSessions.delete(token);
+  res.clearCookie('admin_token');
+  res.json({ success: true });
+});
+
+// GET /api/admin/check
+app.get('/api/admin/check', requireAdmin, (req, res) => {
+  res.json({ success: true });
+});
+
+// GET /api/admin/subscribers
+app.get('/api/admin/subscribers', requireAdmin, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT id, name, email, subscribed_at FROM subscribers ORDER BY subscribed_at DESC');
+    res.json({ success: true, data: result.rows, total: result.rows.length });
+  } catch (error) {
+    console.error('Error fetching subscribers:', error);
+    res.status(500).json({ success: false, error: 'Erro ao buscar assinantes' });
+  }
+});
+
+// DELETE /api/admin/subscribers/:id
+app.delete('/api/admin/subscribers/:id', requireAdmin, async (req, res) => {
+  try {
+    await pool.query('DELETE FROM subscribers WHERE id = $1', [req.params.id]);
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Erro ao remover assinante' });
+  }
+});
+
+// GET /api/admin/contacts
+app.get('/api/admin/contacts', requireAdmin, async (req, res) => {
+  try {
+    const result = await pool.query('SELECT id, name, email, message, created_at FROM contact_messages ORDER BY created_at DESC');
+    res.json({ success: true, data: result.rows, total: result.rows.length });
+  } catch (error) {
+    console.error('Error fetching contacts:', error);
+    res.status(500).json({ success: false, error: 'Erro ao buscar mensagens' });
+  }
+});
+
+// DELETE /api/admin/contacts/:id
+app.delete('/api/admin/contacts/:id', requireAdmin, async (req, res) => {
+  try {
+    await pool.query('DELETE FROM contact_messages WHERE id = $1', [req.params.id]);
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'Erro ao remover mensagem' });
+  }
+});
+
+// ═══════════════════════════════════════════
+//  SITEMAP & ROBOTS
+// ═══════════════════════════════════════════
+
+// GET /sitemap.xml
+app.get('/sitemap.xml', async (req, res) => {
+  try {
+    const baseUrl = req.protocol + '://' + req.get('host');
+    const postsResult = await pool.query('SELECT slug, date FROM posts ORDER BY date DESC');
+    const categoriesResult = await pool.query('SELECT slug FROM categories');
+
+    let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+    xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+
+    // Static pages
+    const staticPages = ['', '/categorias', '/sobre', '/newsletter', '/buscar'];
+    staticPages.forEach(page => {
+      xml += '  <url><loc>' + baseUrl + page + '</loc><changefreq>weekly</changefreq></url>\n';
+    });
+
+    // Posts
+    postsResult.rows.forEach(post => {
+      const date = new Date(post.date).toISOString().split('T')[0];
+      xml += '  <url><loc>' + baseUrl + '/post/' + post.slug + '</loc><lastmod>' + date + '</lastmod><changefreq>monthly</changefreq></url>\n';
+    });
+
+    // Categories
+    categoriesResult.rows.forEach(cat => {
+      xml += '  <url><loc>' + baseUrl + '/categoria/' + cat.slug + '</loc><changefreq>weekly</changefreq></url>\n';
+    });
+
+    xml += '</urlset>';
+    res.set('Content-Type', 'application/xml');
+    res.send(xml);
+  } catch (error) {
+    res.status(500).send('Error generating sitemap');
+  }
+});
+
+// GET /robots.txt
+app.get('/robots.txt', (req, res) => {
+  const baseUrl = req.protocol + '://' + req.get('host');
+  res.set('Content-Type', 'text/plain');
+  res.send('User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /api/\nSitemap: ' + baseUrl + '/sitemap.xml\n');
+});
+
+// ═══════════════════════════════════════════
 //  HTML PAGE ROUTES
 // ═══════════════════════════════════════════
 
@@ -619,6 +800,10 @@ app.get('/busca', (req, res) => {
 
 app.get('/buscar', (req, res) => {
   sendHTML(res, 'search.html');
+});
+
+app.get('/admin', (req, res) => {
+  sendHTML(res, 'admin.html');
 });
 
 // ═══════════════════════════════════════════

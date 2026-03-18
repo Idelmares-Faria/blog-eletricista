@@ -28,7 +28,14 @@
       "Bash(vercel inspect:*)",
       "Bash(vercel build:*)",
       "Bash(vercel pull:*)",
-      "mcp__claude_ai_Vercel__get_runtime_logs"
+      "mcp__claude_ai_Vercel__get_runtime_logs",
+      "Bash(git config:*)",
+      "Bash(git reset:*)",
+      "Bash(curl -s -X POST http://localhost:3457/api/admin/login -H \"Content-Type: application/json\" -d '{\"\"\"\"username\"\"\"\":\"\"\"\"admin\"\"\"\",\"\"\"\"password\"\"\"\":\"\"\"\"Admin@2026!\"\"\"\"}')",
+      "Bash(TOKEN=\"0cb1492158f189dc1195b8f77a93508846ca24998029bfc35a0e041f3d7e0e27\")",
+      "Bash(curl -s http://localhost:3457/api/admin/subscribers -H \"x-admin-token: $TOKEN\")",
+      "Bash(curl -s http://localhost:3457/api/admin/contacts -H \"x-admin-token: $TOKEN\")",
+      "Bash(taskkill //F //IM node.exe)"
     ]
   }
 }

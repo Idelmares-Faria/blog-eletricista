@@ -421,6 +421,23 @@
   (function () {
     'use strict';
 
+    // ── Initials-based avatar generator ──
+    function getInitials(name) {
+      if (!name) return '?';
+      var parts = name.trim().split(/\s+/);
+      if (parts.length >= 2) return (parts[0][0] + parts[parts.length-1][0]).toUpperCase();
+      return parts[0][0].toUpperCase();
+    }
+
+    function initialsAvatar(name) {
+      var initials = getInitials(name);
+      var colors = ['#f59e0b','#3b82f6','#10b981','#ef4444','#8b5cf6','#ec4899','#14b8a6','#f97316'];
+      var hash = 0;
+      for (var i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+      var color = colors[Math.abs(hash) % colors.length];
+      return 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80"><rect width="80" height="80" rx="40" fill="' + color + '"/><text x="50%" y="50%" dy=".1em" fill="white" font-family="sans-serif" font-size="32" font-weight="600" text-anchor="middle" dominant-baseline="central">' + initials + '</text></svg>');
+    }
+
     // ── Segurança: escape de texto puro inserido em innerHTML ──
     function escapeHTML(str) {
       if (!str) return '';
@@ -475,6 +492,37 @@
 
         // Fill post data
         document.title = post.title + ' — Blog do Eletricista';
+        // Dynamic SEO meta tags
+        var metaDesc = document.querySelector('meta[name="description"]');
+        if (metaDesc) metaDesc.setAttribute('content', post.excerpt);
+        var ogTitle = document.querySelector('meta[property="og:title"]');
+        if (!ogTitle) { ogTitle = document.createElement('meta'); ogTitle.setAttribute('property', 'og:title'); document.head.appendChild(ogTitle); }
+        ogTitle.setAttribute('content', post.title + ' — Blog do Eletricista');
+        var ogDesc = document.querySelector('meta[property="og:description"]');
+        if (!ogDesc) { ogDesc = document.createElement('meta'); ogDesc.setAttribute('property', 'og:description'); document.head.appendChild(ogDesc); }
+        ogDesc.setAttribute('content', post.excerpt);
+        var ogImage = document.querySelector('meta[property="og:image"]');
+        if (!ogImage) { ogImage = document.createElement('meta'); ogImage.setAttribute('property', 'og:image'); document.head.appendChild(ogImage); }
+        ogImage.setAttribute('content', post.image);
+        // Canonical URL
+        var canonical = document.querySelector('link[rel="canonical"]');
+        if (!canonical) { canonical = document.createElement('link'); canonical.setAttribute('rel', 'canonical'); document.head.appendChild(canonical); }
+        canonical.setAttribute('href', window.location.origin + '/post/' + post.slug);
+        // JSON-LD structured data
+        var jsonLd = document.createElement('script');
+        jsonLd.type = 'application/ld+json';
+        jsonLd.textContent = JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Article",
+          "headline": post.title,
+          "description": post.excerpt,
+          "image": post.image,
+          "author": { "@type": "Person", "name": post.author.name },
+          "publisher": { "@type": "Organization", "name": "Blog do Eletricista" },
+          "datePublished": post.date,
+          "mainEntityOfPage": { "@type": "WebPage", "@id": window.location.href }
+        });
+        document.head.appendChild(jsonLd);
         document.getElementById('postTitle').textContent = post.title;
         document.getElementById('postCategory').textContent = post.category.name;
         document.getElementById('breadcrumbCategory').textContent = post.category.name;
@@ -501,10 +549,10 @@
             related.forEach(function (p, index) {
               html += '<article class="sidebar-post">' +
                 '<a href="/post/' + p.slug + '" class="sidebar-post__image-wrap">' +
-                '<img src="' + p.image + '" alt="' + p.title + '" class="sidebar-post__image" />' +
+                '<img src="' + p.image + '" alt="' + escapeHTML(p.title) + '" class="sidebar-post__image" />' +
                 '</a><div class="sidebar-post__body">' +
-                '<a href="/post/' + p.slug + '" class="sidebar-post__title">' + p.title + '</a>' +
-                '<p class="sidebar-post__excerpt">' + p.excerpt + '</p>' +
+                '<a href="/post/' + p.slug + '" class="sidebar-post__title">' + escapeHTML(p.title) + '</a>' +
+                '<p class="sidebar-post__excerpt">' + escapeHTML(p.excerpt) + '</p>' +
                 '<div class="sidebar-post__footer">' +
                 '<span class="sidebar-post__meta">' + formatDate(p.date) + '</span>' +
                 '<a href="/post/' + p.slug + '" class="sidebar-post__read-more">Ler mais <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>' +
@@ -538,7 +586,7 @@
           var list = document.getElementById('commentsList');
           list.innerHTML = comments.map(function (c) {
             return '<div class="comment">' +
-              '<img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=80&q=80" alt="Avatar" class="comment__avatar" />' +
+              '<img src="' + initialsAvatar(c.author) + '" alt="Avatar" class="comment__avatar" />' +
               '<div class="comment__body">' +
               '<div class="comment__header"><strong class="comment__author">' + escapeHTML(c.author) + '</strong>' +
               '<time class="comment__date">' + escapeHTML(formatDate(c.date)) + '</time></div>' +
@@ -592,7 +640,7 @@
       .then(function (comment) {
         var list = document.getElementById('commentsList');
         var html = '<div class="comment">' +
-          '<img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=80&q=80" alt="Avatar" class="comment__avatar" />' +
+          '<img src="' + initialsAvatar(name) + '" alt="Avatar" class="comment__avatar" />' +
           '<div class="comment__body">' +
           '<div class="comment__header"><strong class="comment__author">' + escapeHTML(name) + '</strong>' +
           '<time class="comment__date">Agora</time></div>' +

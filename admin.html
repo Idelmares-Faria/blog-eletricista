@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Blog do Eletricista</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    /* ========== LOGIN SCREEN ========== */
+    .login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg-primary);
+      position: relative;
+      overflow: hidden;
+    }
+    .login-screen::before {
+      content: '';
+      position: absolute;
+      top: -40%;
+      right: -20%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(245,158,11,0.08) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .login-card {
+      width: 100%;
+      max-width: 420px;
+      padding: 48px 40px;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+      z-index: 1;
+    }
+    .login-card__logo {
+      font-family: 'Instrument Serif', serif;
+      font-size: 28px;
+      font-style: italic;
+      text-align: center;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+    .login-card__subtitle {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 36px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 700;
+    }
+    .login-card__field {
+      margin-bottom: 20px;
+    }
+    .login-card__label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .login-card__input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .login-card__input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(245,158,11,0.12);
+    }
+    .login-card__btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+      margin-top: 8px;
+    }
+    .login-card__btn:hover {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(245,158,11,0.3);
+    }
+    .login-card__btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .login-card__error {
+      background: var(--tag-red-bg);
+      color: var(--tag-red-text);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 10px 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      display: none;
+    }
+
+    /* ========== ADMIN DASHBOARD ========== */
+    .admin-dashboard { display: none; min-height: 100vh; background: var(--bg-primary); }
+
+    .admin-navbar {
+      height: 64px;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(12px);
+    }
+    .admin-navbar__left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .admin-navbar__logo {
+      font-family: 'Instrument Serif', serif;
+      font-size: 22px;
+      font-style: italic;
+      color: var(--text-primary);
+    }
+    .admin-navbar__badge {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      background: var(--accent-light);
+      color: var(--accent);
+      padding: 4px 12px;
+      border-radius: 100px;
+    }
+    .admin-navbar__right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .admin-navbar__theme-btn,
+    .admin-navbar__logout-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .admin-navbar__theme-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .admin-navbar__logout-btn:hover {
+      border-color: var(--tag-red-text);
+      color: var(--tag-red-text);
+      background: var(--tag-red-bg);
+    }
+
+    /* ========== STATS ROW ========== */
+    .admin-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      padding: 32px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .admin-stat-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      transition: border-color 0.2s;
+    }
+    .admin-stat-card:hover {
+      border-color: var(--accent);
+    }
+    .admin-stat-card__label {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .admin-stat-card__value {
+      font-family: 'Instrument Serif', serif;
+      font-size: 36px;
+      color: var(--text-primary);
+      line-height: 1;
+    }
+
+    /* ========== TAB NAVIGATION ========== */
+    .admin-tabs {
+      display: flex;
+      gap: 4px;
+      padding: 0 32px;
+      max-width: 1200px;
+      margin: 0 auto 24px;
+      border-bottom: 2px solid var(--border-color);
+    }
+    .admin-tab {
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      position: relative;
+      transition: color 0.2s;
+    }
+    .admin-tab:hover {
+      color: var(--text-primary);
+    }
+    .admin-tab--active {
+      color: var(--accent);
+    }
+    .admin-tab--active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent);
+    }
+
+    /* ========== DATA TABLE ========== */
+    .admin-panel {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px 60px;
+    }
+    .admin-table-wrap {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    .admin-table-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .admin-table-header__title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .admin-table-header__count {
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--accent-light);
+      color: var(--accent);
+      padding: 2px 10px;
+      border-radius: 100px;
+    }
+    .admin-table-header__search {
+      padding: 8px 14px;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 13px;
+      outline: none;
+      width: 220px;
+      transition: border-color 0.2s;
+    }
+    .admin-table-header__search:focus {
+      border-color: var(--accent);
+    }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .admin-table th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      padding: 14px 24px;
+      border-bottom: 1px solid var(--border-color);
+      background: var(--bg-primary);
+    }
+    .admin-table td {
+      padding: 16px 24px;
+      font-size: 14px;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border-color);
+      vertical-align: top;
+    }
+    .admin-table tr:last-child td {
+      border-bottom: none;
+    }
+    .admin-table tr:hover td {
+      background: var(--accent-light);
+    }
+    .admin-table__name {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+    .admin-table__email {
+      font-size: 13px;
+      color: var(--accent);
+    }
+    .admin-table__date {
+      font-size: 12px;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .admin-table__message {
+      max-width: 400px;
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .admin-table__message--expanded {
+      -webkit-line-clamp: unset;
+      line-clamp: unset;
+    }
+    .admin-table__delete-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .admin-table__delete-btn:hover {
+      border-color: var(--tag-red-text);
+      color: var(--tag-red-text);
+      background: var(--tag-red-bg);
+    }
+
+    .admin-empty {
+      text-align: center;
+      padding: 60px 24px;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+    .admin-empty__icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: 0.4;
+    }
+
+    /* ========== TOAST ========== */
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--text-primary);
+      color: var(--bg-primary);
+      padding: 12px 24px;
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 600;
+      opacity: 0;
+      transition: all 0.3s;
+      z-index: 9999;
+      white-space: nowrap;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .toast.is-visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ========== CONFIRM MODAL ========== */
+    .admin-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 9998;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+    .admin-modal-overlay.is-visible {
+      display: flex;
+    }
+    .admin-modal {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 32px;
+      max-width: 400px;
+      width: 90%;
+      box-shadow: var(--shadow-lg);
+    }
+    .admin-modal__title {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+    }
+    .admin-modal__text {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 24px;
+      line-height: 1.5;
+    }
+    .admin-modal__actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+    }
+    .admin-modal__cancel {
+      padding: 10px 20px;
+      background: transparent;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-secondary);
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .admin-modal__cancel:hover {
+      border-color: var(--text-primary);
+      color: var(--text-primary);
+    }
+    .admin-modal__confirm {
+      padding: 10px 20px;
+      background: #ef4444;
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .admin-modal__confirm:hover {
+      background: #dc2626;
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 768px) {
+      .admin-navbar { padding: 0 16px; }
+      .admin-stats { padding: 20px 16px; grid-template-columns: 1fr 1fr; }
+      .admin-tabs { padding: 0 16px; }
+      .admin-panel { padding: 0 16px 40px; }
+      .admin-table-header { flex-direction: column; gap: 12px; align-items: stretch; }
+      .admin-table-header__search { width: 100%; }
+      .admin-table { display: block; }
+      .admin-table thead { display: none; }
+      .admin-table tbody { display: block; }
+      .admin-table tr {
+        display: flex;
+        flex-direction: column;
+        padding: 16px 20px;
+        border-bottom: 1px solid var(--border-color);
+        gap: 6px;
+      }
+      .admin-table tr:hover { background: var(--accent-light); }
+      .admin-table td {
+        padding: 0;
+        border: none;
+        display: block;
+      }
+      .admin-table__message { max-width: 100%; }
+      .login-card { margin: 24px; padding: 36px 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ======== LOGIN SCREEN ======== -->
+  <div class="login-screen" id="loginScreen">
+    <div class="login-card">
+      <div class="login-card__logo">Blog do Eletricista</div>
+      <div class="login-card__subtitle">Painel Administrativo</div>
+      <div class="login-card__error" id="loginError"></div>
+      <form id="loginForm">
+        <div class="login-card__field">
+          <label class="login-card__label" for="loginUser">Usuário</label>
+          <input type="text" class="login-card__input" id="loginUser" placeholder="admin" required autocomplete="username" />
+        </div>
+        <div class="login-card__field">
+          <label class="login-card__label" for="loginPass">Senha</label>
+          <input type="password" class="login-card__input" id="loginPass" placeholder="Sua senha" required autocomplete="current-password" />
+        </div>
+        <button type="submit" class="login-card__btn" id="loginBtn">Entrar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======== ADMIN DASHBOARD ======== -->
+  <div class="admin-dashboard" id="adminDashboard">
+    <!-- Navbar -->
+    <nav class="admin-navbar">
+      <div class="admin-navbar__left">
+        <a href="/" class="admin-navbar__logo">Blog do Eletricista</a>
+        <span class="admin-navbar__badge">Admin</span>
+      </div>
+      <div class="admin-navbar__right">
+        <button class="admin-navbar__theme-btn" id="adminThemeToggle" aria-label="Alternar tema">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          Tema
+        </button>
+        <button class="admin-navbar__logout-btn" id="logoutBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sair
+        </button>
+      </div>
+    </nav>
+
+    <!-- Stats -->
+    <div class="admin-stats" id="adminStats">
+      <div class="admin-stat-card">
+        <div class="admin-stat-card__label">Assinantes Newsletter</div>
+        <div class="admin-stat-card__value" id="statSubs">--</div>
+      </div>
+      <div class="admin-stat-card">
+        <div class="admin-stat-card__label">Mensagens de Contato</div>
+        <div class="admin-stat-card__value" id="statContacts">--</div>
+      </div>
+      <div class="admin-stat-card">
+        <div class="admin-stat-card__label">Posts Publicados</div>
+        <div class="admin-stat-card__value" id="statPostsCount">--</div>
+      </div>
+      <div class="admin-stat-card">
+        <div class="admin-stat-card__label">Categorias</div>
+        <div class="admin-stat-card__value" id="statCatsCount">--</div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="admin-tabs">
+      <button class="admin-tab admin-tab--active" data-tab="subscribers">Assinantes</button>
+      <button class="admin-tab" data-tab="contacts">Mensagens</button>
+    </div>
+
+    <!-- Content Panels -->
+    <div class="admin-panel">
+      <!-- Subscribers Panel -->
+      <div class="admin-table-wrap" id="subscribersPanel">
+        <div class="admin-table-header">
+          <div class="admin-table-header__title">
+            Assinantes da Newsletter
+            <span class="admin-table-header__count" id="subsCount">0</span>
+          </div>
+          <input type="text" class="admin-table-header__search" id="subsSearch" placeholder="Buscar assinante..." />
+        </div>
+        <table class="admin-table" id="subsTable">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Email</th>
+              <th>Data</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="subsBody"></tbody>
+        </table>
+        <div class="admin-empty" id="subsEmpty" style="display:none;">
+          <div class="admin-empty__icon">&#9993;</div>
+          <p>Nenhum assinante encontrado.</p>
+        </div>
+      </div>
+
+      <!-- Contacts Panel -->
+      <div class="admin-table-wrap" id="contactsPanel" style="display:none;">
+        <div class="admin-table-header">
+          <div class="admin-table-header__title">
+            Mensagens de Contato
+            <span class="admin-table-header__count" id="contactsCount">0</span>
+          </div>
+          <input type="text" class="admin-table-header__search" id="contactsSearch" placeholder="Buscar mensagem..." />
+        </div>
+        <table class="admin-table" id="contactsTable">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Email</th>
+              <th>Mensagem</th>
+              <th>Data</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="contactsBody"></tbody>
+        </table>
+        <div class="admin-empty" id="contactsEmpty" style="display:none;">
+          <div class="admin-empty__icon">&#128172;</div>
+          <p>Nenhuma mensagem de contato encontrada.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirm Modal -->
+  <div class="admin-modal-overlay" id="confirmModal">
+    <div class="admin-modal">
+      <div class="admin-modal__title">Confirmar exclusão</div>
+      <div class="admin-modal__text" id="confirmText">Tem certeza que deseja excluir este item?</div>
+      <div class="admin-modal__actions">
+        <button class="admin-modal__cancel" id="confirmCancel">Cancelar</button>
+        <button class="admin-modal__confirm" id="confirmOk">Excluir</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function () {
+    'use strict';
+
+    var STORAGE_KEY = 'blogeletricista-theme';
+    var html = document.documentElement;
+
+    // Theme
+    function getTheme() {
+      var stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) return stored;
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    function setTheme(t) { html.setAttribute('data-theme', t); localStorage.setItem(STORAGE_KEY, t); }
+    setTheme(getTheme());
+
+    document.getElementById('adminThemeToggle').addEventListener('click', function () {
+      setTheme(html.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+    });
+
+    // Escape
+    function escapeHTML(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+    }
+
+    function formatDateTime(dateStr) {
+      if (!dateStr) return '--';
+      var d = new Date(dateStr);
+      return d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }) +
+        ' ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    // Toast
+    function showToast(msg) {
+      var existing = document.querySelector('.toast');
+      if (existing) existing.remove();
+      var toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.textContent = msg;
+      document.body.appendChild(toast);
+      requestAnimationFrame(function () { toast.classList.add('is-visible'); });
+      setTimeout(function () { toast.classList.remove('is-visible'); setTimeout(function () { toast.remove(); }, 300); }, 3000);
+    }
+
+    // Confirm modal
+    var pendingDelete = null;
+    function showConfirm(text, callback) {
+      document.getElementById('confirmText').textContent = text;
+      document.getElementById('confirmModal').classList.add('is-visible');
+      pendingDelete = callback;
+    }
+    document.getElementById('confirmCancel').addEventListener('click', function () {
+      document.getElementById('confirmModal').classList.remove('is-visible');
+      pendingDelete = null;
+    });
+    document.getElementById('confirmOk').addEventListener('click', function () {
+      document.getElementById('confirmModal').classList.remove('is-visible');
+      if (pendingDelete) pendingDelete();
+      pendingDelete = null;
+    });
+
+    // ── Auth ──
+    var loginScreen = document.getElementById('loginScreen');
+    var dashboard = document.getElementById('adminDashboard');
+
+    function showDashboard() {
+      loginScreen.style.display = 'none';
+      dashboard.style.display = 'block';
+      loadStats();
+      loadSubscribers();
+      loadContacts();
+    }
+
+    function showLogin() {
+      loginScreen.style.display = '';
+      dashboard.style.display = 'none';
+    }
+
+    // Check if already logged in
+    fetch('/api/admin/check')
+      .then(function (r) { if (r.ok) showDashboard(); })
+      .catch(function () {});
+
+    // Login form
+    document.getElementById('loginForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      var btn = document.getElementById('loginBtn');
+      var errEl = document.getElementById('loginError');
+      btn.disabled = true;
+      btn.textContent = 'Entrando...';
+      errEl.style.display = 'none';
+
+      fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: document.getElementById('loginUser').value,
+          password: document.getElementById('loginPass').value
+        })
+      })
+      .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, data: d }; }); })
+      .then(function (res) {
+        btn.disabled = false;
+        btn.textContent = 'Entrar';
+        if (res.ok && res.data.success) {
+          showDashboard();
+        } else {
+          errEl.textContent = res.data.error || 'Erro ao fazer login';
+          errEl.style.display = 'block';
+        }
+      })
+      .catch(function () {
+        btn.disabled = false;
+        btn.textContent = 'Entrar';
+        errEl.textContent = 'Erro de conexão. Tente novamente.';
+        errEl.style.display = 'block';
+      });
+    });
+
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', function () {
+      fetch('/api/admin/logout', { method: 'POST' })
+        .then(function () { showLogin(); })
+        .catch(function () { showLogin(); });
+    });
+
+    // ── Tabs ──
+    var tabs = document.querySelectorAll('.admin-tab');
+    tabs.forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        tabs.forEach(function (t) { t.classList.remove('admin-tab--active'); });
+        tab.classList.add('admin-tab--active');
+        var target = tab.dataset.tab;
+        document.getElementById('subscribersPanel').style.display = target === 'subscribers' ? '' : 'none';
+        document.getElementById('contactsPanel').style.display = target === 'contacts' ? '' : 'none';
+      });
+    });
+
+    // ── Data ──
+    var subscribersData = [];
+    var contactsData = [];
+
+    function loadStats() {
+      fetch('/api/stats')
+        .then(function (r) { return r.json(); })
+        .then(function (res) {
+          if (res.success) {
+            document.getElementById('statPostsCount').textContent = res.data.posts;
+            document.getElementById('statCatsCount').textContent = res.data.categories;
+          }
+        })
+        .catch(function () {});
+    }
+
+    function loadSubscribers() {
+      fetch('/api/admin/subscribers')
+        .then(function (r) { return r.json(); })
+        .then(function (res) {
+          if (!res.success) return;
+          subscribersData = res.data;
+          document.getElementById('statSubs').textContent = res.total;
+          document.getElementById('subsCount').textContent = res.total;
+          renderSubscribers(subscribersData);
+        })
+        .catch(function () {});
+    }
+
+    function renderSubscribers(data) {
+      var tbody = document.getElementById('subsBody');
+      var empty = document.getElementById('subsEmpty');
+      var table = document.getElementById('subsTable');
+
+      if (data.length === 0) {
+        table.style.display = 'none';
+        empty.style.display = '';
+        return;
+      }
+      table.style.display = '';
+      empty.style.display = 'none';
+
+      tbody.innerHTML = data.map(function (s) {
+        return '<tr>' +
+          '<td class="admin-table__name">' + escapeHTML(s.name || 'Sem nome') + '</td>' +
+          '<td class="admin-table__email">' + escapeHTML(s.email) + '</td>' +
+          '<td class="admin-table__date">' + formatDateTime(s.subscribed_at) + '</td>' +
+          '<td><button class="admin-table__delete-btn" data-id="' + s.id + '" data-type="subscriber">Remover</button></td>' +
+          '</tr>';
+      }).join('');
+    }
+
+    function loadContacts() {
+      fetch('/api/admin/contacts')
+        .then(function (r) { return r.json(); })
+        .then(function (res) {
+          if (!res.success) return;
+          contactsData = res.data;
+          document.getElementById('statContacts').textContent = res.total;
+          document.getElementById('contactsCount').textContent = res.total;
+          renderContacts(contactsData);
+        })
+        .catch(function () {});
+    }
+
+    function renderContacts(data) {
+      var tbody = document.getElementById('contactsBody');
+      var empty = document.getElementById('contactsEmpty');
+      var table = document.getElementById('contactsTable');
+
+      if (data.length === 0) {
+        table.style.display = 'none';
+        empty.style.display = '';
+        return;
+      }
+      table.style.display = '';
+      empty.style.display = 'none';
+
+      tbody.innerHTML = data.map(function (c) {
+        return '<tr>' +
+          '<td class="admin-table__name">' + escapeHTML(c.name) + '</td>' +
+          '<td class="admin-table__email">' + escapeHTML(c.email) + '</td>' +
+          '<td class="admin-table__message">' + escapeHTML(c.message) + '</td>' +
+          '<td class="admin-table__date">' + formatDateTime(c.created_at) + '</td>' +
+          '<td><button class="admin-table__delete-btn" data-id="' + c.id + '" data-type="contact">Remover</button></td>' +
+          '</tr>';
+      }).join('');
+    }
+
+    // ── Search filters ──
+    document.getElementById('subsSearch').addEventListener('input', function () {
+      var q = this.value.toLowerCase();
+      var filtered = subscribersData.filter(function (s) {
+        return (s.name || '').toLowerCase().indexOf(q) !== -1 || s.email.toLowerCase().indexOf(q) !== -1;
+      });
+      renderSubscribers(filtered);
+    });
+
+    document.getElementById('contactsSearch').addEventListener('input', function () {
+      var q = this.value.toLowerCase();
+      var filtered = contactsData.filter(function (c) {
+        return c.name.toLowerCase().indexOf(q) !== -1 || c.email.toLowerCase().indexOf(q) !== -1 || c.message.toLowerCase().indexOf(q) !== -1;
+      });
+      renderContacts(filtered);
+    });
+
+    // ── Delete delegation ──
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('.admin-table__delete-btn');
+      if (!btn) return;
+
+      var id = btn.dataset.id;
+      var type = btn.dataset.type;
+
+      if (type === 'subscriber') {
+        showConfirm('Tem certeza que deseja remover este assinante?', function () {
+          fetch('/api/admin/subscribers/' + id, { method: 'DELETE' })
+            .then(function (r) { return r.json(); })
+            .then(function (res) {
+              if (res.success) {
+                showToast('Assinante removido com sucesso');
+                loadSubscribers();
+              }
+            })
+            .catch(function () { showToast('Erro ao remover assinante'); });
+        });
+      } else if (type === 'contact') {
+        showConfirm('Tem certeza que deseja remover esta mensagem?', function () {
+          fetch('/api/admin/contacts/' + id, { method: 'DELETE' })
+            .then(function (r) { return r.json(); })
+            .then(function (res) {
+              if (res.success) {
+                showToast('Mensagem removida com sucesso');
+                loadContacts();
+              }
+            })
+            .catch(function () { showToast('Erro ao remover mensagem'); });
+        });
+      }
+    });
+
+    // ── Expand message on click ──
+    document.addEventListener('click', function (e) {
+      if (e.target.classList.contains('admin-table__message')) {
+        e.target.classList.toggle('admin-table__message--expanded');
+      }
+    });
+  })();
+  </script>
+</body>
+</html>

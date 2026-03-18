@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Buscar — Blog do Eletricista</title>
   <meta name="description" content="Busque artigos técnicos sobre instalações elétricas, normas, segurança e manutenção no Blog do Eletricista." />
+  <link rel="canonical" href="/busca" />
   <meta property="og:title" content="Buscar — Blog do Eletricista" />
   <meta property="og:description" content="Busque artigos técnicos sobre instalações elétricas, normas, segurança e manutenção no Blog do Eletricista." />
   <meta property="og:type" content="website" />
@@ -192,6 +193,13 @@
     var searchInitial = document.getElementById('searchInitial');
     var debounceTimer;
 
+    function escapeHTML(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
     // Get query from URL
     var params = new URLSearchParams(window.location.search);
     var initialQuery = params.get('q');
@@ -228,14 +236,14 @@
 
             searchGrid.innerHTML = posts.map(function (p) {
               return '<article class="post-card post-card--vertical reveal is-visible">' +
-                '<a href="/post/' + p.slug + '" class="post-card__image-wrap">' +
-                '<img src="' + p.image + '" alt="' + p.title + '" class="post-card__image" /></a>' +
+                '<a href="/post/' + escapeHTML(p.slug) + '" class="post-card__image-wrap">' +
+                '<img src="' + escapeHTML(p.image) + '" alt="' + escapeHTML(p.title) + '" class="post-card__image" /></a>' +
                 '<div class="post-card__body">' +
-                '<span class="post-card__meta">' + p.author.name + ' &bull; ' + formatDate(p.date) + '</span>' +
-                '<a href="/post/' + p.slug + '" class="post-card__title-link">' +
-                '<h3 class="post-card__title">' + p.title + ' <svg class="arrow-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></h3></a>' +
-                '<p class="post-card__excerpt">' + p.excerpt + '</p>' +
-                '<div class="post-card__tags"><span class="tag tag--purple">' + p.category.name + '</span></div>' +
+                '<span class="post-card__meta">' + escapeHTML(p.author.name) + ' &bull; ' + formatDate(p.date) + '</span>' +
+                '<a href="/post/' + escapeHTML(p.slug) + '" class="post-card__title-link">' +
+                '<h3 class="post-card__title">' + escapeHTML(p.title) + ' <svg class="arrow-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></h3></a>' +
+                '<p class="post-card__excerpt">' + escapeHTML(p.excerpt) + '</p>' +
+                '<div class="post-card__tags"><span class="tag tag--purple">' + escapeHTML(p.category.name) + '</span></div>' +
                 '</div></article>';
             }).join('');
           } else {

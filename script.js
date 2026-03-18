@@ -169,6 +169,12 @@
         var posts = res.data;
         var pagination = res.pagination;
 
+        // Show/hide recent section based on page
+        var recentSection = document.getElementById('recentPostsSection');
+        if (recentSection) {
+          recentSection.style.display = page === 1 ? '' : 'none';
+        }
+
         // Recent posts grid: featured + 2 horizontal
         var recentGrid = document.getElementById('recentPostsGrid');
         if (recentGrid && page === 1) {

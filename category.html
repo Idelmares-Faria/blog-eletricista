@@ -330,6 +330,10 @@
         }
 
         loadFilteredPosts(1);
+
+        var canonicalLink = document.querySelector('link[rel="canonical"]');
+        if (!canonicalLink) { canonicalLink = document.createElement('link'); canonicalLink.rel = 'canonical'; document.head.appendChild(canonicalLink); }
+        canonicalLink.href = window.location.origin + window.location.pathname + (cat ? '?cat=' + cat : '');
       });
 
     // Scroll reveal

@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Newsletter — Blog do Eletricista</title>
   <meta name="description" content="Inscreva-se na newsletter do Blog do Eletricista e receba artigos técnicos, normas e dicas práticas no seu email." />
+  <link rel="canonical" href="/newsletter" />
   <meta property="og:title" content="Newsletter — Blog do Eletricista" />
   <meta property="og:description" content="Inscreva-se na newsletter do Blog do Eletricista e receba artigos técnicos, normas e dicas práticas no seu email." />
   <meta property="og:type" content="website" />
@@ -143,30 +144,6 @@
     </div>
   </section>
 
-  <!-- ======== SOCIAL PROOF ======== -->
-  <section class="section newsletter-proof">
-    <div class="container">
-      <div class="proof__grid">
-        <div class="proof-card reveal">
-          <span class="proof-card__number" id="statSubscribers">15.4k+</span>
-          <span class="proof-card__label">Inscritos</span>
-        </div>
-        <div class="proof-card reveal">
-          <span class="proof-card__number">52%</span>
-          <span class="proof-card__label">Taxa de Abertura</span>
-        </div>
-        <div class="proof-card reveal">
-          <span class="proof-card__number" id="statEditions">150+</span>
-          <span class="proof-card__label">Edições Técnicas</span>
-        </div>
-        <div class="proof-card reveal">
-          <span class="proof-card__number">4.9/5</span>
-          <span class="proof-card__label">Satisfação</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- Ad: Inline -->
   <div class="container">
     <div class="ad-slot ad-slot--inline"></div>
@@ -298,36 +275,6 @@
       var months = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
       return d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
     }
-
-    // Animation Helper
-    function animateValue(obj, start, end, duration) {
-      if (!obj) return;
-      let startTimestamp = null;
-      const step = (timestamp) => {
-        if (!startTimestamp) startTimestamp = timestamp;
-        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-        const val = Math.floor(progress * (end - start) + start);
-        obj.textContent = val + (end > 1000 ? 'k+' : '+');
-        if (progress < 1) {
-          window.requestAnimationFrame(step);
-        } else {
-          obj.textContent = end + (end > 1000 ? 'k+' : '+');
-        }
-      };
-      window.requestAnimationFrame(step);
-    }
-
-    // Fetch stats for proof
-    fetch('/api/stats')
-      .then(function(r) { return r.json(); })
-      .then(function(res) {
-        if (res.success) {
-          const subEl = document.getElementById('statSubscribers');
-          const edEl = document.getElementById('statEditions');
-          animateValue(subEl, 0, 15, 1500); // 15k
-          animateValue(edEl, 0, 150, 1500); 
-        }
-      });
 
     // Fetch recent posts
     fetch('/api/posts?limit=3')
