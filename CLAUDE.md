@@ -5,17 +5,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Running the Server
 
 ```bash
-npm start        # or: node server.js
+npm run dev      # Development server with hot reload
+npm run build    # Production build
+npm start        # Production server
 ```
 
-Server runs on port 3457 by default (configurable via `PORT` env var). Requires a `.env` file — copy `.env.example` and fill in `DATABASE_URL`.
+Dev server runs on port 3000 by default. Requires a `.env.local` file — copy `.env.example` and fill in `DATABASE_URL`.
 
 ## Environment Setup
 
-`.env` requires:
+`.env.local` requires:
 ```
 DATABASE_URL=postgresql://username:password@host/database?sslmode=require
-PORT=3457
 NODE_ENV=development
 ```
 
@@ -23,9 +24,13 @@ The database is hosted on [Neon](https://neon.tech) (serverless PostgreSQL).
 
 ## Architecture
 
-**Backend:** Express.js (`server.js`) serving static HTML files + a JSON REST API. No build step — everything is vanilla HTML/CSS/JS.
+**Tech Stack:** Next.js 16 (App Router) + React 19 + TypeScript + Tailwind CSS 4
 
-**Frontend:** Each HTML page has inline `<script>` that fetches from the API and renders cards/content dynamically. `script.js` contains shared logic: theme toggle, mobile nav, scroll reveal animations, back-to-top button, and the home page post loader.
+**Backend:** API routes in `app/api/` handle data fetching, rate limiting, and database queries. Server components (RSC) reduce client-side bundle.
+
+**Frontend:** Page/layout components in `app/` are React Server Components by default. Client components marked with `'use client'` for interactivity (search, theme toggle, comments). Reusable components in `components/` directory.
+
+**Styling:** Tailwind CSS v4 with custom theme tokens. Dark mode via `data-theme` attribute on `<html>`, stored in `localStorage` under key `blogeletricista-theme`.
 
 **Database schema (PostgreSQL):**
 - `posts` — slug, title, excerpt, content, author_name/avatar/bio, image, featured, read_time, date, category_id
@@ -35,7 +40,7 @@ The database is hosted on [Neon](https://neon.tech) (serverless PostgreSQL).
 - `subscribers` — email, name
 - `contact_messages` — name, email, message, created_at
 
-**Migrations:** registradas em `migrations.sql`. Não há ORM — execute manualmente no SQL Editor do Neon ao adicionar tabelas/colunas.
+**Migrations:** registered in `migrations.sql`. No ORM — execute manually in Neon SQL Editor when adding tables/columns.
 
 ## API Routes
 
@@ -46,33 +51,59 @@ The database is hosted on [Neon](https://neon.tech) (serverless PostgreSQL).
 | GET | `/api/categories` | — | All categories with post counts |
 | GET | `/api/stats` | — | Blog statistics (posts, categories, comments, community) |
 | GET | `/api/search` | — | Full-text search (Portuguese), falls back to LIKE |
-| POST | `/api/newsletter` | 5/hora | Subscribe email (`name`, `email`) |
-| POST | `/api/contact` | 5/hora | Contact form (`name`, `email`, `message`) → salva em `contact_messages` |
-| GET | `/api/posts/:slug/comments` | — | Comments for a post (email **não** é retornado) |
+| POST | `/api/newsletter` | 5/hour | Subscribe email (`name`, `email`) |
+| POST | `/api/contact` | 5/hour | Contact form (`name`, `email`, `message`) → saved in `contact_messages` |
+| GET | `/api/posts/:slug/comments` | — | Comments for a post (email **not** returned) |
 | POST | `/api/posts/:slug/comments` | 10/15min | Add a comment |
+| POST | `/api/admin/login` | — | Admin login (session-based) |
+| GET/DELETE | `/api/admin/subscribers` | — | Manage subscribers |
+| GET/DELETE | `/api/admin/contacts` | — | Manage contact messages |
 
 ## Pages and Routes
 
-| URL | HTML file |
+| URL | Component |
 |-----|-----------|
-| `/` | `index.html` |
-| `/post/:slug` | `post.html` |
-| `/categorias` | `category.html` |
-| `/categoria/:slug` | `category.html` |
-| `/sobre` | `about.html` |
-| `/newsletter` | `newsletter.html` |
-| `/busca` or `/buscar` | `search.html` |
+| `/` | `app/page.tsx` |
+| `/post/:slug` | `app/post/[slug]/page.tsx` |
+| `/categorias` | `app/categorias/page.tsx` |
+| `/categoria/:slug` | `app/categoria/[slug]/page.tsx` |
+| `/sobre` | `app/sobre/page.tsx` |
+| `/newsletter` | `app/newsletter/page.tsx` |
+| `/busca` | `app/busca/page.tsx` |
+| `/admin` | `app/admin/page.tsx` |
 
 ## Security
 
-- **HTML do conteúdo de posts** é sanitizado via `sanitizeHTML()` em `post.html` antes de ser inserido no DOM (remove `script`, `iframe`, atributos `on*` e `javascript:` hrefs)
-- **Campos de texto dinâmicos** (comentários, títulos, nomes) usam `escapeHTML()` antes de `innerHTML`
-- **Email dos comentaristas** não é exposto na API `GET /api/posts/:slug/comments`
-- **Rate limiting** via `express-rate-limit`: newsletter e contato (5/hora), comentários (10/15min)
-- **SQL injection** impossível — todas as queries usam prepared statements (`$1`, `$2`, ...)
+- **HTML content in posts** is sanitized server-side before storage and client-side via React's built-in XSS protection
+- **Dynamic text fields** (comments, titles, names) escaped before rendering
+- **Commenter email** not exposed in API `GET /api/posts/:slug/comments`
+- **Rate limiting** via `express-rate-limit`: newsletter and contact (5/hour), comments (10/15min)
+- **SQL injection** impossible — all queries use prepared statements (`$1`, `$2`, ...)
+- **Admin routes** protected by session-based authentication
 
-## Styling
+## Directory Structure
 
-`styles.css` uses CSS custom properties for theming. Theme is stored in `localStorage` under key `blogeletricista-theme` and toggled via `data-theme` attribute on `<html>`. Fonts: **Instrument Serif** (headings) + **DM Sans** (body) from Google Fonts.
+```
+app/              # Next.js App Router pages and layouts
+├── api/          # API routes (Route Handlers)
+├── admin/        # Admin dashboard (protected)
+├── post/         # Post detail page with SSG
+├── categoria/    # Category pages with SSG
+├── categorias/   # Categories list
+├── busca/        # Search page
+├── sobre/        # About page
+├── newsletter/   # Newsletter signup
+└── layout.tsx    # Root layout (HTML, headers, footer)
 
-Post page (`post.html`) has additional inline `<style>` blocks for page-specific components (breadcrumb, post header, sidebar, content typography) since it has the most complex layout.
+components/       # Reusable React components
+├── PostCard.tsx
+├── CommentForm.tsx
+├── SearchBox.tsx
+└── ...
+
+lib/              # Utility functions (database, formatting, etc.)
+
+public/           # Static assets (images, favicons)
+
+styles/           # Global CSS (Tailwind CSS)
+```

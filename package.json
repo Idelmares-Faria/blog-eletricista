@@ -1,28 +1,33 @@
 {
   "name": "blog-eletricista",
-  "version": "1.0.0",
-  "description": "Blog do Eletricista — Dicas e Tutoriais de Elétrica",
-  "main": "server.js",
+  "version": "2.0.0",
+  "description": "Blog do Eletricista — Next.js",
+  "private": true,
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
-  "keywords": [
-    "eletricista",
-    "eletrica",
-    "instalacoes",
-    "blog"
-  ],
-  "author": "Blog do Eletricista",
-  "license": "ISC",
   "engines": {
     "node": "20.x"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.0.2",
+    "@tailwindcss/postcss": "^4.2.2",
+    "@types/node": "^25.5.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
     "compression": "^1.8.1",
     "dotenv": "^16.3.1",
     "express": "^4.21.0",
     "express-rate-limit": "^8.3.1",
-    "pg": "^8.11.3"
+    "next": "^16.2.0",
+    "pg": "^8.11.3",
+    "postcss": "^8.5.8",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "tailwindcss": "^4.2.2",
+    "typescript": "^5.9.3"
   }
 }

@@ -35,7 +35,29 @@
       "Bash(TOKEN=\"0cb1492158f189dc1195b8f77a93508846ca24998029bfc35a0e041f3d7e0e27\")",
       "Bash(curl -s http://localhost:3457/api/admin/subscribers -H \"x-admin-token: $TOKEN\")",
       "Bash(curl -s http://localhost:3457/api/admin/contacts -H \"x-admin-token: $TOKEN\")",
-      "Bash(taskkill //F //IM node.exe)"
+      "Bash(taskkill //F //IM node.exe)",
+      "Bash(ls:*)",
+      "Bash(npx next:*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3457/categorias)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3457/sobre)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3457/newsletter)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3457/busca)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3457/admin)",
+      "Bash(grep -E \"\\\\.tsx$|^d\")",
+      "Bash(npm run:*)",
+      "Bash(curl -s http://localhost:3000/post/tendencias-2026-eletricistas-centro-transformacao-energetica)",
+      "Bash(curl -s http://localhost:3000/api/posts)",
+      "Bash(jq .posts[0])",
+      "Bash(curl -s http://localhost:3000/categorias)",
+      "Bash(curl -s \"http://localhost:3000/api/search?q=segurança\")",
+      "Bash(jq .data[0])",
+      "Bash(curl -s \"http://localhost:3000/api/categories\")",
+      "Bash(curl -s http://localhost:3000/api/stats)",
+      "Bash(curl -s http://localhost:3000/sobre)",
+      "Bash(curl -s http://localhost:3000/newsletter)",
+      "Bash(curl -s \"http://localhost:3000/categoria/seguranca\")",
+      "Bash(curl -s \"http://localhost:3000/busca?q=test\")",
+      "Bash(pkill -f \"next dev\")"
     ]
   }
 }
