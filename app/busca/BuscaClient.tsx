@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { PostCardVertical } from '@/components/PostCard'
+import AdBanner from '@/components/AdBanner'
 
 function SearchContent() {
   const searchParams = useSearchParams()
@@ -47,7 +48,7 @@ function SearchContent() {
   return (
     <>
       {/* Search Hero */}
-      <section className="py-16 bg-[var(--bg-secondary)]">
+      <section className="hero-section py-16 bg-[var(--bg-secondary)]">
         <div className="max-w-[800px] mx-auto px-6 text-center">
           <h1 className="font-serif text-4xl mb-8">Buscar no blog</h1>
           <form onSubmit={e => { e.preventDefault(); search(query) }} className="relative">
@@ -70,6 +71,11 @@ function SearchContent() {
       {/* Results */}
       <section className="py-[60px]">
         <div className="max-w-[1200px] mx-auto px-6">
+          {/* Ad banner */}
+          <div className="mb-8">
+            <AdBanner location="busca_banner" height={100} />
+          </div>
+
           {searched && !loading && posts.length > 0 && (
             <p className="text-[var(--text-secondary)] mb-8">{posts.length} resultado{posts.length > 1 ? 's' : ''} para &ldquo;{query}&rdquo;</p>
           )}

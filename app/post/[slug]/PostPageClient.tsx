@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { showToast } from '@/components/Toast'
+import AdBanner from '@/components/AdBanner'
 
 interface Post {
   id: number; slug: string; title: string; excerpt: string; content: string
@@ -61,8 +62,11 @@ function initialsAvatar(name: string) {
 export default function PostPageClient({ post, related }: { post: Post; related: Related[] }) {
   const [comments, setComments] = useState<Comment[]>([])
   const [progress, setProgress] = useState(0)
+  const [pageUrl, setPageUrl] = useState('')
 
   useEffect(() => {
+    setPageUrl(window.location.href)
+
     fetch(`/api/posts/${post.slug}/comments`).then(r => r.json()).then(res => {
       if (res.success) setComments(res.data)
     })
@@ -100,8 +104,6 @@ export default function PostPageClient({ post, related }: { post: Post; related:
     .catch(() => showToast('Erro ao publicar comentário. Tente novamente.'))
   }
 
-  const pageUrl = typeof window !== 'undefined' ? window.location.href : ''
-
   return (
     <>
       {/* Reading Progress */}
@@ -119,7 +121,7 @@ export default function PostPageClient({ post, related }: { post: Post; related:
       </nav>
 
       {/* Post Header */}
-      <section className="py-12 pb-8">
+      <section className="py-8">
         <div className="max-w-[800px] mx-auto text-center px-6">
           <div className="mb-4">
             <span className="bg-[var(--accent-light)] text-[var(--accent)] text-[11px] font-extrabold px-3.5 py-1.5 rounded-full uppercase tracking-[0.08em] inline-block">
@@ -131,7 +133,7 @@ export default function PostPageClient({ post, related }: { post: Post; related:
           </h1>
           <div className="flex items-center justify-center gap-6 py-5 border-y border-[var(--border-color)] flex-wrap">
             <div className="flex items-center gap-3">
-              <img src={post.author.avatar || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=60&q=80'} alt="Avatar" className="w-11 h-11 rounded-full object-cover border-2 border-[var(--accent)]" />
+              <img src={post.author.avatar || initialsAvatar(post.author.name)} alt="Avatar" className="w-11 h-11 rounded-full object-cover border-2 border-[var(--accent)]" />
               <div className="text-left">
                 <div className="text-sm font-semibold text-[var(--text-primary)]">{post.author.name}</div>
                 <div className="text-xs text-[var(--text-muted)] flex items-center gap-1.5">
@@ -173,10 +175,15 @@ export default function PostPageClient({ post, related }: { post: Post; related:
             <div className="post-content__inner" dangerouslySetInnerHTML={{ __html: sanitizeHTML(post.content) }} />
           </article>
 
+          {/* Ad after content */}
+          <div className="mb-8">
+            <AdBanner location="post_after_content" height={90} />
+          </div>
+
           {/* Author Box */}
           <section className="bg-gradient-to-br from-[var(--bg-secondary)] to-[var(--bg-primary)] border border-[var(--border-color)] rounded-xl p-8 mb-12">
             <div className="flex items-start gap-6 max-sm:flex-col">
-              <img src={post.author.avatar || 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=160&q=80'} alt="Avatar" className="w-20 h-20 rounded-full object-cover border-[3px] border-[var(--accent)] shrink-0" />
+              <img src={post.author.avatar || initialsAvatar(post.author.name)} alt="Avatar" className="w-20 h-20 rounded-full object-cover border-[3px] border-[var(--accent)] shrink-0" />
               <div className="flex-1 min-w-0">
                 <span className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-[var(--accent)] block mb-1.5">Sobre o autor</span>
                 <h3 className="text-lg font-bold text-[var(--text-primary)] mb-2">{post.author.name}</h3>
@@ -224,35 +231,54 @@ export default function PostPageClient({ post, related }: { post: Post; related:
           </section>
         </div>
 
-        {/* Sidebar */}
-        <aside className="flex flex-col gap-6 lg:sticky lg:top-[96px]">
-          <div className="bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl p-6">
-            <h3 className="text-[11px] font-extrabold uppercase tracking-[0.12em] text-[var(--accent)] mb-6 pb-3 border-b-2 border-[var(--border-color)]">
-              Recomendados
-            </h3>
-            <div className="flex flex-col gap-8">
-              {related.map((r, i) => (
-                <article key={r.slug} className="flex flex-col gap-3 transition-transform hover:-translate-y-1 pb-6 border-b border-[var(--border-color)] last:border-b-0 last:pb-0">
+        {/* Sidebar - Responsivo */}
+        <aside className="hidden lg:flex flex-col gap-6">
+          {/* Título da Sidebar */}
+          <h2 className="text-[36px] font-normal font-serif text-[var(--text-primary)] pb-3 border-b border-[var(--border-color)] leading-tight">
+            Artigos Recomendados
+          </h2>
+
+          {/* Gera lista intercalando artigos com ads */}
+          {Array.from({ length: Math.ceil((related.length + 3) / 1.5) }).map((_, i) => {
+            const items = [];
+
+            // Adiciona artigo
+            if (related[i]) {
+              const r = related[i];
+              items.push(
+                <article key={`article-${i}`} className="bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl p-6 flex flex-col gap-3 transition-transform hover:border-[var(--accent)]">
                   {r.image && (
-                    <Link href={`/post/${r.slug}`} className="aspect-video overflow-hidden rounded-lg block border border-[var(--border-color)]">
+                    <Link href={`/post/${r.slug}`} className="aspect-[4/3] overflow-hidden rounded-lg block border border-[var(--border-color)]">
                       <img src={r.image} alt={r.title} className="w-full h-full object-cover transition-transform hover:scale-105" loading="lazy" />
                     </Link>
                   )}
-                  <Link href={`/post/${r.slug}`} className="text-[15px] font-bold text-[var(--text-primary)] leading-snug hover:text-[var(--accent)]">
-                    {r.title}
-                  </Link>
-                  <p className="text-[13px] text-[var(--text-secondary)] leading-relaxed line-clamp-3">{r.excerpt}</p>
-                  <div className="flex items-center justify-between mt-1">
+                  <div>
+                    <span className="text-[10px] font-extrabold uppercase tracking-[0.1em] text-[var(--accent)]">Recomendado</span>
+                    <Link href={`/post/${r.slug}`} className="text-[15px] font-bold text-[var(--text-primary)] leading-snug hover:text-[var(--accent)] block mt-1">
+                      {r.title}
+                    </Link>
+                  </div>
+                  <p className="text-[13px] text-[var(--text-secondary)] leading-relaxed line-clamp-2">{r.excerpt}</p>
+                  <div className="flex items-center justify-between pt-2 border-t border-[var(--border-color)]">
                     <span className="text-[11px] text-[var(--text-muted)] font-medium">{formatDate(r.date)}</span>
                     <Link href={`/post/${r.slug}`} className="text-xs font-bold text-[var(--accent)] flex items-center gap-1 hover:underline">
-                      Ler mais
+                      Ler
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                     </Link>
                   </div>
                 </article>
-              ))}
-            </div>
-          </div>
+              );
+            }
+
+            // Adiciona espaço publicitário
+            items.push(
+              <div key={`ad-${i}`}>
+                <AdBanner location="post_sidebar" height={180} />
+              </div>
+            );
+
+            return items;
+          }).flat()}
         </aside>
       </div>
     </>

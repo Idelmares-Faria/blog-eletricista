@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS categories (
   slug VARCHAR(100) UNIQUE NOT NULL,
   name VARCHAR(255) NOT NULL,
   color VARCHAR(50) NOT NULL,
+  image VARCHAR(500),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -58,6 +59,24 @@ CREATE TABLE IF NOT EXISTS subscribers (
   id SERIAL PRIMARY KEY,
   email VARCHAR(255) UNIQUE NOT NULL,
   subscribed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Ads table
+CREATE TABLE IF NOT EXISTS ads (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  location VARCHAR(100) NOT NULL,
+  image_url VARCHAR(1000),
+  link_url VARCHAR(1000),
+  alt_text VARCHAR(500),
+  html_code TEXT,
+  active BOOLEAN DEFAULT TRUE,
+  clicks INTEGER DEFAULT 0,
+  impressions INTEGER DEFAULT 0,
+  start_date DATE,
+  end_date DATE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Indexes for better performance

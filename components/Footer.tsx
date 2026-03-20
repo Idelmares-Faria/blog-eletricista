@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="max-w-[1200px] mx-auto px-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr] gap-10 mb-10">
           <div>
-            <h3 className="font-serif text-[26px]">Blog do Eletricista</h3>
+            <h3 className="font-serif text-[26px] flex items-center gap-2"><span>⚡</span>Blog do Eletricista</h3>
             <p className="text-sm text-[var(--text-secondary)] max-w-[300px] mt-3">
               Conteúdo técnico de qualidade sobre instalações elétricas, normas, segurança e manutenção para profissionais e entusiastas.
             </p>

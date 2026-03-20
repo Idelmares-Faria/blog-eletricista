@@ -34,10 +34,10 @@ export default function SobreClient() {
   return (
     <>
       {/* Hero */}
-      <section className="relative min-h-[300px] py-16 flex items-center justify-center text-center overflow-hidden bg-cover bg-center" style={{ backgroundImage: "linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/images/hero-sobre.png')" }}>
+      <section className="hero-section relative min-h-[320px] py-16 flex items-center justify-center text-center overflow-hidden bg-cover bg-center" style={{ backgroundImage: "linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/images/hero-sobre.png')" }}>
         <div className="relative z-[3] w-full max-w-[1200px] mx-auto px-6">
           <span className="inline-block bg-[var(--accent-light)] text-[var(--accent)] px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-[0.1em] mb-4">Especialistas em Elétrica</span>
-          <h1 className="font-serif text-[clamp(48px,10vw,80px)] leading-none mb-4 font-normal text-white">SOBRE <em className="italic text-[var(--accent)]">NÓS</em></h1>
+          <h1 className="font-serif text-[clamp(48px,10vw,80px)] leading-none mb-4 font-normal">SOBRE <em className="italic text-[var(--accent)]">NÓS</em></h1>
           <p className="text-lg text-gray-300">Compartilhando conhecimento técnico em elétrica desde 2020.</p>
         </div>
       </section>

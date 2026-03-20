@@ -3,7 +3,9 @@
 import { useEffect, useState, useCallback, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Marquee from '@/components/Marquee'
+import CategoriesCarousel from '@/components/CategoriesCarousel'
 import { PostCardVertical } from '@/components/PostCard'
+import AdBanner, { insertAdsBetweenPosts } from '@/components/AdBanner'
 
 interface Post {
   slug: string; title: string; excerpt: string; image?: string; date: string;
@@ -66,19 +68,34 @@ function CategoriesContent() {
   return (
     <>
       {/* Hero */}
-      <section className="relative min-h-[300px] py-16 flex items-center justify-center text-center overflow-hidden bg-cover bg-center" style={{ backgroundImage: "linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/images/hero-categorias.png')" }}>
+      <section className="hero-section relative min-h-[392px] pt-[72px] pb-16 flex items-center justify-center text-center overflow-hidden bg-cover" style={{ backgroundImage: "linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('/images/hero-categorias.png')", backgroundPosition: 'center top' }}>
         <div className="relative z-[3] w-full max-w-[1200px] mx-auto px-6">
           <span className="inline-block bg-[var(--accent-light)] text-[var(--accent)] px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-[0.1em] mb-4">
             Especialistas em Elétrica
           </span>
-          <h1 className="font-serif text-[clamp(48px,10vw,80px)] leading-none mb-4 font-normal text-white">
-            {heroTitle ? heroTitle.split('').map((c, i) => i >= heroTitle.length - 4 ? <em key={i} className="italic text-[var(--accent)]">{c}</em> : c) : 'CATEGORIAS'}
+          <h1 className="hero-title font-serif text-[clamp(48px,10vw,80px)] leading-none mb-4 font-normal [text-shadow:_0_2px_8px_rgba(0,0,0,0.6)]">
+            {heroTitle ? heroTitle.split('').map((c, i) => i >= heroTitle.length - 4 ? <em key={i} className="hero-title italic text-[var(--accent)] [text-shadow:_0_2px_8px_rgba(0,0,0,0.6)]">{c}</em> : c) : 'CATEGORIAS'}
           </h1>
           <p className="text-lg text-gray-300">Explore nosso conhecimento técnico sobre instalações elétricas, segurança e normas NBR.</p>
         </div>
       </section>
 
       <Marquee />
+
+      {/* Categories Carousel */}
+      {categories.length > 0 && (
+        <section className="py-12">
+          <div className="max-w-[1200px] mx-auto px-6">
+            <h2 className="text-[28px] font-bold font-serif mb-8 whitespace-nowrap">Explore as Categorias</h2>
+            <CategoriesCarousel categories={categories} />
+          </div>
+        </section>
+      )}
+
+      {/* Ad banner */}
+      <div className="max-w-[1200px] mx-auto px-6 my-6">
+        <AdBanner location="categorias_banner" height={100} />
+      </div>
 
       {/* Filters */}
       <section className="py-[60px] pb-0">
@@ -125,19 +142,22 @@ function CategoriesContent() {
             <div className="py-10 text-center text-[var(--text-muted)]">Nenhum post encontrado com esses filtros.</div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {posts.map(post => <PostCardVertical key={post.slug} post={post} />)}
+              {insertAdsBetweenPosts(
+                posts.map(post => <PostCardVertical key={post.slug} post={post} />),
+                'categorias_between_posts', 6, 100
+              )}
             </div>
           )}
 
           {pagination && pagination.totalPages > 1 && (
             <div className="flex items-center justify-center gap-2 py-10">
-              <button onClick={() => { loadPosts(page - 1); window.scrollTo(0, 0) }} disabled={!pagination.hasPrevPage} className="px-5 py-2.5 rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:border-[var(--accent)] hover:text-[var(--accent)]">Anterior</button>
+              <button onClick={() => loadPosts(page - 1)} disabled={!pagination.hasPrevPage} className="px-5 py-2.5 rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:border-[var(--accent)] hover:text-[var(--accent)]">Anterior</button>
               <div className="flex gap-1">
                 {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map(p => (
-                  <button key={p} onClick={() => { loadPosts(p); window.scrollTo(0, 0) }} className={`w-9 h-9 flex items-center justify-center rounded-lg text-sm font-semibold ${p === page ? 'bg-[var(--accent)] text-white' : 'text-[var(--text-secondary)] hover:bg-[var(--bg-secondary)]'}`}>{p}</button>
+                  <button key={p} onClick={() => loadPosts(p)} className={`w-9 h-9 flex items-center justify-center rounded-lg text-sm font-semibold ${p === page ? 'bg-[var(--accent)] text-white' : 'text-[var(--text-secondary)] hover:bg-[var(--bg-secondary)]'}`}>{p}</button>
                 ))}
               </div>
-              <button onClick={() => { loadPosts(page + 1); window.scrollTo(0, 0) }} disabled={!pagination.hasNextPage} className="px-5 py-2.5 rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:border-[var(--accent)] hover:text-[var(--accent)]">Próximo</button>
+              <button onClick={() => loadPosts(page + 1)} disabled={!pagination.hasNextPage} className="px-5 py-2.5 rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] text-sm font-semibold disabled:opacity-40 disabled:cursor-not-allowed hover:border-[var(--accent)] hover:text-[var(--accent)]">Próximo</button>
             </div>
           )}
         </div>

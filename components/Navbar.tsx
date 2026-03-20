@@ -35,7 +35,8 @@ export default function Navbar() {
     <>
       <header className="sticky top-0 z-[1000] h-[72px] bg-[rgba(var(--bg-primary-rgb),0.85)] backdrop-blur-[12px] border-b border-[var(--border-color)]">
         <div className="max-w-[1200px] mx-auto px-6 flex items-center justify-between h-full">
-          <Link href="/" className="font-serif text-[26px] italic text-[var(--text-primary)]">
+          <Link href="/" className="font-serif text-[26px] italic text-[var(--text-primary)] flex items-center gap-2">
+            <span>⚡</span>
             Blog do Eletricista
           </Link>
 

@@ -293,3 +293,16 @@ a { text-decoration: none; color: inherit; transition: color 0.2s; }
   backdrop-filter: blur(4px);
 }
 .admin-modal-overlay.is-visible { display: flex; }
+
+/* ---------- Hero Banner Styles ---------- */
+.hero-section,
+.hero-section h1,
+.hero-section h2,
+.hero-section p,
+.hero-title {
+  color: white !important;
+}
+
+.hero-section em {
+  color: inherit;
+}

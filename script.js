@@ -274,7 +274,7 @@
         var cats = res.data;
         var html = '';
         cats.forEach(function(c) {
-          var bgImg = c.image || 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800&q=80';
+          var bgImg = c.image || '/images/blog/blog-3.jpg';
           html += '<a href="/categorias?cat=' + c.slug + '" class="category-preview-card reveal">' +
                   '<div class="category-preview-card__image-container">' +
                   '<div class="category-preview-card__bg" style="background-image: url(' + bgImg + ')"></div>' +
