@@ -29,15 +29,18 @@ function tagColorClass(color?: string) {
   return map[color || ''] || map.blue
 }
 
+function PostImage({ src, alt }: { src?: string; alt: string }) {
+  if (src) {
+    return <img src={src} alt={alt} className="block w-full h-full object-cover transition-transform duration-600 group-hover:scale-[1.08]" loading="lazy" />
+  }
+  return <div className="w-full h-full flex items-center justify-center text-[var(--text-muted)] text-[13px] font-semibold bg-[var(--bg-secondary)]">Sem Imagem</div>
+}
+
 export function PostCardVertical({ post }: { post: Post }) {
   return (
     <article className="flex flex-col bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl p-4 h-full transition-all duration-300 hover:-translate-y-1.5 hover:border-[var(--accent)] hover:shadow-[var(--shadow-md)]">
-      <Link href={`/post/${post.slug}`} className="aspect-video overflow-hidden rounded-lg mb-4 bg-[var(--bg-secondary)] block">
-        {post.image ? (
-          <img src={post.image} alt={post.title} className="w-full h-full object-cover transition-transform duration-600 hover:scale-[1.08]" loading="lazy" />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-[var(--text-muted)] text-[13px] font-semibold">Sem Imagem</div>
-        )}
+      <Link href={`/post/${post.slug}`} className="group aspect-[4/3] overflow-hidden rounded-lg mb-4 bg-[var(--bg-secondary)] flex">
+        <PostImage src={post.image} alt={post.title} />
       </Link>
       <div className="flex flex-col flex-1">
         <span className="text-[13px] font-semibold text-[var(--accent)] mb-2">
@@ -68,12 +71,8 @@ export function PostCardVertical({ post }: { post: Post }) {
 export function PostCardFeatured({ post }: { post: Post }) {
   return (
     <article className="flex flex-col bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl p-4 h-full transition-all duration-300 hover:-translate-y-1.5 hover:border-[var(--accent)] hover:shadow-[var(--shadow-md)]">
-      <Link href={`/post/${post.slug}`} className="aspect-video overflow-hidden rounded-lg mb-4 bg-[var(--bg-secondary)] block">
-        {post.image ? (
-          <img src={post.image} alt={post.title} className="w-full h-full object-cover transition-transform duration-600 hover:scale-[1.08]" loading="lazy" />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-[var(--text-muted)] text-[13px] font-semibold">Sem Imagem</div>
-        )}
+      <Link href={`/post/${post.slug}`} className="group aspect-[4/3] overflow-hidden rounded-lg mb-4 bg-[var(--bg-secondary)] flex">
+        <PostImage src={post.image} alt={post.title} />
       </Link>
       <div className="flex flex-col flex-1">
         <span className="text-[13px] font-semibold text-[var(--accent)] mb-2">
@@ -103,13 +102,9 @@ export function PostCardFeatured({ post }: { post: Post }) {
 
 export function PostCardHorizontal({ post }: { post: Post }) {
   return (
-    <article className="grid grid-cols-[200px_1fr] max-sm:grid-cols-1 gap-5 bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl p-3 transition-all duration-300 hover:-translate-y-1.5 hover:border-[var(--accent)] hover:shadow-[var(--shadow-md)]">
-      <Link href={`/post/${post.slug}`} className="aspect-video sm:aspect-auto sm:h-full overflow-hidden rounded-lg bg-[var(--bg-secondary)] block">
-        {post.image ? (
-          <img src={post.image} alt={post.title} className="w-full h-full object-cover transition-transform duration-600 hover:scale-[1.08]" loading="lazy" />
-        ) : (
-          <div className="w-full h-full flex items-center justify-center text-[var(--text-muted)] text-[13px] font-semibold">Sem Imagem</div>
-        )}
+    <article className="grid grid-cols-[160px_1fr] max-sm:grid-cols-1 gap-5 bg-[var(--bg-card)] border border-[var(--border-color)] rounded-xl p-3 flex-1 transition-all duration-300 hover:-translate-y-1.5 hover:border-[var(--accent)] hover:shadow-[var(--shadow-md)]">
+      <Link href={`/post/${post.slug}`} className="group overflow-hidden rounded-lg bg-[var(--bg-secondary)] flex min-h-[160px]">
+        <PostImage src={post.image} alt={post.title} />
       </Link>
       <div className="flex flex-col">
         <span className="text-[13px] font-semibold text-[var(--accent)] mb-2">
