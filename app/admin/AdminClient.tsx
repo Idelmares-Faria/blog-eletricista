@@ -42,21 +42,12 @@ export default function AdminClient() {
   const [contactsSearch, setContactsSearch] = useState('')
   const [confirmModal, setConfirmModal] = useState<{ text: string; onConfirm: () => void } | null>(null)
   const [adModal, setAdModal] = useState<{ ad?: Ad; location?: AdLocation } | null>(null)
-  const [theme, setTheme] = useState('light')
-  const [adsView, setAdsView] = useState<'map'|'list'>('map')
+
+  const [adsTab, setAdsTab] = useState<'publicacao'|'proporcoes'|'analytics'>('publicacao')
 
   useEffect(() => {
-    const stored = localStorage.getItem('blogeletricista-theme')
-    if (stored) { setTheme(stored); document.documentElement.setAttribute('data-theme', stored) }
     fetch('/api/admin/check').then(r => { if (r.ok) { setLoggedIn(true); loadData() } setLoading(false) }).catch(() => setLoading(false))
   }, [])
-
-  function toggleTheme() {
-    const next = theme === 'light' ? 'dark' : 'light'
-    setTheme(next)
-    document.documentElement.setAttribute('data-theme', next)
-    localStorage.setItem('blogeletricista-theme', next)
-  }
 
   function loadData() {
     fetch('/api/stats').then(r => r.json()).then(res => {
@@ -163,29 +154,17 @@ export default function AdminClient() {
 
   return (
     <div className="min-h-screen bg-[var(--bg-primary)]">
-      {/* Admin Navbar */}
-      <nav className="h-16 bg-[var(--bg-secondary)] border-b border-[var(--border-color)] flex items-center justify-between px-8 sticky top-0 z-[100] backdrop-blur-[12px]">
-        <div className="flex items-center gap-4">
-          <a href="/" className="font-serif text-[22px] italic text-[var(--text-primary)]">Blog do Eletricista</a>
-          <span className="text-[10px] font-extrabold uppercase tracking-[0.1em] bg-[var(--accent-light)] text-[var(--accent)] px-3 py-1 rounded-full">Admin</span>
-        </div>
-        <div className="flex items-center gap-3">
-          <button onClick={toggleTheme} className="bg-transparent border border-[var(--border-color)] text-[var(--text-secondary)] px-4 py-2 rounded-lg text-[13px] font-semibold cursor-pointer flex items-center gap-1.5 hover:border-[var(--accent)] hover:text-[var(--accent)]">Tema</button>
-          <button onClick={handleLogout} className="bg-transparent border border-[var(--border-color)] text-[var(--text-secondary)] px-4 py-2 rounded-lg text-[13px] font-semibold cursor-pointer flex items-center gap-1.5 hover:border-[var(--tag-red-text)] hover:text-[var(--tag-red-text)] hover:bg-[var(--tag-red-bg)]">Sair</button>
-        </div>
-      </nav>
-
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-5 p-8 max-w-[1200px] mx-auto">
         {[
-          { label: 'Assinantes Newsletter', value: stats.subs },
-          { label: 'Mensagens de Contato', value: stats.contacts },
-          { label: 'Posts Publicados', value: stats.posts },
-          { label: 'Categorias', value: stats.categories },
-          { label: 'Anúncios Ativos', value: stats.ads },
+          { label: 'Newsletter', value: stats.subs, icon: '✉️' },
+          { label: 'Contato', value: stats.contacts, icon: '💬' },
+          { label: 'Posts', value: stats.posts, icon: '📝' },
+          { label: 'Categorias', value: stats.categories, icon: '📂' },
+          { label: 'Anúncios', value: stats.ads, icon: '📢' },
         ].map(s => (
-          <div key={s.label} className="bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl p-6 hover:border-[var(--accent)] transition-colors">
-            <div className="text-[11px] font-extrabold uppercase tracking-[0.12em] text-[var(--text-muted)] mb-2">{s.label}</div>
+          <div key={s.label} className="bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl p-5 hover:border-[var(--accent)] transition-colors flex flex-col justify-between h-[100px]">
+            <div className="text-[11px] font-extrabold uppercase tracking-[0.12em] text-[var(--text-muted)] whitespace-nowrap truncate">{s.label}</div>
             <div className="font-serif text-4xl text-[var(--text-primary)]">{s.value}</div>
           </div>
         ))}
@@ -274,273 +253,446 @@ export default function AdminClient() {
         {/* ═══ ADS TAB ═══ */}
         {tab === 'ads' && (
           <div>
-            {/* Header */}
-            <div className="flex items-center justify-between mb-6 flex-wrap gap-3">
-              <div>
-                <h2 className="text-xl font-bold text-[var(--text-primary)]">Gerenciamento de Publicidade</h2>
-                <p className="text-sm text-[var(--text-muted)] mt-1">Gerencie os espaços publicitários do blog. Espaços escaláveis multiplicam conforme o volume de artigos.</p>
-              </div>
-              <div className="flex gap-2">
-                <button onClick={() => setAdsView('map')} className={`px-4 py-2 rounded-lg text-[13px] font-semibold cursor-pointer border transition-colors ${adsView === 'map' ? 'bg-[var(--accent)] text-white border-[var(--accent)]' : 'bg-transparent border-[var(--border-color)] text-[var(--text-secondary)] hover:border-[var(--accent)]'}`}>
-                  Mapa Visual
+            {/* Sub-tabs */}
+            <div className="flex gap-1 mb-6 border-b-2 border-[var(--border-color)]">
+              {([
+                { key: 'publicacao' as const, label: 'Publicacao', icon: '📢' },
+                { key: 'proporcoes' as const, label: 'Proporcoes', icon: '📐' },
+                { key: 'analytics' as const, label: 'Analytics', icon: '📊' },
+              ]).map(t => (
+                <button key={t.key} onClick={() => setAdsTab(t.key)} className={`px-5 py-3 text-sm font-semibold border-none bg-transparent cursor-pointer relative transition-colors flex items-center gap-2 ${adsTab === t.key ? 'text-[var(--accent)] after:content-[""] after:absolute after:bottom-[-2px] after:left-0 after:right-0 after:h-[2px] after:bg-[var(--accent)]' : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'}`}>
+                  <span>{t.icon}</span> {t.label}
                 </button>
-                <button onClick={() => setAdsView('list')} className={`px-4 py-2 rounded-lg text-[13px] font-semibold cursor-pointer border transition-colors ${adsView === 'list' ? 'bg-[var(--accent)] text-white border-[var(--accent)]' : 'bg-transparent border-[var(--border-color)] text-[var(--text-secondary)] hover:border-[var(--accent)]'}`}>
-                  Lista
-                </button>
-              </div>
+              ))}
             </div>
 
-            {/* ═══ MAP VIEW ═══ */}
-            {adsView === 'map' && (
-              <div className="flex flex-col gap-8">
+            {/* ═══ PUBLICACAO SUB-TAB ═══ */}
+            {adsTab === 'publicacao' && (
+              <div>
+                <div className="flex items-center justify-between mb-5 flex-wrap gap-3">
+                  <div>
+                    <h2 className="text-lg font-bold text-[var(--text-primary)]">Banners Ativos</h2>
+                    <p className="text-sm text-[var(--text-muted)] mt-1">Gerencie os banners rotativos do blog. Cada visitante visualiza um banner aleatorio por espaco.</p>
+                  </div>
+                  <button onClick={() => setAdModal({})} className="text-[13px] font-bold bg-[var(--accent)] text-white px-4 py-2 rounded-lg border-none cursor-pointer hover:bg-[var(--accent-hover)]">+ Novo Banner</button>
+                </div>
+
+                {/* Active Banners Grid */}
+                {ads.filter(a => a.active).length === 0 ? (
+                  <div className="bg-[var(--bg-secondary)] border border-dashed border-[var(--border-color)] rounded-xl text-center py-16">
+                    <div className="text-4xl mb-3">📢</div>
+                    <div className="text-[var(--text-muted)] text-sm">Nenhum banner ativo. Crie seu primeiro banner clicando em &quot;+ Novo Banner&quot;.</div>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                    {ads.filter(a => a.active).map(a => {
+                      const loc = AD_LOCATIONS.find(l => l.key === a.location)
+                      const ctr = a.impressions > 0 ? ((a.clicks / a.impressions) * 100).toFixed(2) : '0.00'
+                      return (
+                        <div key={a.id} className="bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl overflow-hidden hover:border-[var(--accent)] transition-colors">
+                          {/* Banner Preview */}
+                          {a.image_url ? (
+                            <div className="bg-[var(--bg-primary)] border-b border-[var(--border-color)] flex items-center justify-center p-3" style={{ minHeight: 80 }}>
+                              <img src={a.image_url} alt={a.alt_text || a.name} className="max-w-full max-h-[100px] object-contain rounded" />
+                            </div>
+                          ) : a.html_code ? (
+                            <div className="bg-[var(--bg-primary)] border-b border-[var(--border-color)] flex items-center justify-center p-3 text-[11px] text-[var(--text-muted)] font-mono" style={{ minHeight: 80 }}>
+                              &lt;HTML/AdSense&gt;
+                            </div>
+                          ) : null}
+                          <div className="p-4">
+                            <div className="flex items-start justify-between mb-2">
+                              <div className="min-w-0 flex-1">
+                                <h4 className="text-sm font-bold text-[var(--text-primary)] truncate">{a.name}</h4>
+                                <p className="text-[11px] text-[var(--text-muted)] mt-0.5">{loc?.label || a.location}</p>
+                              </div>
+                              <button onClick={() => toggleAdActive(a)} className="text-[10px] font-bold px-2.5 py-1 rounded-full border-none cursor-pointer bg-[#dcfce7] text-[#16a34a] whitespace-nowrap ml-2">Ativo</button>
+                            </div>
+                            <div className="flex items-center gap-4 mt-3 pt-3 border-t border-[var(--border-color)] text-[11px] text-[var(--text-muted)]">
+                              <span className="font-mono">{loc?.width}x{loc?.height}px</span>
+                              <span>{a.impressions.toLocaleString()} imp.</span>
+                              <span>{a.clicks.toLocaleString()} cliques</span>
+                              <span className="font-bold text-[var(--accent)]">{ctr}% CTR</span>
+                              <div className="flex-1" />
+                              <button onClick={() => { setAdModal({ ad: a, location: loc }) }} className="text-[var(--text-muted)] hover:text-[var(--accent)] cursor-pointer bg-transparent border-none">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                              </button>
+                              <button onClick={() => setConfirmModal({ text: `Remover banner "${a.name}"?`, onConfirm: () => { deleteItem('ad', a.id); setConfirmModal(null) } })} className="text-[var(--text-muted)] hover:text-[var(--tag-red-text)] cursor-pointer bg-transparent border-none">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                )}
+
+                {/* Inactive Banners */}
+                {ads.filter(a => !a.active).length > 0 && (
+                  <div className="mt-6">
+                    <h3 className="text-sm font-bold text-[var(--text-muted)] mb-3 uppercase tracking-[0.1em]">Inativos ({ads.filter(a => !a.active).length})</h3>
+                    <div className="bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl overflow-hidden">
+                      <table className="admin-table">
+                        <thead><tr><th>Nome</th><th>Localizacao</th><th>Status</th><th></th></tr></thead>
+                        <tbody>
+                          {ads.filter(a => !a.active).map(a => {
+                            const loc = AD_LOCATIONS.find(l => l.key === a.location)
+                            return (
+                              <tr key={a.id}>
+                                <td>
+                                  <div className="flex items-center gap-2">
+                                    {a.image_url && <img src={a.image_url} alt="" className="w-10 h-7 object-cover rounded opacity-50" />}
+                                    <span className="font-semibold text-[var(--text-muted)]">{a.name}</span>
+                                  </div>
+                                </td>
+                                <td className="text-[12px] text-[var(--text-muted)]">{loc?.label || a.location}</td>
+                                <td>
+                                  <button onClick={() => toggleAdActive(a)} className="text-[11px] font-bold px-3 py-1 rounded-full border-none cursor-pointer bg-[var(--bg-primary)] text-[var(--text-muted)] hover:bg-[#dcfce7] hover:text-[#16a34a]">
+                                    Ativar
+                                  </button>
+                                </td>
+                                <td>
+                                  <div className="flex gap-1">
+                                    <button onClick={() => { setAdModal({ ad: a, location: loc }) }} className="bg-transparent border border-[var(--border-color)] text-[var(--text-muted)] px-3 py-1.5 rounded-md text-xs font-semibold cursor-pointer hover:border-[var(--accent)] hover:text-[var(--accent)]">Editar</button>
+                                    <button onClick={() => setConfirmModal({ text: `Remover banner "${a.name}"?`, onConfirm: () => { deleteItem('ad', a.id); setConfirmModal(null) } })} className="bg-transparent border border-[var(--border-color)] text-[var(--text-muted)] px-3 py-1.5 rounded-md text-xs font-semibold cursor-pointer hover:border-[var(--tag-red-text)] hover:text-[var(--tag-red-text)] hover:bg-[var(--tag-red-bg)]">Remover</button>
+                                  </div>
+                                </td>
+                              </tr>
+                            )
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+
+                {/* Distribution by Location */}
+                <div className="mt-8 bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl p-5">
+                  <h3 className="text-sm font-bold text-[var(--text-primary)] mb-4">Distribuicao por Localizacao</h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {AD_LOCATIONS.map(loc => {
+                      const locAds = getAdsForLocation(loc.key)
+                      const activeCount = locAds.filter(a => a.active).length
+                      const color = PAGE_COLORS[loc.page] || '#666'
+                      return (
+                        <div key={loc.key} className={`flex items-center gap-3 p-3 rounded-lg border transition-colors cursor-pointer hover:border-[var(--accent)] ${activeCount > 0 ? 'border-[var(--accent)] bg-[var(--accent-light)]' : 'border-[var(--border-color)] bg-[var(--bg-primary)]'}`} onClick={() => setAdModal({ location: loc })}>
+                          <div className="w-1.5 h-10 rounded-full" style={{ backgroundColor: color }} />
+                          <div className="flex-1 min-w-0">
+                            <div className="text-[12px] font-bold text-[var(--text-primary)] truncate">{loc.label}</div>
+                            <div className="text-[10px] text-[var(--text-muted)] font-mono">{loc.width}x{loc.height}px</div>
+                          </div>
+                          <div className="text-right">
+                            <div className={`text-sm font-bold ${activeCount > 0 ? 'text-[var(--accent)]' : 'text-[var(--text-muted)]'}`}>{activeCount}</div>
+                            <div className="text-[9px] text-[var(--text-muted)]">banner{activeCount !== 1 ? 's' : ''}</div>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ═══ PROPORCOES SUB-TAB ═══ */}
+            {adsTab === 'proporcoes' && (
+              <div>
+                <div className="mb-5">
+                  <h2 className="text-lg font-bold text-[var(--text-primary)]">Manual de Proporcoes</h2>
+                  <p className="text-sm text-[var(--text-muted)] mt-1">Referencia completa com as dimensoes exatas de todos os espacos publicitarios disponiveis no blog.</p>
+                </div>
+
                 {['Homepage', 'Post', 'Categorias', 'Busca'].map(page => {
                   const locations = AD_LOCATIONS.filter(l => l.page === page)
                   const color = PAGE_COLORS[page] || '#666'
 
                   return (
-                    <div key={page} className="bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl overflow-hidden">
-                      {/* Page Header */}
+                    <div key={page} className="bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl overflow-hidden mb-5">
                       <div className="flex items-center gap-3 p-5 border-b border-[var(--border-color)]">
                         <div className="w-3 h-3 rounded-full" style={{ backgroundColor: color }} />
                         <h3 className="text-base font-bold text-[var(--text-primary)]">{page}</h3>
-                        <span className="text-xs font-bold bg-[var(--bg-primary)] text-[var(--text-muted)] px-2.5 py-0.5 rounded-full">
-                          {locations.length} espaço{locations.length > 1 ? 's' : ''}
-                        </span>
+                        <span className="text-[10px] text-[var(--text-muted)] font-mono ml-1">/{page === 'Homepage' ? '' : page === 'Post' ? 'post/[slug]' : page.toLowerCase()}</span>
                       </div>
-
-                      {/* Page Layout Mockup */}
-                      <div className="p-5">
-                        <div className="bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-lg p-4 max-w-[700px] mx-auto">
-                          {/* Mini page mockup */}
-                          <div className="flex items-center gap-2 mb-3 pb-3 border-b border-[var(--border-color)]">
-                            <div className="w-2 h-2 rounded-full bg-[#ef4444]" />
-                            <div className="w-2 h-2 rounded-full bg-[#f59e0b]" />
-                            <div className="w-2 h-2 rounded-full bg-[#10b981]" />
-                            <span className="text-[10px] text-[var(--text-muted)] ml-2 font-mono">/{page === 'Homepage' ? '' : page === 'Post' ? 'post/artigo' : page.toLowerCase()}</span>
-                          </div>
-
-                          {/* Navbar mockup */}
-                          <div className="bg-[var(--bg-secondary)] rounded h-5 mb-3 flex items-center px-2">
-                            <div className="w-16 h-2 bg-[var(--border-color)] rounded" />
-                          </div>
-
-                          {/* Content mockups per page */}
-                          {page === 'Homepage' && (
-                            <>
-                              <div className="bg-[var(--bg-secondary)] rounded h-14 mb-3 flex items-center justify-center text-[10px] text-[var(--text-muted)]">Hero</div>
-                              <div className="flex gap-2 mb-3">
-                                {[1,2,3,4].map(i => <div key={i} className="flex-1 bg-[var(--bg-secondary)] rounded h-8 flex items-center justify-center text-[9px] text-[var(--text-muted)]">Cat</div>)}
-                              </div>
-                              {renderAdSlot(locations.find(l => l.key === 'home_banner_1')!, color)}
-                              <div className="grid grid-cols-3 gap-2 mb-3">
-                                {[1,2,3].map(i => <div key={i} className="bg-[var(--bg-secondary)] rounded h-12 flex items-center justify-center text-[9px] text-[var(--text-muted)]">Post</div>)}
-                              </div>
-                              {renderAdSlot(locations.find(l => l.key === 'home_banner_2')!, color)}
-                              <div className="grid grid-cols-3 gap-2 mb-2">
-                                {[1,2,3,4,5,6].map(i => <div key={i} className="bg-[var(--bg-secondary)] rounded h-10 flex items-center justify-center text-[9px] text-[var(--text-muted)]">Post</div>)}
-                              </div>
-                              {renderAdSlot(locations.find(l => l.key === 'home_between_posts')!, color)}
-                              <div className="grid grid-cols-3 gap-2">
-                                {[1,2,3].map(i => <div key={i} className="bg-[var(--bg-secondary)] rounded h-10 flex items-center justify-center text-[9px] text-[var(--text-muted)]">Post</div>)}
-                              </div>
-                            </>
-                          )}
-
-                          {page === 'Post' && (
-                            <div className="grid grid-cols-[1fr_120px] gap-3">
-                              <div>
-                                <div className="bg-[var(--bg-secondary)] rounded h-10 mb-2 flex items-center justify-center text-[9px] text-[var(--text-muted)]">Header + Imagem</div>
-                                <div className="bg-[var(--bg-secondary)] rounded h-24 mb-2 flex items-center justify-center text-[9px] text-[var(--text-muted)]">Conteudo do Artigo</div>
-                                {renderAdSlot(locations.find(l => l.key === 'post_after_content')!, color)}
-                                <div className="bg-[var(--bg-secondary)] rounded h-10 flex items-center justify-center text-[9px] text-[var(--text-muted)]">Autor + Comentarios</div>
-                              </div>
-                              <div className="flex flex-col gap-2">
-                                <div className="text-[8px] text-[var(--text-muted)] font-bold text-center">SIDEBAR</div>
-                                <div className="bg-[var(--bg-secondary)] rounded h-12 flex items-center justify-center text-[9px] text-[var(--text-muted)]">Artigo</div>
-                                {renderAdSlot(locations.find(l => l.key === 'post_sidebar')!, color)}
-                                <div className="bg-[var(--bg-secondary)] rounded h-12 flex items-center justify-center text-[9px] text-[var(--text-muted)]">Artigo</div>
-                              </div>
-                            </div>
-                          )}
-
-                          {page === 'Categorias' && (
-                            <>
-                              <div className="bg-[var(--bg-secondary)] rounded h-14 mb-3 flex items-center justify-center text-[10px] text-[var(--text-muted)]">Hero + Carrossel</div>
-                              {renderAdSlot(locations.find(l => l.key === 'categorias_banner')!, color)}
-                              <div className="bg-[var(--bg-secondary)] rounded h-8 mb-3 flex items-center justify-center text-[9px] text-[var(--text-muted)]">Filtros</div>
-                              <div className="grid grid-cols-3 gap-2 mb-2">
-                                {[1,2,3,4,5,6].map(i => <div key={i} className="bg-[var(--bg-secondary)] rounded h-10 flex items-center justify-center text-[9px] text-[var(--text-muted)]">Post</div>)}
-                              </div>
-                              {renderAdSlot(locations.find(l => l.key === 'categorias_between_posts')!, color)}
-                              <div className="grid grid-cols-3 gap-2">
-                                {[1,2,3].map(i => <div key={i} className="bg-[var(--bg-secondary)] rounded h-10 flex items-center justify-center text-[9px] text-[var(--text-muted)]">Post</div>)}
-                              </div>
-                            </>
-                          )}
-
-                          {page === 'Busca' && (
-                            <>
-                              <div className="bg-[var(--bg-secondary)] rounded h-14 mb-3 flex items-center justify-center text-[10px] text-[var(--text-muted)]">Campo de Busca</div>
-                              {renderAdSlot(locations.find(l => l.key === 'busca_banner')!, color)}
-                              <div className="grid grid-cols-3 gap-2">
-                                {[1,2,3,4,5,6].map(i => <div key={i} className="bg-[var(--bg-secondary)] rounded h-10 flex items-center justify-center text-[9px] text-[var(--text-muted)]">Resultado</div>)}
-                              </div>
-                            </>
-                          )}
-                        </div>
-
-                        {/* Location details cards */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
-                          {locations.map(loc => {
-                            const locAds = getAdsForLocation(loc.key)
-                            const hasAd = locAds.length > 0
-                            const activeAds = locAds.filter(a => a.active)
-
-                            return (
-                              <div key={loc.key} className={`border rounded-xl p-4 transition-colors ${hasAd ? 'border-[var(--accent)] bg-[var(--accent-light)]' : 'border-[var(--border-color)] bg-[var(--bg-primary)]'}`}>
-                                <div className="flex items-start justify-between mb-2">
-                                  <div>
-                                    <h4 className="text-sm font-bold text-[var(--text-primary)]">{loc.label}</h4>
-                                    <p className="text-[11px] text-[var(--text-muted)] mt-1 leading-relaxed">{loc.description}</p>
-                                  </div>
-                                  {loc.scalable && (
-                                    <span className="text-[9px] font-extrabold uppercase bg-[#dbeafe] text-[#2563eb] px-2 py-0.5 rounded-full whitespace-nowrap ml-2">Escalavel</span>
-                                  )}
+                      <div className="divide-y divide-[var(--border-color)]">
+                        {locations.map(loc => {
+                          const ratio = (loc.width / loc.height).toFixed(1)
+                          return (
+                            <div key={loc.key} className="p-5 flex gap-6 items-start">
+                              {/* Visual preview */}
+                              <div className="flex-shrink-0 flex flex-col items-center gap-2">
+                                <div
+                                  className="border-2 border-dashed rounded-lg flex items-center justify-center text-[10px] font-mono font-bold"
+                                  style={{
+                                    borderColor: color,
+                                    color: color,
+                                    backgroundColor: color + '10',
+                                    width: Math.min(180, loc.width / 6),
+                                    height: Math.max(30, loc.height / 3),
+                                  }}
+                                >
+                                  {loc.width}x{loc.height}
                                 </div>
-
-                                <div className="flex items-center gap-3 mt-3 pt-3 border-t border-[var(--border-color)]">
-                                  <div className="flex items-center gap-1.5 text-[11px] text-[var(--text-muted)]">
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="3" width="20" height="14" rx="2" /><line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" /></svg>
-                                    <span className="font-mono font-bold">{loc.width} x {loc.height}px</span>
+                                <span className="text-[9px] text-[var(--text-muted)]">Preview proporcional</span>
+                              </div>
+                              {/* Details */}
+                              <div className="flex-1">
+                                <h4 className="text-sm font-bold text-[var(--text-primary)]">{loc.label}</h4>
+                                <p className="text-[12px] text-[var(--text-muted)] mt-1 leading-relaxed">{loc.description}</p>
+                                <div className="flex flex-wrap gap-3 mt-3">
+                                  <div className="bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-lg px-3 py-2">
+                                    <div className="text-[9px] font-bold text-[var(--text-muted)] uppercase tracking-wider">Largura</div>
+                                    <div className="text-sm font-mono font-bold text-[var(--text-primary)]">{loc.width}px</div>
                                   </div>
-                                  <div className="flex-1" />
-                                  {hasAd ? (
-                                    <div className="flex items-center gap-2">
-                                      <span className="text-[11px] font-bold text-[var(--accent)]">{activeAds.length} ativo{activeAds.length !== 1 ? 's' : ''}</span>
-                                      <button onClick={() => setAdModal({ location: loc })} className="text-[11px] font-bold text-[var(--accent)] underline cursor-pointer bg-transparent border-none hover:text-[var(--accent-hover)]">+ Novo</button>
-                                    </div>
-                                  ) : (
-                                    <button onClick={() => setAdModal({ location: loc })} className="text-[11px] font-bold bg-[var(--accent)] text-white px-3 py-1.5 rounded-lg border-none cursor-pointer hover:bg-[var(--accent-hover)]">Vincular Anuncio</button>
-                                  )}
+                                  <div className="bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-lg px-3 py-2">
+                                    <div className="text-[9px] font-bold text-[var(--text-muted)] uppercase tracking-wider">Altura</div>
+                                    <div className="text-sm font-mono font-bold text-[var(--text-primary)]">{loc.height}px</div>
+                                  </div>
+                                  <div className="bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-lg px-3 py-2">
+                                    <div className="text-[9px] font-bold text-[var(--text-muted)] uppercase tracking-wider">Proporcao</div>
+                                    <div className="text-sm font-mono font-bold text-[var(--text-primary)]">{ratio}:1</div>
+                                  </div>
+                                  <div className="bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-lg px-3 py-2">
+                                    <div className="text-[9px] font-bold text-[var(--text-muted)] uppercase tracking-wider">Tipo</div>
+                                    <div className="text-sm font-bold text-[var(--text-primary)]">{loc.scalable ? 'Escalavel' : 'Fixo'}</div>
+                                  </div>
                                 </div>
-
-                                {/* Ads linked to this location */}
-                                {locAds.length > 0 && (
-                                  <div className="mt-3 flex flex-col gap-2">
-                                    {locAds.map(a => (
-                                      <div key={a.id} className="flex items-center gap-2 bg-[var(--bg-secondary)] rounded-lg p-2 border border-[var(--border-color)]">
-                                        {a.image_url && <img src={a.image_url} alt="" className="w-12 h-8 object-cover rounded" />}
-                                        <div className="flex-1 min-w-0">
-                                          <div className="text-[11px] font-semibold text-[var(--text-primary)] truncate">{a.name}</div>
-                                          <div className="text-[10px] text-[var(--text-muted)]">{a.impressions} imp. / {a.clicks} cliques</div>
-                                        </div>
-                                        <button onClick={() => toggleAdActive(a)} className={`text-[9px] font-bold px-2 py-1 rounded-full border-none cursor-pointer ${a.active ? 'bg-[#dcfce7] text-[#16a34a]' : 'bg-[var(--bg-primary)] text-[var(--text-muted)]'}`}>
-                                          {a.active ? 'ON' : 'OFF'}
-                                        </button>
-                                        <button onClick={() => setAdModal({ ad: a, location: loc })} className="text-[var(--text-muted)] hover:text-[var(--accent)] cursor-pointer bg-transparent border-none">
-                                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                                        </button>
-                                        <button onClick={() => setConfirmModal({ text: `Remover anuncio "${a.name}"?`, onConfirm: () => { deleteItem('ad', a.id); setConfirmModal(null) } })} className="text-[var(--text-muted)] hover:text-[var(--tag-red-text)] cursor-pointer bg-transparent border-none">
-                                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-                                        </button>
-                                      </div>
-                                    ))}
+                                {loc.scalable && (
+                                  <div className="mt-2 flex items-center gap-1.5 text-[11px] text-[#2563eb]">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                                    Este espaco multiplica conforme a quantidade de posts na pagina (1 a cada 6 posts).
                                   </div>
                                 )}
                               </div>
-                            )
-                          })}
-                        </div>
+                            </div>
+                          )
+                        })}
                       </div>
                     </div>
                   )
                 })}
-              </div>
-            )}
 
-            {/* ═══ LIST VIEW ═══ */}
-            {adsView === 'list' && (
-              <div className="bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl overflow-hidden">
-                <div className="flex items-center justify-between p-5 border-b border-[var(--border-color)]">
-                  <div className="text-base font-bold text-[var(--text-primary)] flex items-center gap-2.5">
-                    Todos os Anuncios
-                    <span className="text-xs font-bold bg-[var(--accent-light)] text-[var(--accent)] px-2.5 py-0.5 rounded-full">{ads.length}</span>
+                {/* Summary Table */}
+                <div className="bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl overflow-hidden">
+                  <div className="p-5 border-b border-[var(--border-color)]">
+                    <h3 className="text-sm font-bold text-[var(--text-primary)]">Tabela Resumo — Todas as Dimensoes</h3>
                   </div>
-                  <button onClick={() => setAdModal({})} className="text-[13px] font-bold bg-[var(--accent)] text-white px-4 py-2 rounded-lg border-none cursor-pointer hover:bg-[var(--accent-hover)]">+ Novo Anuncio</button>
-                </div>
-                {ads.length === 0 ? (
-                  <div className="text-center py-[60px] text-[var(--text-muted)] text-sm">Nenhum anuncio cadastrado. Clique em &quot;+ Novo Anuncio&quot; ou use o Mapa Visual.</div>
-                ) : (
                   <table className="admin-table">
                     <thead>
                       <tr>
-                        <th>Nome</th>
-                        <th>Localização</th>
-                        <th>Status</th>
-                        <th>Impressões</th>
-                        <th>Cliques</th>
-                        <th>CTR</th>
-                        <th></th>
+                        <th>Pagina</th>
+                        <th>Espaco</th>
+                        <th>Largura</th>
+                        <th>Altura</th>
+                        <th>Proporcao</th>
+                        <th>Tipo</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {ads.map(a => {
-                        const ctr = a.impressions > 0 ? ((a.clicks / a.impressions) * 100).toFixed(2) : '0.00'
+                      {AD_LOCATIONS.map(loc => (
+                        <tr key={loc.key}>
+                          <td>
+                            <div className="flex items-center gap-2">
+                              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: PAGE_COLORS[loc.page] || '#666' }} />
+                              <span className="text-[12px] font-semibold">{loc.page}</span>
+                            </div>
+                          </td>
+                          <td className="text-[12px] font-semibold text-[var(--text-primary)]">{loc.label.split(' — ')[1]}</td>
+                          <td className="font-mono text-sm">{loc.width}px</td>
+                          <td className="font-mono text-sm">{loc.height}px</td>
+                          <td className="font-mono text-sm">{(loc.width / loc.height).toFixed(1)}:1</td>
+                          <td>
+                            {loc.scalable
+                              ? <span className="text-[10px] font-extrabold uppercase bg-[#dbeafe] text-[#2563eb] px-2 py-0.5 rounded-full">Escalavel</span>
+                              : <span className="text-[10px] font-extrabold uppercase bg-[var(--bg-primary)] text-[var(--text-muted)] px-2 py-0.5 rounded-full">Fixo</span>
+                            }
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Legend */}
+                <div className="mt-5 p-4 bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl">
+                  <div className="flex items-center flex-wrap gap-5 text-[11px] text-[var(--text-muted)]">
+                    <span className="flex items-center gap-1.5"><span className="inline-block w-2.5 h-2.5 rounded-full bg-[#f59e0b]" /> Homepage</span>
+                    <span className="flex items-center gap-1.5"><span className="inline-block w-2.5 h-2.5 rounded-full bg-[#3b82f6]" /> Artigo</span>
+                    <span className="flex items-center gap-1.5"><span className="inline-block w-2.5 h-2.5 rounded-full bg-[#10b981]" /> Categorias</span>
+                    <span className="flex items-center gap-1.5"><span className="inline-block w-2.5 h-2.5 rounded-full bg-[#8b5cf6]" /> Busca</span>
+                    <span className="ml-auto text-[10px]"><strong>Escalavel</strong> = multiplica automaticamente a cada 6 posts</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ═══ ANALYTICS SUB-TAB ═══ */}
+            {adsTab === 'analytics' && (
+              <div>
+                <div className="mb-5">
+                  <h2 className="text-lg font-bold text-[var(--text-primary)]">Analytics de Publicidade</h2>
+                  <p className="text-sm text-[var(--text-muted)] mt-1">Metricas de desempenho dos banners: impressoes, cliques, CTR e distribuicao.</p>
+                </div>
+
+                {/* Global Stats */}
+                {(() => {
+                  const totalImpressions = ads.reduce((s, a) => s + a.impressions, 0)
+                  const totalClicks = ads.reduce((s, a) => s + a.clicks, 0)
+                  const globalCtr = totalImpressions > 0 ? ((totalClicks / totalImpressions) * 100).toFixed(2) : '0.00'
+                  const activeCount = ads.filter(a => a.active).length
+                  return (
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                      {[
+                        { label: 'Total Impressoes', value: totalImpressions.toLocaleString(), color: '#3b82f6' },
+                        { label: 'Total Cliques', value: totalClicks.toLocaleString(), color: '#10b981' },
+                        { label: 'CTR Global', value: globalCtr + '%', color: '#f59e0b' },
+                        { label: 'Banners Ativos', value: activeCount.toString(), color: '#8b5cf6' },
+                      ].map(s => (
+                        <div key={s.label} className="bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl p-5">
+                          <div className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-[var(--text-muted)] mb-1">{s.label}</div>
+                          <div className="font-serif text-3xl" style={{ color: s.color }}>{s.value}</div>
+                        </div>
+                      ))}
+                    </div>
+                  )
+                })()}
+
+                {/* Per-Banner Performance Table */}
+                <div className="bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl overflow-hidden mb-6">
+                  <div className="p-5 border-b border-[var(--border-color)]">
+                    <h3 className="text-sm font-bold text-[var(--text-primary)]">Desempenho por Banner</h3>
+                  </div>
+                  {ads.length === 0 ? (
+                    <div className="text-center py-[60px] text-[var(--text-muted)] text-sm">Nenhum banner cadastrado.</div>
+                  ) : (
+                    <table className="admin-table">
+                      <thead>
+                        <tr>
+                          <th>Banner</th>
+                          <th>Localizacao</th>
+                          <th>Status</th>
+                          <th>Impressoes</th>
+                          <th>Cliques</th>
+                          <th>CTR</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {[...ads].sort((a, b) => b.impressions - a.impressions).map(a => {
+                          const ctr = a.impressions > 0 ? ((a.clicks / a.impressions) * 100).toFixed(2) : '0.00'
+                          const ctrNum = parseFloat(ctr)
+                          const ctrColor = ctrNum >= 2 ? '#16a34a' : ctrNum >= 0.5 ? '#f59e0b' : 'var(--text-muted)'
+                          return (
+                            <tr key={a.id}>
+                              <td>
+                                <div className="flex items-center gap-2">
+                                  {a.image_url && <img src={a.image_url} alt="" className="w-10 h-7 object-cover rounded" />}
+                                  <span className="font-semibold text-[var(--text-primary)]">{a.name}</span>
+                                </div>
+                              </td>
+                              <td className="text-[12px] text-[var(--text-secondary)]">{getLocationLabel(a.location)}</td>
+                              <td>
+                                <span className={`text-[11px] font-bold px-3 py-1 rounded-full ${a.active ? 'bg-[#dcfce7] text-[#16a34a]' : 'bg-[var(--bg-primary)] text-[var(--text-muted)]'}`}>
+                                  {a.active ? 'Ativo' : 'Inativo'}
+                                </span>
+                              </td>
+                              <td className="text-sm text-[var(--text-secondary)] font-mono">{a.impressions.toLocaleString()}</td>
+                              <td className="text-sm text-[var(--text-secondary)] font-mono">{a.clicks.toLocaleString()}</td>
+                              <td className="text-sm font-bold font-mono" style={{ color: ctrColor }}>{ctr}%</td>
+                            </tr>
+                          )
+                        })}
+                      </tbody>
+                    </table>
+                  )}
+                </div>
+
+                {/* Per-Location Performance */}
+                <div className="bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl overflow-hidden mb-6">
+                  <div className="p-5 border-b border-[var(--border-color)]">
+                    <h3 className="text-sm font-bold text-[var(--text-primary)]">Desempenho por Localizacao</h3>
+                  </div>
+                  <table className="admin-table">
+                    <thead>
+                      <tr>
+                        <th>Localizacao</th>
+                        <th>Banners</th>
+                        <th>Impressoes</th>
+                        <th>Cliques</th>
+                        <th>CTR</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {AD_LOCATIONS.map(loc => {
+                        const locAds = ads.filter(a => a.location === loc.key)
+                        const imp = locAds.reduce((s, a) => s + a.impressions, 0)
+                        const clk = locAds.reduce((s, a) => s + a.clicks, 0)
+                        const ctr = imp > 0 ? ((clk / imp) * 100).toFixed(2) : '0.00'
+                        const color = PAGE_COLORS[loc.page] || '#666'
                         return (
-                          <tr key={a.id}>
+                          <tr key={loc.key}>
                             <td>
                               <div className="flex items-center gap-2">
-                                {a.image_url && <img src={a.image_url} alt="" className="w-10 h-7 object-cover rounded" />}
-                                <span className="font-semibold text-[var(--text-primary)]">{a.name}</span>
+                                <div className="w-2 h-2 rounded-full" style={{ backgroundColor: color }} />
+                                <span className="text-[12px] font-semibold text-[var(--text-primary)]">{loc.label}</span>
                               </div>
                             </td>
-                            <td className="text-[12px] text-[var(--text-secondary)]">{getLocationLabel(a.location)}</td>
-                            <td>
-                              <button onClick={() => toggleAdActive(a)} className={`text-[11px] font-bold px-3 py-1 rounded-full border-none cursor-pointer ${a.active ? 'bg-[#dcfce7] text-[#16a34a]' : 'bg-[var(--bg-primary)] text-[var(--text-muted)]'}`}>
-                                {a.active ? 'Ativo' : 'Inativo'}
-                              </button>
-                            </td>
-                            <td className="text-sm text-[var(--text-secondary)] font-mono">{a.impressions.toLocaleString()}</td>
-                            <td className="text-sm text-[var(--text-secondary)] font-mono">{a.clicks.toLocaleString()}</td>
+                            <td className="text-sm text-[var(--text-secondary)]">{locAds.filter(a => a.active).length} / {locAds.length}</td>
+                            <td className="text-sm text-[var(--text-secondary)] font-mono">{imp.toLocaleString()}</td>
+                            <td className="text-sm text-[var(--text-secondary)] font-mono">{clk.toLocaleString()}</td>
                             <td className="text-sm text-[var(--accent)] font-bold font-mono">{ctr}%</td>
-                            <td>
-                              <div className="flex gap-1">
-                                <button onClick={() => { const loc = AD_LOCATIONS.find(l => l.key === a.location); setAdModal({ ad: a, location: loc }) }} className="bg-transparent border border-[var(--border-color)] text-[var(--text-muted)] px-3 py-1.5 rounded-md text-xs font-semibold cursor-pointer hover:border-[var(--accent)] hover:text-[var(--accent)]">Editar</button>
-                                <button onClick={() => setConfirmModal({ text: `Remover anuncio "${a.name}"?`, onConfirm: () => { deleteItem('ad', a.id); setConfirmModal(null) } })} className="bg-transparent border border-[var(--border-color)] text-[var(--text-muted)] px-3 py-1.5 rounded-md text-xs font-semibold cursor-pointer hover:border-[var(--tag-red-text)] hover:text-[var(--tag-red-text)] hover:bg-[var(--tag-red-bg)]">Remover</button>
-                              </div>
-                            </td>
                           </tr>
                         )
                       })}
                     </tbody>
                   </table>
-                )}
+                </div>
+
+                {/* Distribution by Page */}
+                <div className="bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl p-5">
+                  <h3 className="text-sm font-bold text-[var(--text-primary)] mb-4">Distribuicao por Pagina</h3>
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    {['Homepage', 'Post', 'Categorias', 'Busca'].map(page => {
+                      const pageAds = ads.filter(a => AD_LOCATIONS.find(l => l.key === a.location)?.page === page)
+                      const imp = pageAds.reduce((s, a) => s + a.impressions, 0)
+                      const clk = pageAds.reduce((s, a) => s + a.clicks, 0)
+                      const ctr = imp > 0 ? ((clk / imp) * 100).toFixed(2) : '0.00'
+                      const color = PAGE_COLORS[page] || '#666'
+                      const totalImpressions = ads.reduce((s, a) => s + a.impressions, 0)
+                      const pct = totalImpressions > 0 ? ((imp / totalImpressions) * 100).toFixed(0) : '0'
+                      return (
+                        <div key={page} className="bg-[var(--bg-primary)] border border-[var(--border-color)] rounded-xl p-4">
+                          <div className="flex items-center gap-2 mb-3">
+                            <div className="w-3 h-3 rounded-full" style={{ backgroundColor: color }} />
+                            <span className="text-sm font-bold text-[var(--text-primary)]">{page}</span>
+                          </div>
+                          {/* Simple bar */}
+                          <div className="w-full h-2 bg-[var(--border-color)] rounded-full mb-3 overflow-hidden">
+                            <div className="h-full rounded-full transition-all" style={{ backgroundColor: color, width: pct + '%' }} />
+                          </div>
+                          <div className="grid grid-cols-2 gap-2 text-[11px]">
+                            <div>
+                              <div className="text-[var(--text-muted)]">Impressoes</div>
+                              <div className="font-mono font-bold text-[var(--text-primary)]">{imp.toLocaleString()}</div>
+                            </div>
+                            <div>
+                              <div className="text-[var(--text-muted)]">Cliques</div>
+                              <div className="font-mono font-bold text-[var(--text-primary)]">{clk.toLocaleString()}</div>
+                            </div>
+                            <div>
+                              <div className="text-[var(--text-muted)]">CTR</div>
+                              <div className="font-mono font-bold" style={{ color }}>{ctr}%</div>
+                            </div>
+                            <div>
+                              <div className="text-[var(--text-muted)]">% do Total</div>
+                              <div className="font-mono font-bold text-[var(--text-primary)]">{pct}%</div>
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
               </div>
             )}
-
-            {/* Resumo de dimensões */}
-            <div className="mt-8 bg-[var(--bg-secondary)] border border-[var(--border-color)] rounded-xl p-6">
-              <h3 className="text-sm font-bold text-[var(--text-primary)] mb-4">Dimensões dos Espaços Publicitários</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-                {AD_LOCATIONS.map(loc => (
-                  <div key={loc.key} className="flex items-center gap-3 p-3 bg-[var(--bg-primary)] rounded-lg border border-[var(--border-color)]">
-                    <div className="w-1.5 h-8 rounded-full" style={{ backgroundColor: PAGE_COLORS[loc.page] || '#666' }} />
-                    <div>
-                      <div className="text-[11px] font-bold text-[var(--text-primary)]">{loc.label.split(' — ')[1]}</div>
-                      <div className="text-[10px] text-[var(--text-muted)] font-mono">{loc.width} x {loc.height}px</div>
-                    </div>
-                    {loc.scalable && <span className="text-[8px] font-extrabold uppercase bg-[#dbeafe] text-[#2563eb] px-1.5 py-0.5 rounded-full ml-auto">ESC</span>}
-                  </div>
-                ))}
-              </div>
-              <div className="mt-4 flex items-center gap-4 text-[11px] text-[var(--text-muted)]">
-                <span className="flex items-center gap-1"><span className="inline-block w-2 h-2 rounded-full bg-[#f59e0b]" /> Homepage</span>
-                <span className="flex items-center gap-1"><span className="inline-block w-2 h-2 rounded-full bg-[#3b82f6]" /> Artigo</span>
-                <span className="flex items-center gap-1"><span className="inline-block w-2 h-2 rounded-full bg-[#10b981]" /> Categorias</span>
-                <span className="flex items-center gap-1"><span className="inline-block w-2 h-2 rounded-full bg-[#8b5cf6]" /> Busca</span>
-                <span className="flex items-center gap-1"><span className="inline-block w-2 h-2 rounded-full bg-[#2563eb] text-[8px] font-extrabold">ESC</span> = Escalavel (multiplica com posts)</span>
-              </div>
-            </div>
           </div>
         )}
       </div>
@@ -575,28 +727,6 @@ export default function AdminClient() {
     </div>
   )
 
-  function renderAdSlot(loc: AdLocation | undefined, color: string) {
-    if (!loc) return null
-    const locAds = getAdsForLocation(loc.key)
-    const hasAd = locAds.some(a => a.active)
-
-    return (
-      <div
-        className={`rounded my-2 flex items-center justify-center text-[9px] font-bold border-2 border-dashed cursor-pointer transition-all hover:opacity-80 ${hasAd ? 'border-solid' : ''}`}
-        style={{
-          borderColor: color,
-          backgroundColor: hasAd ? color + '22' : 'transparent',
-          color: color,
-          height: Math.max(20, loc.height / 5),
-        }}
-        onClick={() => setAdModal({ location: loc })}
-      >
-        {loc.label.split(' — ')[1]} ({loc.width}x{loc.height})
-        {loc.scalable && ' *'}
-        {hasAd && ' ✓'}
-      </div>
-    )
-  }
 }
 
 // ═══ AD FORM COMPONENT ═══

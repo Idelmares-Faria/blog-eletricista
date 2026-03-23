@@ -17,16 +17,15 @@ export async function GET(request: NextRequest) {
     // Filter by date range
     sql += ` AND (start_date IS NULL OR start_date <= CURRENT_DATE)`
     sql += ` AND (end_date IS NULL OR end_date >= CURRENT_DATE)`
-    sql += ` ORDER BY RANDOM()`
+    sql += ` ORDER BY RANDOM() LIMIT 1`
 
     const rows = await query(sql, params)
 
-    // Increment impressions for returned ads
+    // Increment impression only for the single served ad
     if (rows.length > 0) {
-      const ids = rows.map((r: any) => r.id)
       await query(
-        `UPDATE ads SET impressions = impressions + 1 WHERE id = ANY($1::int[])`,
-        [ids]
+        `UPDATE ads SET impressions = impressions + 1 WHERE id = $1`,
+        [rows[0].id]
       )
     }
 

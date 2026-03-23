@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { toggleTheme } from './ThemeProvider'
@@ -18,6 +18,24 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const searchRef = useRef<HTMLInputElement>(null)
+  const [isAdmin, setIsAdmin] = useState(false)
+
+  useEffect(() => {
+    if (pathname?.startsWith('/admin')) {
+      fetch('/api/admin/check').then(r => {
+        setIsAdmin(r.ok)
+      }).catch(() => setIsAdmin(false))
+    } else {
+      setIsAdmin(false)
+    }
+  }, [pathname])
+
+  function handleLogout() {
+    fetch('/api/admin/logout', { method: 'POST' }).finally(() => {
+      setIsAdmin(false)
+      router.push('/admin')
+    })
+  }
 
   function handleSearch(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === 'Enter' && searchRef.current?.value.trim()) {
@@ -82,6 +100,17 @@ export default function Navbar() {
             >
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
             </button>
+
+            {/* Admin Logout */}
+            {isAdmin && (
+              <button
+                onClick={handleLogout}
+                className="bg-transparent border border-[var(--border-color)] text-[var(--text-secondary)] px-3.5 py-2 rounded-[20px] text-sm font-semibold cursor-pointer flex items-center gap-1.5 hover:border-red-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950 transition-colors"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                Sair
+              </button>
+            )}
           </nav>
 
           {/* Hamburger */}
@@ -123,6 +152,14 @@ export default function Navbar() {
           >
             Alternar Tema
           </button>
+          {isAdmin && (
+            <button
+              onClick={() => { handleLogout(); setMenuOpen(false) }}
+              className="mt-2 bg-transparent border border-[var(--border-color)] text-red-500 px-4 py-3 rounded-xl text-sm font-semibold"
+            >
+              Sair
+            </button>
+          )}
         </div>
       )}
     </>
